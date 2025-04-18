@@ -35,3 +35,15 @@ project.assets.json
 *.db
 *.bak
 *.vs/
+
+
+
+# takip et
+!EventData/
+!EventData/**
+!MapData/
+!MapData/**
+!iconData/
+!iconData/**
+!Extracted/
+!Extracted/**
