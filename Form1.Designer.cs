@@ -44,11 +44,11 @@
             checkBox1 = new CheckBox();
             checkBox2 = new CheckBox();
             groupBox1 = new GroupBox();
+            button11 = new Button();
             button10 = new Button();
             checkBox4 = new CheckBox();
             button9 = new Button();
             checkBox3 = new CheckBox();
-            button11 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -224,6 +224,16 @@
             groupBox1.Text = "Utilities";
             groupBox1.Visible = false;
             // 
+            // button11
+            // 
+            button11.Location = new Point(6, 66);
+            button11.Name = "button11";
+            button11.Size = new Size(24, 23);
+            button11.TabIndex = 14;
+            button11.Text = "🖌️";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
+            // 
             // button10
             // 
             button10.Location = new Point(91, 51);
@@ -266,16 +276,6 @@
             checkBox3.TabIndex = 16;
             checkBox3.Text = "Redraw on click";
             checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // button11
-            // 
-            button11.Location = new Point(6, 66);
-            button11.Name = "button11";
-            button11.Size = new Size(24, 23);
-            button11.TabIndex = 14;
-            button11.Text = "0";
-            button11.UseVisualStyleBackColor = true;
-            button11.Click += button11_Click;
             // 
             // Form1
             // 

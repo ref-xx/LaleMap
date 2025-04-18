@@ -1,0 +1,37 @@
+## Derleme dizinleri
+bin/
+obj/
+
+## VS ayar dosyaları
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Resharper gibi eklentiler
+_ReSharper*/
+*.DotSettings.user
+
+## VS Code özel dosyaları (VSCode kullanıyorsan)
+.vscode/
+
+## Geçici dosyalar
+*.tmp
+*.log
+*.cache
+
+## NuGet paketleri
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+
+## DLL ve exe
+*.dll
+*.exe
+*.pdb
+
+## Diğer
+*.db
+*.bak
+*.vs/

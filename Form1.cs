@@ -11,7 +11,7 @@ namespace LaleMapTest
     public struct AmigaPic
     {
         public Color[] palette;       // 32 girdilik palet
-        public Color[] BackupPalette;       // 32 girdilik palet
+        public Color[] BackupPalette; // 32 girdilik palet
 
         public int width;             // Genişlik (dosyada bayt cinsinden)
         public int lumph;            // Yükseklik (satır sayısı)
@@ -43,7 +43,114 @@ namespace LaleMapTest
     public partial class Form1 : Form
     {
         private AmigaPic PicBank = new AmigaPic();
-        public Color[] BackupPalette = new Color[32];
+        Color[] BackupPalette2 = new Color[]
+        {
+            Color.FromArgb(0x00, 0x00, 0x00),    // COLOR00 = 000
+            Color.FromArgb(0x00, 0x55, 0x66),     // COLOR01 = 056
+            Color.FromArgb(0xCC, 0x22, 0x00),     // COLOR02 = C20
+            Color.FromArgb(0x88, 0x77, 0x00),      // COLOR03 = 870
+            Color.FromArgb(0x44, 0x33, 0x00),     // COLOR04 = 430
+            Color.FromArgb(0x77, 0x66, 0x00),     // COLOR05 = 760
+            Color.FromArgb(0x55, 0x44, 0x00),     // COLOR06 = 540
+            Color.FromArgb(0x66, 0x55, 0x00),     // COLOR07 = 650
+            Color.FromArgb(0x00, 0x66, 0x77),     // COLOR08 = 067
+            Color.FromArgb(0x00, 0x77, 0x88),     // COLOR09 = 078
+            Color.FromArgb(0x00, 0x88, 0x99),     // COLOR10 = 089
+            Color.FromArgb(0x00, 0x33, 0x44),     // COLOR11 = 034
+            Color.FromArgb(0x00, 0x44, 0x55),     // COLOR12 = 045
+            Color.FromArgb(0x00, 0x55, 0x66),     // COLOR13 = 056
+            Color.FromArgb(0x00, 0x44, 0x55),     // COLOR14 = 045
+            Color.FromArgb(0x00, 0x33, 0x44),     // COLOR15 = 034
+            Color.FromArgb(0x00, 0x55, 0x00),     // COLOR16 = 050
+            Color.FromArgb(0x00, 0x66, 0x00),     // COLOR17 = 060
+            Color.FromArgb(0x00, 0x44, 0x00),     // COLOR18 = 040
+            Color.FromArgb(0xFF, 0xCC, 0xAA),      // COLOR19 = FCA
+            Color.FromArgb(0x33, 0x33, 0x33),     // COLOR20 = 333
+            Color.FromArgb(0x44, 0x44, 0x44),     // COLOR21 = 444
+            Color.FromArgb(0x55, 0x55, 0x55),     // COLOR22 = 555
+            Color.FromArgb(0x66, 0x66, 0x66),     // COLOR23 = 666
+            Color.FromArgb(0x77, 0x77, 0x77),     // COLOR24 = 777
+            Color.FromArgb(0x88, 0x88, 0x88),     // COLOR25 = 888
+            Color.FromArgb(0x44, 0x44, 0x44),     // COLOR26 = 444
+            Color.FromArgb(0x00, 0x33, 0x33),     // COLOR27 = 033
+            Color.FromArgb(0x00, 0x55, 0x66),     // COLOR28 = 056
+            Color.FromArgb(0x44, 0x66, 0x88),     // COLOR29 = 468
+            Color.FromArgb(0xEE, 0x33, 0x00),     // COLOR30 = E30
+            Color.FromArgb(0x99, 0x22, 0x00)      // COLOR31 = 920
+        };
+        Color[] BackupPalette3 = new Color[]
+        {
+            Color.FromArgb(0x00, 0x00, 0x00),    // COLOR00 = 000
+            Color.FromArgb(0x00, 0x55, 0x00),    // COLOR01 = 050
+            Color.FromArgb(0x00, 0x44, 0x00),    // COLOR02 = 040
+            Color.FromArgb(0x00, 0x33, 0x00),    // COLOR03 = 030
+            Color.FromArgb(0x00, 0x22, 0x88),    // COLOR04 = 028
+            Color.FromArgb(0x00, 0x11, 0x66),    // COLOR05 = 016
+            Color.FromArgb(0x00, 0x00, 0x44),    // COLOR06 = 004
+            Color.FromArgb(0x55, 0x22, 0x00),    // COLOR07 = 520
+            Color.FromArgb(0x44, 0x11, 0x00),    // COLOR08 = 410
+            Color.FromArgb(0x33, 0x00, 0x00),    // COLOR09 = 300
+            Color.FromArgb(0x55, 0x55, 0x55),    // COLOR10 = 555
+            Color.FromArgb(0x44, 0x44, 0x44),    // COLOR11 = 444
+            Color.FromArgb(0x33, 0x33, 0x33),    // COLOR12 = 333
+            Color.FromArgb(0x22, 0x22, 0x22),    // COLOR13 = 222
+            Color.FromArgb(0x11, 0x11, 0x11),    // COLOR14 = 111
+            Color.FromArgb(0x66, 0x66, 0x66),    // COLOR15 = 666
+            Color.FromArgb(0x00, 0x00, 0x00),    // COLOR16 = 000
+            Color.FromArgb(0x22, 0x00, 0x22),    // COLOR17 = 202
+            Color.FromArgb(0x44, 0x00, 0x55),    // COLOR18 = 405
+            Color.FromArgb(0x77, 0x00, 0x88),    // COLOR19 = 708
+            Color.FromArgb(0x00, 0x66, 0x00),    // COLOR20 = 060
+            Color.FromArgb(0x00, 0x00, 0x00),    // COLOR21 = 000
+            Color.FromArgb(0x66, 0x33, 0x00),    // COLOR22 = 630
+            Color.FromArgb(0x11, 0x00, 0x00),    // COLOR23 = 100
+            Color.FromArgb(0x00, 0x33, 0x99),    // COLOR24 = 039
+            Color.FromArgb(0x33, 0x00, 0x00),    // COLOR25 = 300
+            Color.FromArgb(0x55, 0x11, 0x11),    // COLOR26 = 511
+            Color.FromArgb(0x77, 0x22, 0x22),    // COLOR27 = 722
+            Color.FromArgb(0x88, 0x88, 0x88),    // COLOR28 = 888
+            Color.FromArgb(0xCC, 0x00, 0x00),    // COLOR29 = C00
+            Color.FromArgb(0x77, 0x00, 0x00),    // COLOR30 = 700
+            Color.FromArgb(0x77, 0x77, 0x77)     // COLOR31 = 777
+        };
+        Color[] BackupPalette = new Color[]
+        {
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR01 = FF8
+            Color.FromArgb(0xFF, 0xff, 0x88), // COLOR01 = FF8
+            Color.FromArgb(0x22, 0x22, 0x00), // COLOR02 = 220
+            Color.FromArgb(0x33, 0x33, 0x00), // COLOR03 = 330
+            Color.FromArgb(0x44, 0x44, 0x00), // COLOR04 = 440
+            Color.FromArgb(0x55, 0x55, 0x11), // COLOR05 = 551
+            Color.FromArgb(0x66, 0x66, 0x11), // COLOR06 = 661
+            Color.FromArgb(0x77, 0x77, 0x11), // COLOR07 = 771
+            Color.FromArgb(0x88, 0x88, 0x22), // COLOR08 = 882
+            Color.FromArgb(0x99, 0x99, 0x22), // COLOR09 = 992
+            Color.FromArgb(0xAA, 0xaa, 0x22), // COLOR10 = AA3
+            Color.FromArgb(0xBB, 0xbb, 0x44), // COLOR11 = BB4
+            Color.FromArgb(0xCC, 0xcc, 0x44), // COLOR12 = CC4
+            Color.FromArgb(0xDD, 0xdd, 0x00), // COLOR13 = DD5
+            Color.FromArgb(0xEE, 0xee, 0x66), // COLOR14 = EE6
+            Color.FromArgb(0x11, 0x11, 0x00), // COLOR15 = 110
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR16 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR17 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR18 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR19 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR20 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR21 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR22 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR23 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR24 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR25 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR26 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR27 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR28 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR29 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR30 = 000
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR31 = 000
+};
+
+
+
         private LaleMap map = new LaleMap();
         private int searchindex = 0;
         List<byte[]> eventDataList = new List<byte[]>(); // form sınıfına ekle
@@ -549,6 +656,7 @@ namespace LaleMapTest
                 drawDungeon();
         }
         private string lastfile = "";
+        private string lastfilepath = "";
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -567,6 +675,8 @@ namespace LaleMapTest
 
                 if (!File.Exists(filename))
                     return;
+                lastfilepath = filename;
+
                 lastfile = openFileDialog.SafeFileName;
                 LoadAbkPic(filename);
             }
@@ -1826,7 +1936,40 @@ namespace LaleMapTest
 
         private void button11_Click(object sender, EventArgs e)
         {
-            BackupPalette[0] = Color.Magenta;
+            Form paletteForm = new Form();
+            paletteForm.Text = "Palette Editor";
+            paletteForm.Size = new Size(420, 300);
+            paletteForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            paletteForm.MaximizeBox = false;
+
+            for (int i = 0; i < 32; i++)
+            {
+                Button colorButton = new Button();
+                colorButton.Size = new Size(40, 40);
+                colorButton.Left = 10 + (i % 8) * 50;
+                colorButton.Top = 10 + (i / 8) * 50;
+                colorButton.BackColor = BackupPalette[i];
+                int index = i; // gerekli, closure hatasını önler
+
+                colorButton.Click += (s, ev) =>
+                {
+                    using (ColorDialog dlg = new ColorDialog())
+                    {
+                        dlg.Color = BackupPalette[index];
+                        if (dlg.ShowDialog() == DialogResult.OK)
+                        {
+                            BackupPalette[index] = dlg.Color;
+                            colorButton.BackColor = dlg.Color;
+                            LoadAbkPic(lastfilepath);
+                        }
+                    }
+                };
+
+                paletteForm.Controls.Add(colorButton);
+            }
+
+            paletteForm.ShowDialog();
         }
+
     }
 }
