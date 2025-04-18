@@ -1,0 +1,118 @@
+﻿===== Event #1 =====
+Header: 00 13 00 6A 00 E4 00 E6 
+
+0.Room Begin: (0)
+1.IF isNotSet(1) Then SKIP 1 (3)
+
+2.Begin
+3.Print "dISarIdan garip hIrIltIlar geliyor... gerCekten dISarI CIkacak MIYIZ ? "
+4.Input?  evet / hayIr
+5.IF AnswerWas(1) Then SKIP 1 (7)
+6.[break]
+
+7.Admit and Begin (0x0E) (0)
+8.IF isNotSet(1) Then SKIP 2 (11)
+9.Print "burada OlU bir kOpek YatIyor. "
+
+10.Begin
+11.Show Image(13)
+12.Print "hIrIltIlar Bundan geliyormuS !!! "
+13.[startFight: enemyId=13(kOpek), count=1, ?: 0, 0, 0, 0]
+14.Talk Random Face "ne dellenmiS ki bu hayvan yahu? "
+15.SetVariable (1).
+
+16.End.
+
+17.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 13 00 0B 00 B5 00 B7 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(2) Then SKIP 3 (6)
+3.Show Image(32)
+4.Talk Random Face "Bu herif hala ayIlmamIS mI ? "
+
+5.Begin
+6.Show Image(32)
+7.Print "burada baygIn bir adam yatIyor... UstUnU arayalIm mI? "
+8.Input?  evet / hayIr
+9.IF AnswerWas(1) Then SKIP 1 (11)
+
+10.Begin
+11.Loot $: 5, M: 0, K: 1
+  Loot 0  item #3(kIsa zopa)
+  Loot Params: 0, 0, 0, 0
+12.IF isNotSet(2) Then SKIP 1 (14)
+
+13.Begin
+14.Talk Random Face "BEyler burada bir anahtar buldum "
+15.SetVariable (2).
+
+16.End.
+
+17.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0D 00 7C 00 7F 00 82 
+
+0.Room Begin: (0)
+1.IF isNotSet(2) Then SKIP 5 (7)
+2.Print "otoparktan CIkmak istediGine emin misin? "
+3.Input?  evet / hayIr
+4.IF AnswerWas(1) Then SKIP 1 (6)
+5.[break]
+6.******* Next Map: 2, 2, 152, 3
+7.Talk with face 1,"bu KapI Kilitli. anahtar gOren oldu mu ? "
+8.[break]
+9.End 0.
+
+10.End.
+
+11.Begin
+
+12.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 06 00 0B 00 2E 00 30 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.Talk with face 3,"burasI amma pis kokuyo bee ! "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 10 00 5A 00 7C 00 7E 
+
+0.Room Begin: (0)
+1.IF isNotSet(81) Then SKIP 1 (3)
+
+2.Begin
+3.Print "CIkmak istediGinden emin misin ? "
+4.Input?  eminim / deGilim
+5.IF AnswerWas(1) Then SKIP 1 (7)
+6.[break]
+7.Print "iyi Oyle olsun. "
+
+8.Admit and Begin (0x0E) (0)
+9.IF isNotSet(81) Then SKIP 1 (11)
+
+10.Begin
+11.Print "CIktIk iSte n'olcek ? "
+12.SetVariable (81).
+
+13.End.
+
+14.Room End (4-0)
+
+

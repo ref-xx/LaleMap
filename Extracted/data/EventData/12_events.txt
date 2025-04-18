@@ -1,0 +1,245 @@
+﻿===== Event #1 =====
+Header: 00 0B 00 0B 01 3F 01 41 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+[12] 2.IF AnswerWas(0) Then SKIP 2 (5)
+3.[printRandom]
+- "burasI bir birahane. pek fazla mUSteri yok gibi.
+"
+- "sabahIn kOrUnde bu birahanede hiC mUSteri yok. "
+
+4.Begin
+5.Show Image(4)
+6.Print "ooo beyler buyrun oturun. gece buranIn muhabbeti harika olur. sizde duydunuzmu semtimizi ele geCiren ecinnileri. amigo mu neymiS birisi getirmiS bunlarI. nihat diye bir CocuGun evinden CIkmISlar. "
+
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 14 00 E9 01 E2 01 E4 
+
+0.Room Begin: (0)
+1.IF isNotSet(51) Then SKIP 2 (4)
+2.Talk with face 1,"hey yol aCIlmIS ! "
+
+3.Begin
+4.Print "yoh hemSerim olmaz geCemezsiniz. iCersi silkonyalI mI ne bir garip herifler tarafIndan incelemeye aLIndI. iCerde hazIrlIk neyin yapIyorlarmIS. beni de kaPIya kimseyi geCirmeyayim diye koydular. "
+5.[break]
+6.End 0.
+7.IF isNotSet(59) Then SKIP 1 (9)
+
+8.Begin
+9.Print "burasI dam ! bir de pabuC var alalIm mI ? "
+10.Input?  evet / hayIr
+11.IF AnswerWas(0) Then SKIP 5 (17)
+12.SetVariable (59).
+[17 (!)] [00] 13.SetVariable (17).
+14.Input?  u pabuC kokuyor ulan. almayalIm biz en iyisi bunu.  / mgrubun diGer elemanlarInIn bir kIsmI bu lafI sOylelyen hIyarI dOverken, biri de gidip p
+[57 (a)] [58 (b)] [6B (u)] [59 (c)] [6B (u)] [AC] [57 (a)] [62 (l)] [5A (d)] [3F (I)] [24 (.)] [AC] 
+15.Begin
+16.Print "iyi, Oyle olsun. "
+
+17.End.
+
+18.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 20 00 0B 05 C1 05 C3 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(60) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(73)
+5.IF isNotSet(59) Then SKIP 9 (15)
+6.Print "ooo beyler kokudan anladIGIm kadarIyla. bizim treysi'nin istediGi pabucu getirmiSsiniz. hadi verin Simdi onu bana. "
+[17 (!)] [00] 7.SetVariable (17).
+8.Input?  vet sayIn zot bey getirdik. buyrun alIn efendim.  / lnIhahaaa sizi aptallar. artIk pabucu aldIm. savaSCIlar! saldIrIn Su heriflere! OlUm yine k
+[57 (a)] [50 (Z)] [57 (a)] [64 (n)] [5A (d)] [3F (I)] [24 (.)] [AC] 9.Print "zot arakasInI dOnUp monitOrden iCeri atladI. birden bire nereden geldiGini anlayamadIGInIz. bir yIGIn esesay faytIRI , bir meycik yuzIr ve bIr kaC kIleriK UstUnUze atladI. "
+10.[startFight: enemyId=9(meycik yuzIr), count=1, ?: 10, 3, 11, 4]
+11.SetVariable (60).
+12.Print "KIleriGin birinin UstUnU aradIGInIzda herifin UstUnden kocaman bronz bir anahtar CIkTI. "
+
+13.Begin
+14.IF isNotSet(58) Then SKIP 2 (17)
+15.Print "pabucumuz damdan getirilene kadar, eylemlerimiz sUrecektir! "
+
+16.Begin
+17.Print "odanIn kOSesinde monitOrU kIrIlmIS bir amiga var. bu iSin Onemsiz gOrUnen kIsmI. birde tam karSInIzda dikilen Su ecinni suratlI herif var. bize garip garip bakIyor. suratInda birden, tanIma ve sinirlenme hissettiniz. "
+[17 (!)] 18.IF Operator(14)->(17) Then SKIP 5 (24)
+[3B (E)] [69 (s)] [5B (e)] [64 (n)] [16 ( )] [5A (d)] [5B (e)] [16 ( )] [61 (k)] [5F (i)] [63 (m)] [69 (s)] [5F (i)] [64 (n)] [16 ( )] [58 (b)] [68 (r)] [5B (e)] [16 ( )] [61 (k)] [57 (a)] [5C (f)] [5F (i)] [68 (r)] [24 (.)] [16 ( )] [6C (v)] [5B (e)] [16 ( )] [5A (d)] [5B (e)] [16 ( )] [64 (n)] [5B (e)] [AC] [5F (i)] [69 (s)] [6A (t)] [5B (e)] [63 (m)] [5B (e)] [61 (k)] [6A (t)] [5B (e)] [69 (s)] [5F (i)] [64 (n)] [16 ( )] [61 (k)] [5F (i)] [16 ( )] [58 (b)] [5F (i)] [70 (z)] [5A (d)] [5B (e)] [64 (n)] [16 ( )] [35 (?)] [AC] 19.Print "ben OlUmUn efendisi yUce lord zot. hiC bir OlUmlU benim karSImda dayanamaz. ben elimin bir hareketiyle hepinizi OldUrebilirim. ben ingilizce de bilirim... benn... beeeennn... "
+[17 (!)] [00] 20.SetVariable (17).
+21.Input?  ey millet bu herif tehlikeli gibi gOrUndU bana. siz ne dersiniz. ! / +sus! ulan, sus! allah allah yaa. ?ben ve adamlarIm Su amiga'dan CIktIK. siz 'istanbul ef
+[69 (s)] [57 (a)] [64 (n)] [5B (e)] [62 (l)] [5B (e)] [68 (r)] [5F (i)] [1D (')] [16 ( )] [5A (d)] [5F (i)] [6F (y)] [5B (e)] [AC] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [65 (o)] [6F (y)] [6B (u)] [64 (n)] [6B (u)] [64 (n)] [16 ( )] [61 (k)] [57 (a)] [5E (h)] [68 (r)] [57 (a)] [63 (m)] [57 (a)] [64 (n)] [62 (l)] [57 (a)] [68 (r)] [3F (I)] [6F (y)] [63 (m)] [3F (I)] [49 (S)] [69 (s)] [3F (I)] [64 (n)] [3F (I)] [70 (z)] [24 (.)] [AC] [69 (s)] [5F (i)] [70 (z)] [5F (i)] [64 (n)] [16 ( )] [5F (i)] [39 (C)] [5F (i)] [64 (n)] [16 ( )] [5D (g)] [5B (e)] [62 (l)] [5A (d)] [5F (i)] [61 (k)] [24 (.)] [16 ( )] [58 (b)] [5B (e)] [64 (n)] [16 ( )] [5A (d)] [68 (r)] [57 (a)] [5D (g)] [65 (o)] [64 (n)] [62 (l)] [5B (e)] [64 (n)] [69 (s)] [AC] [59 (c)] [57 (a)] [64 (n)] [57 (a)] [6C (v)] [57 (a)] [68 (r)] [3F (I)] [6F (y)] [3F (I)] [63 (m)] [24 (.)] [16 ( )] [69 (s)] [5F (i)] [70 (z)] [5F (i)] [64 (n)] [16 ( )] [65 (o)] [6F (y)] [6B (u)] [64 (n)] [16 ( )] [58 (b)] [5F (i)] [70 (z)] [5F (i)] [63 (m)] [61 (k)] [5F (i)] [64 (n)] [5F (i)] [64 (n)] [AC] [66 (p)] [57 (a)] [58 (b)] [6B (u)] [59 (c)] [6B (u)] [64 (n)] [6B (u)] [16 ( )] [5A (d)] [57 (a)] [63 (m)] [57 (a)] [16 ( )] [57 (a)] [6A (t)] [63 (m)] [3F (I)] [49 (S)] [24 (.)] [24 (.)] [24 (.)] [AC] 22.Print "pabucumuz damdan getirilene kadar, eylemlerimiz sUrecektir! "
+23.SetVariable (58).
+
+24.End.
+
+25.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 0E 00 0B 00 D4 00 D6 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(60) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(125) Then SKIP 2 (7)
+5.Print "burada yerde garip iki boyutlu nesneler yatIyor. "
+
+6.Begin
+7.Show Image(10)
+8.Print "burasI esesay faytIrlarI tarafIndan. barakaya CevrilmiS bir bina. dolayIsIyla iCinde iSbu SahIslardan bol miktarda mevcut. "
+9.[startFight: enemyId=10(faytIr), count=4, ?: 0, 0, 0, 0]
+10.SetVariable (125).
+
+11.End.
+
+12.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0F 00 0B 01 B2 01 B4 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.Show Image(4)
+3.IF isNotSet(126) Then SKIP 2 (6)
+4.Print "gUle gUle abilerim. hayIrlI yolculuklar. "
+
+5.Begin
+6.IF isNotSet(60) Then SKIP 4 (11)
+7.Print "saGolun sayIn aabilerim. size minnettarIz. teSEkkUr mahiyetinde size bir vecize OGretelim diyorduk kelime daGarcIGImIz da bayaGI geniSTir yani. "
+[1C (&)] 8.SetVariable (126).
+
+9.Begin
+10.Print "yaa abii tavla oynamaktan zaman bulsak, bi gUn toplanIp Su ecinnilere hadlerini bildirecez ama olmuyor aabi. bide herifler iki boyutlu vurmak ta zor oluyor ipnalara. sizin baSlamISken temizleseydiniz diyoduk hani. "
+
+11.End.
+
+12.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 06 00 0B 00 82 00 84 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "melbourne palas Cay ocaGI. yemek servisimiz iCeride.
+"
+- "melbourne CaylarI ve tost bulunur. yemek servisi bUfemizde. "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 08 00 0B 00 B4 00 B6 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(60) Then SKIP 1 (4)
+
+3.Begin
+4.Print "bucivarlarda garip bir niiii sesi mevcut. hani bilgisayarIn monitorU aCIk kalInca garip bir ses CIkar, kimse duymaz da sadece siz duyarsInIz. iSte o ses gibi. "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 0D 00 0B 00 E3 00 E5 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(60) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(127) Then SKIP 1 (6)
+
+5.Begin
+6.SetVariable (127).
+7.Show Image(9)
+8.Print "burada bir miktar iki boyutlu meycik yuzIr. etrafI garip bir Sekilde dekore ediyorlar.bir tanesi elinde 'mages guild' yazan bir pankart taSIyor. bizi gOrUnce ilgileri bu tarafa yoGunlaStI. "
+9.[startFight: enemyId=9(meycik yuzIr), count=4, ?: 0, 0, 0, 0]
+
+10.End.
+
+11.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 0E 00 0B 00 EC 00 EE 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(60) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(128) Then SKIP 2 (7)
+5.Print "burada yerde garip iki boyutlu nesneler yatIyor. "
+
+6.Begin
+7.Show Image(11)
+8.Print "kaRSInIzda ellerinde bir yIGIn ne olduGu anlaSIlmaz nesne taSIyan esesay kIlerikleri var. birinin elindeki tabelada.'temple of mishakal' yazmakta. "
+9.[startFight: enemyId=11(kIlerik), count=5, ?: 0, 0, 0, 0]
+10.SetVariable (128).
+
+11.End.
+
+12.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 06 00 0B 00 2F 00 31 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "hotel Sehrazat
+"
+- "Sehrazat oteli "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #11 =====
+Header: 00 0C 00 93 00 96 00 98 
+
+0.Room Begin: (0)
+1.IF isNotSet(62) Then SKIP 2 (4)
+2.Print "kapI biz CIkTIKtan sonra birileri tarafIndan kitlenmiS. "
+3.[break]
+4.IF isNotSet(60) Then SKIP 2 (7)
+5.Print "bu kaPI garip bir karanlIGa iniyor. "
+6.******* Next Map: 16, 0, 2, 1
+7.Print "kaPI kapalI Ve kilitli. "
+8.[break]
+9.End 0.
+
+10.End.
+
+11.Room End (4-0)
+
+

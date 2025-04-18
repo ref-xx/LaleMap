@@ -1,0 +1,215 @@
+﻿===== Event #1 =====
+Header: 00 18 00 0B 03 DD 03 DF 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(62) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(75)
+5.Print "hey siz ! siz de kim oluyorsunuz da gubarak necati'nin UssUne elinizi kolunuzu sallayarak gireceGinizi sanIyorsunuz. "
+[17 (!)] 6.IF Operator(14)->(17) Then SKIP 5 (12)
+[E1] [58 (b)] [5F (i)] [70 (z)] [16 ( )] [63 (m)] [5F (i)] [35 (?)] [16 ( )] [5B (e)] [5B (e)] [5B (e)] [16 ( )] [58 (b)] [5F (i)] [70 (z)] [16 ( )] [49 (S)] [5B (e)] [6F (y)] [5F (i)] [70 (z)] [16 ( )] [5F (i)] [49 (S)] [6A (t)] [5B (e)] [16 ( )] [6F (y)] [57 (a)] [57 (a)] [24 (.)] [16 ( )] [64 (n)] [57 (a)] [69 (s)] [3F (I)] [62 (l)] [AC] [5A (d)] [5F (i)] [6F (y)] [65 (o)] [68 (r)] [69 (s)] [6B (u)] [64 (n)] [6B (u)] [70 (z)] [16 ( )] [5B (e)] [5B (e)] [5B (e)] [24 (.)] [24 (.)] [24 (.)] [16 ( )] [16 ( )] [16 ( )] [61 (k)] [57 (a)] [5E (h)] [68 (r)] [57 (a)] [63 (m)] [57 (a)] [64 (n)] [62 (l)] [57 (a)] [68 (r)] [17 (!)] [16 ( )] [5E (h)] [57 (a)] [64 (n)] [5F (i)] [AC] [65 (o)] [62 (l)] [6B (u)] [6F (y)] [65 (o)] [68 (r)] [16 ( )] [6F (y)] [57 (a)] [31 (;)] [16 ( )] [58 (b)] [5B (e)] [6F (y)] [57 (a)] [70 (z)] [16 ( )] [5D (g)] [5F (i)] [6F (y)] [5B (e)] [64 (n)] [22 (,)] [16 ( )] [5F (i)] [6F (y)] [5F (i)] [16 ( )] [57 (a)] [5A (d)] [57 (a)] [63 (m)] [62 (l)] [57 (a)] [68 (r)] [24 (.)] [AC] [69 (s)] [5F (i)] [70 (z)] [5A (d)] [5B (e)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [57 (a)] [68 (r)] [61 (k)] [57 (a)] [5A (d)] [57 (a)] [49 (S)] [3F (I)] [63 (m)] [3F (I)] [70 (z)] [57 (a)] [16 ( )] [57 (a)] [5F (i)] [6A (t)] [16 ( )] [65 (o)] [62 (l)] [57 (a)] [64 (n)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [49 (S)] [5B (e)] [6F (y)] [AC] [6C (v)] [57 (a)] [68 (r)] [63 (m)] [3F (I)] [49 (S)] [24 (.)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [63 (m)] [57 (a)] [5A (d)] [57 (a)] [62 (l)] [6F (y)] [65 (o)] [64 (n)] [6B (u)] [64 (n)] [16 ( )] [45 (O)] [6A (t)] [5B (e)] [61 (k)] [5F (i)] [16 ( )] [6F (y)] [57 (a)] [68 (r)] [3F (I)] [69 (s)] [3F (I)] [24 (.)] [AC] [5E (h)] [57 (a)] [64 (n)] [5F (i)] [16 ( )] [69 (s)] [3F (I)] [6A (t)] [61 (k)] [3F (I)] [1D (')] [5A (d)] [57 (a)] [64 (n)] [16 ( )] [39 (C)] [57 (a)] [62 (l)] [5A (d)] [3F (I)] [3D (G)] [3F (I)] [64 (n)] [3F (I)] [50 (Z)] [16 ( )] [63 (m)] [57 (a)] [5A (d)] [57 (a)] [62 (l)] [6F (y)] [65 (o)] [64 (n)] [24 (.)] [AC] 7.Print "ne! siz kIl sItkI'nIn adamlarI mIsINIZ? hiC benzemiyorsunuz da. her neyse beni nasIl buldunuz bilmiyorum. eGer madalyonu istiyorsanIz karSILIGINDA tUm paranIzI alIrIm. kabul mU? "
+8.Input?  evet / hayIr
+9.IF AnswerWas(0) Then SKIP 5 (15)
+10.Show Image(78)
+11.Print "akIllIca sECim. alIn bakalIm Su madalyon yarIsInI. her ne iSinize yarayacaksa... hIrsIzlar toplayIn Su heriflerin UstUndeki bUtUn parayI. "
+[1A ($)] [FF] 12.SetVariable (62).
+
+13.Begin
+14.Print "sizi aptallar demek bize karSI gelirsiniz haa. hIrsIzlar gebertin Su herifleri. "
+15.[startFight: enemyId=5(hIrgIz), count=8, ?: 5, 2, 0, 0]
+16.Show Image(78)
+17.Print "necati kaCIp gitmiS. madalyonun yarIsINI DA masanIn UstUNde bIrakmIS. grup fertlerinden biri yaklaSIp bu iki boyutlu nesneyi durduGu yerden kaldIRdI. tebrikler madalyonu aldINIZ. "
+18.SetVariable (62).
+
+19.End.
+
+20.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 0A 00 0B 00 9D 00 9F 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(131) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (131).
+[17 (!)] 5.IF Operator(12)->(17) Then SKIP 5 (11)
+[82] [5E (h)] [5B (e)] [6F (y)] [16 ( )] [58 (b)] [6B (u)] [68 (r)] [57 (a)] [69 (s)] [3F (I)] [16 ( )] [61 (k)] [57 (a)] [64 (n)] [57 (a)] [62 (l)] [5F (i)] [70 (z)] [57 (a)] [69 (s)] [6F (y)] [65 (o)] [64 (n)] [6B (u)] [64 (n)] [16 ( )] [5A (d)] [5F (i)] [3D (G)] [5B (e)] [68 (r)] [AC] [58 (b)] [45 (O)] [62 (l)] [4B (U)] [63 (m)] [62 (l)] [5B (e)] [68 (r)] [5F (i)] [16 ( )] [5D (g)] [5F (i)] [58 (b)] [5F (i)] [16 ( )] [61 (k)] [65 (o)] [61 (k)] [63 (m)] [6B (u)] [6F (y)] [65 (o)] [68 (r)] [24 (.)] [16 ( )] [58 (b)] [6B (u)] [16 ( )] [5F (i)] [69 (s)] [6A (t)] [57 (a)] [64 (n)] [58 (b)] [6B (u)] [62 (l)] [AC] [61 (k)] [57 (a)] [64 (n)] [57 (a)] [62 (l)] [5F (i)] [70 (z)] [57 (a)] [69 (s)] [6F (y)] [65 (o)] [64 (n)] [6B (u)] [16 ( )] [5F (i)] [39 (C)] [5F (i)] [64 (n)] [16 ( )] [65 (o)] [62 (l)] [5A (d)] [6B (u)] [61 (k)] [39 (C)] [57 (a)] [16 ( )] [5D (g)] [57 (a)] [68 (r)] [5F (i)] [66 (p)] [24 (.)] [AC] [57 (a)] [4F (Y)] [68 (r)] [3F (I)] [59 (c)] [57 (a)] [16 ( )] [58 (b)] [6B (u)] [68 (r)] [57 (a)] [69 (s)] [3F (I)] [16 ( )] [5C (f)] [57 (a)] [70 (z)] [62 (l)] [57 (a)] [16 ( )] [6A (t)] [65 (o)] [66 (p)] [62 (l)] [6B (u)] [24 (.)] [AC] 
+6.End.
+
+7.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0B 00 0B 00 A1 00 A3 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(135) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (135).
+5.Show Image(5)
+6.[printRandom]
+- "UlEn kanalizasyonda da rahat yok bee!
+"
+- "HIrgIzlar burda sanki bize tuzak kuruyormuS gibi bekliyorlarmIS. ve sanki baSarmISlar... "
+7.[startFight: enemyId=5(hIrgIz), count=3, ?: 0, 0, 0, 0]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 0E 00 0B 00 B0 01 22 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(136) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (136).
+5.Print "burada yIllar Once mafya tarafIndan kanalizasyona atIlmIS. muhtemelen eski davalardan birine ipucu mahiyeti taSIyan bir takIm zImbIrtIlar var. "
+6.Loot $: 15, M: 0, K: 0
+  ?: 0  item#: 206
+  Loot Params: 0, 129, 0, 0
+
+7.End.
+8.IF isNotSet(136) Then SKIP 1 (10)
+
+9.Begin
+[17 (!)] 10.IF Operator(16)->(17) Then SKIP 5 (16)
+[65 (o)] [57 (a)] [57 (a)] [58 (b)] [5F (i)] [16 ( )] [6F (y)] [57 (a)] [70 (z)] [3F (I)] [61 (k)] [16 ( )] [6F (y)] [57 (a)] [57 (a)] [24 (.)] [16 ( )] [57 (a)] [59 (c)] [3F (I)] [5A (d)] [3F (I)] [63 (m)] [16 ( )] [49 (S)] [5F (i)] [63 (m)] [5A (d)] [5F (i)] [16 ( )] [57 (a)] [5A (d)] [57 (a)] [63 (m)] [62 (l)] [57 (a)] [68 (r)] [57 (a)] [AC] [6F (y)] [57 (a)] [57 (a)] [24 (.)] [16 ( )] [61 (k)] [5B (e)] [69 (s)] [5F (i)] [64 (n)] [16 ( )] [58 (b)] [6B (u)] [16 ( )] [5F (i)] [66 (p)] [6B (u)] [39 (C)] [62 (l)] [57 (a)] [68 (r)] [3F (I)] [16 ( )] [6F (y)] [4B (U)] [70 (z)] [4B (U)] [64 (n)] [5A (d)] [5B (e)] [64 (n)] [AC] [63 (m)] [57 (a)] [5E (h)] [61 (k)] [5B (e)] [63 (m)] [5B (e)] [16 ( )] [6F (y)] [57 (a)] [64 (n)] [62 (l)] [3F (I)] [49 (S)] [16 ( )] [61 (k)] [57 (a)] [68 (r)] [57 (a)] [68 (r)] [16 ( )] [57 (a)] [62 (l)] [63 (m)] [3F (I)] [49 (S)] [6A (t)] [3F (I)] [68 (r)] [24 (.)] [AC] 
+11.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0B 00 0B 00 A1 00 A3 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(135) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (135).
+5.Show Image(5)
+6.[printRandom]
+- "UlEn kanalizasyonda da rahat yok bee!
+"
+- "HIrgIzlar burda sanki bize tuzak kuruyormuS gibi bekliyorlarmIS. ve sanki baSarmISlar... "
+7.[startFight: enemyId=5(hIrgIz), count=8, ?: 0, 0, 0, 0]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 06 00 0B 00 BE 00 C0 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "burada tavandan iGrenC bir sIvI damlIyor. oldukCa da garip kokuyor. ne olduGunu anlayamIyorsunuz.
+"
+- "tavan dan garip kokulu bir sIVI damlamakta. sIvI oldukCA iGrenC gOrUnUyor. "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 0B 00 0B 00 A1 00 A3 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(169) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (169).
+5.Show Image(5)
+6.[printRandom]
+- "UlEn kanalizasyonda da rahat yok bee!
+"
+- "HIrgIzlar burda sanki bize tuzak kuruyormuS gibi bekliyorlarmIS. ve sanki baSarmISlar... "
+7.[startFight: enemyId=5(hIrgIz), count=8, ?: 0, 0, 0, 0]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 0B 00 0B 01 CD 01 CF 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(113) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (113).
+5.Show Image(66)
+6.[printRandom]
+- "merhaba ben bu labirentin laborantIyIm. size hizmet iCin buradayIm. EGer bu labirentten saG salim CIkmak istiyorsanIz..
+"
+- "sarIyer'in kanalizasyonlarIna hoSgeldiniz. ben buranIn laborantI olarak size bir tavsiye de bulunacaGIm. "
+7.[printRandom]
+- "OnUnUzdeki koridordan dUmdUz  ilerleyin. kesinlikle baSka bir yere sapmayIn.
+"
+- "karSInIzdaki koridoru dUmDUz takip edin. kapIlarla ilgilenmeyin. taaa koridorun en sonundaki kapIya kadar hiC sapmadan ilerleyin. "
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 0C 00 0B 00 89 00 8B 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(137) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (137).
+[17 (!)] [00] 5.SetVariable (17).
+[57 (a)] [57 (a)] [16 ( )] [58 (b)] [5B (e)] [64 (n)] [16 ( )] [5F (i)] [3D (G)] [68 (r)] [5B (e)] [64 (n)] [39 (C)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [49 (S)] [5B (e)] [6F (y)] [5B (e)] [16 ( )] [58 (b)] [57 (a)] [69 (s)] [4A (T)] [3F (I)] [63 (m)] [24 (.)] [AC] [64 (n)] [57 (a)] [57 (a)] [66 (p)] [39 (C)] [5B (e)] [70 (z)] [16 ( )] [35 (?)] [AC] [17 (!)] 6.IF Operator(7)->(17) Then SKIP 5 (12)
+[3E (H)] [69 (s)] [6B (u)] [69 (s)] [16 ( )] [6B (u)] [62 (l)] [57 (a)] [64 (n)] [16 ( )] [69 (s)] [57 (a)] [62 (l)] [57 (a)] [61 (k)] [17 (!)] [16 ( )] [61 (k)] [57 (a)] [64 (n)] [57 (a)] [62 (l)] [5F (i)] [70 (z)] [57 (a)] [69 (s)] [6F (y)] [65 (o)] [64 (n)] [16 ( )] [5E (h)] [3F (I)] [68 (r)] [69 (s)] [3F (I)] [70 (z)] [AC] [61 (k)] [57 (a)] [6F (y)] [64 (n)] [3F (I)] [6F (y)] [65 (o)] [68 (r)] [16 ( )] [69 (s)] [5B (e)] [69 (s)] [69 (s)] [5F (i)] [70 (z)] [16 ( )] [65 (o)] [62 (l)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [57 (a)] [70 (z)] [24 (.)] [AC] 
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 0D 00 B0 00 B3 00 B5 
+
+0.Room Begin: (0)
+1.IF isNotSet(62) Then SKIP 1 (3)
+[06] 2.Print "nyaa iCimden bir se"
+[69 (s)] [16 ( )] [58 (b)] [6B (u)] [68 (r)] [57 (a)] [6F (y)] [57 (a)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [57 (a)] [63 (m)] [57 (a)] [39 (C)] [AC] [6B (u)] [3D (G)] [68 (r)] [6B (u)] [64 (n)] [57 (a)] [16 ( )] [5D (g)] [5B (e)] [62 (l)] [5A (d)] [5F (i)] [3D (G)] [5F (i)] [63 (m)] [5F (i)] [70 (z)] [5F (i)] [22 (,)] [16 ( )] [39 (C)] [57 (a)] [58 (b)] [6B (u)] [59 (c)] [57 (a)] [61 (k)] [16 ( )] [66 (p)] [5B (e)] [69 (s)] [AC] [5B (e)] [6A (t)] [63 (m)] [5B (e)] [63 (m)] [5B (e)] [63 (m)] [5F (i)] [70 (z)] [16 ( )] [5D (g)] [5B (e)] [68 (r)] [5B (e)] [61 (k)] [6A (t)] [5F (i)] [3D (G)] [5F (i)] [64 (n)] [5F (i)] [16 ( )] [69 (s)] [45 (O)] [6F (y)] [62 (l)] [4B (U)] [6F (y)] [65 (o)] [68 (r)] [24 (.)] [AC] 3.Print "sarIyer'e geri dOnecek miyiz? "
+4.Input?  evet / hayIr
+5.IF AnswerWas(0) Then SKIP 1 (7)
+6.******* Next Map: 12, 0, 1, 0
+7.[break]
+8.End 0.
+
+9.End.
+
+10.Room End (4-0)
+
+

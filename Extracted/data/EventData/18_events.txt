@@ -1,0 +1,124 @@
+﻿===== Event #1 =====
+Header: 00 07 00 73 00 76 00 78 
+
+0.Room Begin: (0)
+[17 (!)] 1.IF Operator(16)->(17) Then SKIP 5 (7)
+[62 (l)] [5D (g)] [5B (e)] [68 (r)] [5F (i)] [16 ( )] [5A (d)] [65 (o)] [64 (n)] [5B (e)] [68 (r)] [63 (m)] [5F (i)] [6F (y)] [5F (i)] [70 (z)] [16 ( )] [58 (b)] [5B (e)] [5B (e)] [17 (!)] [16 ( )] [59 (c)] [5B (e)] [6C (v)] [5A (d)] [5B (e)] [6A (t)] [1D (')] [5F (i)] [16 ( )] [61 (k)] [57 (a)] [39 (C)] [3F (I)] [68 (r)] [3F (I)] [6F (y)] [65 (o)] [68 (r)] [AC] [5E (h)] [5B (e)] [68 (r)] [5F (i)] [5C (f)] [24 (.)] [16 ( )] [58 (b)] [5B (e)] [62 (l)] [61 (k)] [5F (i)] [16 ( )] [5A (d)] [5B (e)] [16 ( )] [45 (O)] [62 (l)] [5A (d)] [4B (U)] [68 (r)] [5B (e)] [59 (c)] [5B (e)] [61 (k)] [24 (.)] [16 ( )] [69 (s)] [5B (e)] [64 (n)] [16 ( )] [58 (b)] [5F (i)] [70 (z)] [5B (e)] [AC] [6F (y)] [6B (u)] [61 (k)] [57 (a)] [68 (r)] [3F (I)] [16 ( )] [39 (C)] [3F (I)] [61 (k)] [3F (I)] [64 (n)] [16 ( )] [5A (d)] [5F (i)] [6F (y)] [65 (o)] [69 (s)] [6B (u)] [64 (n)] [24 (.)] [AC] 2.[break]
+3.End 0.
+
+4.End.
+
+5.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 0B 00 0B 00 80 00 82 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(152) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (152).
+5.Print "cehalet'i son anda cevdet'i sUrUkleye surukleye Cekerken gOrdUnUz. "
+[17 (!)] 6.IF Operator(10)->(17) Then SKIP 5 (12)
+[20 (*)] [61 (k)] [65 (o)] [49 (S)] [6B (u)] [64 (n)] [16 ( )] [39 (C)] [57 (a)] [58 (b)] [6B (u)] [61 (k)] [16 ( )] [6F (y)] [57 (a)] [61 (k)] [57 (a)] [62 (l)] [57 (a)] [6F (y)] [57 (a)] [62 (l)] [3F (I)] [63 (m)] [16 ( )] [5E (h)] [5B (e)] [68 (r)] [5F (i)] [5C (f)] [5F (i)] [24 (.)] [AC] 
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0C 00 0B 00 4B 00 4D 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(153) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (153).
+[17 (!)] [00] 5.[printRandom]
+- "$burasI doGru y
+"
+[65 (o)] [62 (l)] [16 ( )] [5D (g)] [57 (a)] [62 (l)] [5F (i)] [58 (b)] [57 (a)] [57 (a)] [24 (.)] [AC] [17 (!)] 6.IF Operator(10)->(17) Then SKIP 5 (12)
+7.[break]
+[39 (C)] [57 (a)] [58 (b)] [6B (u)] [61 (k)] [16 ( )] [65 (o)] [62 (l)] [6B (u)] [64 (n)] [16 ( )] [58 (b)] [5B (e)] [5B (e)] [17 (!)] [AC] 
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 0C 00 0B 00 57 00 59 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(154) Then SKIP 2 (5)
+3.Print "burada OlU yobazlar yatIyor. "
+
+4.Begin
+5.SetVariable (154).
+6.Show Image(23)
+7.Print "yanLIS yol hah hah ha! "
+8.[startFight: enemyId=23(kelp), count=3, ?: 22, 2, 0, 0]
+
+9.End.
+
+10.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0A 00 0B 00 8A 00 8C 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(155) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (155).
+5.Print "burada yobazlar ganimetlerinin bir KIsmInI bir COp tenekesi kapaGInIn UstUne yaymISlar. sebebi bilinmez. "
+6.Loot $: 10, M: 7, K: 5
+  ?: 0  item#: 226
+  Loot Params: 0, 0, 0, 0
+
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 17 00 20 04 1F 04 21 
+
+0.Room Begin: (0)
+1.Talk Random Face "evet iSte burasI. "
+
+2.Admit and Begin (0x0E) (0)
+3.Show Image(58)
+4.Print "sizi aptal OlUmlUler siz kim  olduGunuzu sanIyor da, gavur imam'In hizmetkarI Seyh cehalet'i kovalamaya kalkIyorsunuz. Simdi hepiniz efendimin yanIna gideceksiniz. cehenneme!!!. "
+[17 (!)] 5.IF Operator(14)->(17) Then SKIP 5 (11)
+6.Loot $: 97, M: 91, K: 105
+  ?: 22  item#: 98
+  Loot Params: 87, 100, 23, 172
+7.[startFight: enemyId=34(cehalet), count=1, ?: 0, 0, 0, 0]
+8.Show Image(77)
+9.Print "OzUr dileriz, geC kaldIk, ama siz bize ihtiyaC duymamISsInIz. hepinize bUtUn istanbuL adIna ben lale savaSCIlarININ lideri olarak teSEkkUr ediyorum. bizi Cok bUYUk bir beladan kurtardINIz. adamlarIM dISARDA yobazlarIn CoGunu... "
+10.Print "OldUrdU. kalAnlarda kaCIP gitti. sayenizde bir daha buraya gelmeye cesaret edemezler. tekrar teSEkkUrler. siz gidip dinlenin. geri kalanInI biz hallederiz. "
+11.SetVariable (156).
+12.Show Image(34)
+13.Print "Cok saGolun Cocuklar istanbul'u siz kurtardInIz. gerCekten sizinle gurur duyuyorum. "
+[16 ( )] 14.IF AnswerWas(8) Then SKIP 17 (32)
+15.Input?  ende saGol silikon dede. silahIn'I da geri al da yolda baSIna birSeyler gelir melir. nemelazIm hazIrlIklI ol. ' / 
+??ve sonunda, Seyh cehaletin OlUmUyle istanbul'u karanlIk gUClerin penCesinden kurtardInIz, aferin! gr
+[6B (u)] [66 (p)] [6A (t)] [57 (a)] [61 (k)] [5F (i)] [16 ( )] [62 (l)] [57 (a)] [62 (l)] [5B (e)] [62 (l)] [5B (e)] [68 (r)] [16 ( )] [57 (a)] [68 (r)] [6A (t)] [3F (I)] [61 (k)] [16 ( )] [5D (g)] [45 (O)] [64 (n)] [4B (U)] [62 (l)] [16 ( )] [68 (r)] [57 (a)] [5E (h)] [57 (a)] [6A (t)] [62 (l)] [3F (I)] [3D (G)] [3F (I)] [AC] [5F (i)] [39 (C)] [5F (i)] [64 (n)] [5A (d)] [5B (e)] [16 ( )] [69 (s)] [3F (I)] [59 (c)] [57 (a)] [61 (k)] [16 ( )] [6F (y)] [6B (u)] [6C (v)] [57 (a)] [62 (l)] [57 (a)] [68 (r)] [3F (I)] [64 (n)] [57 (a)] [16 ( )] [5A (d)] [45 (O)] [64 (n)] [63 (m)] [5B (e)] [6F (y)] [5F (i)] [AC] [5A (d)] [4B (U)] [49 (S)] [4B (U)] [64 (n)] [4B (U)] [6F (y)] [65 (o)] [68 (r)] [62 (l)] [57 (a)] [68 (r)] [5A (d)] [3F (I)] [16 ( )] [61 (k)] [5F (i)] [24 (.)] [24 (.)] [24 (.)] [AC] [19 (#)] 16.Loot $: 2, M: 17, K: 88
+  ?: 95  item#: 104
+  Loot Params: 90, 91, 100, 88
+[5F (i)] [68 (r)] [5B (e)] [17 (!)] [17 (!)] [17 (!)] [24 (.)] [24 (.)] [24 (.)] [AC] 
+17.End.
+
+18.Room End (4-0)
+
+

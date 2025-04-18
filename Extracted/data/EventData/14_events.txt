@@ -1,0 +1,231 @@
+﻿===== Event #1 =====
+Header: 00 06 00 0B 00 61 00 63 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "burasI garip bir yer. ve bir garip te kokuyor.
+"
+- "yerde vIcIk vIcIk birSeyler var. "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 08 00 0B 00 6E 00 70 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(164) Then SKIP 1 (4)
+
+3.Begin
+4.[printRandom]
+- "bu kapIdan garip garip sesler geliyor. belki bir girip bakmamIz gerekir.
+"
+- "tongadalonk!!! "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0B 00 0B 00 45 00 47 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(164) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (164).
+5.Show Image(16)
+6.[printRandom]
+- "yarasalar saldIrIyor..
+"
+- "viiiyyyk!!! "
+7.[startFight: enemyId=15(fare), count=4, ?: 16, 2, 17, 3]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 08 00 0B 00 6B 00 6D 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(165) Then SKIP 1 (4)
+
+3.Begin
+4.[printRandom]
+- "kapIdan garip gUrUltUler ve gUlUSmeler geliyor.
+"
+- "birisi iCerden Suh bir kahkaha attI. "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0B 00 0B 00 54 00 56 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(165) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (165).
+5.Show Image(19)
+6.[printRandom]
+- "kahkahalarIn sahipleri belli oldu.
+"
+- "kOtU adamlar!! "
+7.[startFight: enemyId=26(fanatik), count=3, ?: 25, 2, 19, 2]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 07 00 0B 00 33 00 35 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+[17 (!)] [00] 2.SetVariable (17).
+[57 (a)] [57 (a)] [16 ( )] [49 (S)] [6B (u)] [16 ( )] [61 (k)] [57 (a)] [66 (p)] [3F (I)] [5A (d)] [57 (a)] [64 (n)] [16 ( )] [69 (s)] [57 (a)] [66 (p)] [69 (s)] [57 (a)] [6F (y)] [5A (d)] [3F (I)] [61 (k)] [16 ( )] [6F (y)] [57 (a)] [57 (a)] [17 (!)] [17 (!)] [AC] 
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 0B 00 0B 00 59 00 5B 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(166) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (166).
+5.Show Image(18)
+6.[printRandom]
+- "OrUmcekler karSIdan Uzerimize atIldI.
+"
+- "OrUmcekleeeer!!! "
+7.[startFight: enemyId=18(dev OmUrcek), count=2, ?: 17, 4, 0, 0]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 0B 00 0B 00 6A 00 6C 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(167) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (167).
+5.Show Image(22)
+6.[printRandom]
+- "yobazlaaar!!!
+"
+- "ne arIyorsunuz bakayIm siz burada. salDIrIn Su salaklara. "
+7.[startFight: enemyId=22(yobaz napoliten), count=2, ?: 19, 4, 26, 3]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 06 00 0B 00 51 00 53 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "ileriden bir yerlerden su sesi gelmekte.
+"
+- "Sip...Sip...Sip...Sip. "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 06 00 0B 00 75 00 77 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.[printRandom]
+- "burada garip bir hava akImI var. grubun On saflarIndakiler farkettiler.
+"
+- "burada rUzgar esiyor kibin. "
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #11 =====
+Header: 00 0C 00 0B 00 4F 00 51 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(168) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (168).
+5.Show Image(16)
+[17 (!)] 6.IF Operator(7)->(17) Then SKIP 5 (12)
+[2A (4)] [6F (y)] [57 (a)] [68 (r)] [57 (a)] [69 (s)] [57 (a)] [62 (l)] [57 (a)] [68 (r)] [3F (I)] [64 (n)] [16 ( )] [6F (y)] [6B (u)] [6C (v)] [57 (a)] [69 (s)] [3F (I)] [64 (n)] [57 (a)] [16 ( )] [5D (g)] [5F (i)] [68 (r)] [5A (d)] [5F (i)] [61 (k)] [16 ( )] [5D (g)] [57 (a)] [62 (l)] [5F (i)] [58 (b)] [57 (a)] [AC] [6F (y)] [57 (a)] [5E (h)] [6B (u)] [17 (!)] [17 (!)] [AC] 7.[startFight: enemyId=16(yarasa), count=8, ?: 16, 8, 0, 0]
+
+8.End.
+
+9.Room End (4-0)
+
+
+===== Event #12 =====
+Header: 00 05 00 0F 00 12 00 14 
+
+0.Room Begin: (0)
+1.******* Next Map: 5, 0, 16, 2
+2.End 0.
+
+3.End.
+
+4.Room End (4-0)
+
+
+===== Event #13 =====
+Header: 00 06 00 10 00 13 00 15 
+
+0.Room Begin: (0)
+1.******* Next Map: 100, 0, 5, 0
+
+2.Admit and Begin (0x0E) (0)
+
+3.End.
+
+4.Room End (4-0)
+
+
