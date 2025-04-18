@@ -1,0 +1,233 @@
+﻿===== Event #1 =====
+Header: 00 11 00 3A 00 8D 00 8F 
+
+0.Room Begin: (0)
+1.IF isNotSet(106) Then SKIP 4 (6)
+2.IF isNotSet(70) Then SKIP 1 (4)
+
+3.Begin
+4.Print "kapI kilitli ve arkadan sUrgUlU !! "
+5.[break]
+
+6.Admit and Begin (0x0E) (0)
+7.IF isNotSet(33) Then SKIP 1 (9)
+
+8.Begin
+9.IF isNotSet(31) Then SKIP 4 (14)
+10.SetVariable (33).
+11.Show Image(22)
+12.Print "kim bunlar be! nasIl girdiler buraya yakalayIN Cabuk !!! "
+13.[startFight: enemyId=22(yobaz napoliten), count=1, ?: 19, 2, 26, 5]
+
+14.End.
+
+15.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 12 00 0B 01 90 01 92 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(31) Then SKIP 12 (15)
+3.IF isNotSet(106) Then SKIP 1 (5)
+
+4.Begin
+5.Print "arkadan gelenler kapIYI DISARIDAN  sURgULEDiler.... "
+6.SetVariable (106).
+7.Show Image(22)
+8.Print "hoSgeldiniz beyler!!! biz de sizleri bekliyorduk.ne tesadUf yani allah allah "
+9.Talk with face 1,"yaa beyler !!! biz ZICTIK !!! "
+10.Print "Cocuklar CAbuk gelin....burdayIM  yanINIZdaki duvarI itin..hadi... "
+[17 (!)] [00] 11.SetVariable (17).
+[57 (a)] [5F (i)] [66 (p)] [6A (t)] [5B (e)] [64 (n)] [16 ( )] [69 (s)] [5B (e)] [69 (s)] [62 (l)] [5B (e)] [68 (r)] [16 ( )] [5D (g)] [5B (e)] [62 (l)] [5F (i)] [6F (y)] [65 (o)] [68 (r)] [16 ( )] [17 (!)] [16 ( )] [58 (b)] [5B (e)] [64 (n)] [16 ( )] [5D (g)] [57 (a)] [62 (l)] [5F (i)] [58 (b)] [57 (a)] [AC] [66 (p)] [5B (e)] [6F (y)] [5D (g)] [57 (a)] [63 (m)] [58 (b)] [5B (e)] [68 (r)] [16 ( )] [65 (o)] [62 (l)] [5A (d)] [6B (u)] [63 (m)] [24 (.)] [24 (.)] [24 (.)] [69 (s)] [5B (e)] [69 (s)] [62 (l)] [5B (e)] [68 (r)] [16 ( )] [5A (d)] [6B (u)] [6F (y)] [6B (u)] [6F (y)] [65 (o)] [68 (r)] [6B (u)] [63 (m)] [24 (.)] [24 (.)] [AC] [45 (O)] [68 (r)] [6A (t)] [4B (U)] [44 (N)] [16 ( )] [58 (b)] [5B (e)] [64 (n)] [5F (i)] [16 ( )] [17 (!)] [17 (!)] [17 (!)] [17 (!)] [AC] [17 (!)] 12.IF Operator(7)->(17) Then SKIP 5 (18)
+[25 (/)] [69 (s)] [57 (a)] [62 (l)] [57 (a)] [61 (k)] [16 ( )] [17 (!)] [16 ( )] [61 (k)] [5B (e)] [69 (s)] [16 ( )] [69 (s)] [5B (e)] [69 (s)] [5F (i)] [64 (n)] [5F (i)] [16 ( )] [5A (d)] [5B (e)] [16 ( )] [49 (S)] [6B (u)] [16 ( )] [5A (d)] [6B (u)] [6C (v)] [57 (a)] [68 (r)] [57 (a)] [16 ( )] [58 (b)] [57 (a)] [61 (k)] [17 (!)] [AC] 
+13.End.
+
+14.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 1B 00 0B 04 FD 04 FF 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(75) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(69) Then SKIP 1 (6)
+
+5.Begin
+6.IF isNotSet(31) Then SKIP 17 (24)
+7.Show Image(64)
+8.IF isNotSet(34) Then SKIP 9 (18)
+9.IF isNotSet(62) Then SKIP 6 (16)
+10.IF isNotSet(63) Then SKIP 2 (13)
+11.Print "zamanIMIZ giderek azalIYor..artIk oyalanmayIN...hadi... "
+
+12.Begin
+13.Print "aferin Cocuklar...becereceGinizi zaten biliyordum...Simdi madalyon tamam olduGuna gOre...alIN ve Umraniye'deki evliya cevdet'e gidin...o ne yapacaGINI bilir...hadi...artIk bir umut var.... "
+14.SetVariable (63).
+
+15.Begin
+16.Print "zamanIMIZ giderek azalIYor..artIk oyalanmayIN...hadi... "
+
+17.Begin
+18.Print "Cocuklar, fazla vaktimiz yok!o herifler gelmeden gitmeniz laZIM. UMraniye'de yaSayan bir evliya var...benim ona bir madalyon gOndermem gerekiyor ama ben gidemem...ayrIca gubarak necati diye bir herif madalyoNun ObUr yUZUnU CaldI "
+19.Print "madalyonun o yUzU olmazsa,istanbul iCin kOtU olur...Cabuk gidin...necati Simdi beyoGlu'ndayMIS...madalyonu tamamlayamazsak iSimiz biter.... kapIdan CIkamazsINIZ...onun iCin Su kapIDAN girip kanalizasyonlara inin "
+20.Print "aSaGIda koridoru dUMdUz izleyin...... Cevrede gOrmemeniz gereken Seylerle ilgilenmeyin. kendi iSinize bakIN... aSaGIda hazine aramaya giren Cok kiSi geri dOnemedi...hazine deGil, istanbul  Onemli...hadi gidin. Cabuk olun.... "
+21.Talk Random Face "sen kimsin peki ? "
+22.Print "benim adIM sItkI.evliya cevdet'in yakIN arkadaSIyIM..sonra tekrar konuSuruz. gidin Simdi...benim de kaCmam laZIM.. madalyonu bulunca yine kanalizasyondan buraya gelin...sakIN kapILardan girmeyin ...OlUrsUnUZ...gidin hadi..... "
+23.SetVariable (34).
+
+24.End.
+
+25.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 07 00 4C 00 4F 00 51 
+
+0.Room Begin: (0)
+1.[printRandom]
+- "iCeride gayet hoS bir koku var!
+"
+- "iCerisi harika kokuyor ! "
+2.******* Next Map: 14, 0, 2, 1
+3.[break]
+4.End 0.
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0A 00 0B 00 3C 00 3E 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(71) Then SKIP 1 (4)
+
+3.Begin
+4.Talk Random Face "allah beee ! Suraya bak ! "
+5.SetVariable (71).
+6.Loot $: 5, M: 5, K: 5
+  ?: 0  item#: 203
+  Loot Params: 0, 112, 0, 130
+
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 0F 01 26 01 29 01 2B 
+
+0.Room Begin: (0)
+1.IF isNotSet(107) Then SKIP 1 (3)
+
+2.Begin
+3.Print "ileride bir adam,kUCUK bir CocuGa dOve dOve takke giydirmeye CalISIYor. bir Seyler yapalIM di mi ? "
+4.Input?  evet / hayIr
+5.SetVariable (107).
+6.IF AnswerWas(1) Then SKIP 2 (9)
+7.Print "Cocuk dayak yememek iCin takkeyi  kafasINA geCirdi....bir ISIK daha  sONdU... "
+
+8.Begin
+9.Print "adamIN Uzerine atILIRKEN SEY oldu.... Sey !!!! "
+10.[startFight: enemyId=25(Cembersakal), count=4, ?: 26, 5, 0, 0]
+11.Talk Random Face "yobaz herifler !!! "
+12.End 0.
+
+13.End.
+
+14.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 0B 00 0B 00 7E 00 80 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(70) Then SKIP 3 (6)
+3.Talk Random Face "allah kayIKLAra bak! Cabuk !!!atlayIN birine...eminOnUne kadar gideriz... "
+4.******* Next Map: 4, 1, 132, 0
+
+5.Begin
+6.Print "burasI bir kayIkhane. "
+[20 (*)] 
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 11 00 0B 00 E8 00 EA 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(34) Then SKIP 4 (7)
+3.Show Image(22)
+4.Print "nIhaha! iSte elimizden kaCan herifler. bu sefer kurtulamayacaksInIz. "
+5.[startFight: enemyId=22(yobaz napoliten), count=2, ?: 21, 4, 23, 1]
+
+6.Begin
+7.IF isNotSet(173) Then SKIP 1 (9)
+
+8.Begin
+9.IF isNotSet(31) Then SKIP 4 (14)
+10.SetVariable (173).
+11.Print "sol taraftaki binalarIn arkasIndan, buradan bile duyulacak sesler geliyor. "
+[17 (!)] 12.IF Operator(12)->(17) Then SKIP 5 (18)
+[26 (0)] [65 (o)] [68 (r)] [57 (a)] [62 (l)] [57 (a)] [68 (r)] [5A (d)] [57 (a)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [5F (i)] [62 (l)] [5B (e)] [68 (r)] [5F (i)] [16 ( )] [6A (t)] [65 (o)] [66 (p)] [62 (l)] [57 (a)] [64 (n)] [63 (m)] [3F (I)] [49 (S)] [16 ( )] [5D (g)] [57 (a)] [62 (l)] [5F (i)] [58 (b)] [57 (a)] [24 (.)] [24 (.)] [24 (.)] [AC] 
+13.End.
+
+14.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 09 00 ED 00 F0 00 F2 
+
+0.Room Begin: (0)
+1.IF isNotSet(34) Then SKIP 3 (5)
+2.Print "her tarafta yobazlar var. evlerin iClerinde bile! her yer yeSil yeSil kIpIrTIlarla dolu. sanIrIm UskUdar'I tUmUyle kaybetmiSiz.istanbul'un geri kalanI iCin burayI Simdilik feda etmeliyiz. "
+3.Print "bir kIsmI tekrar salDIrIyor. "
+4.[break]
+
+5.Admit and Begin (0x0E) (0)
+
+6.End.
+
+7.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 0D 01 19 01 1C 01 1E 
+
+0.Room Begin: (0)
+1.IF isNotSet(31) Then SKIP 8 (10)
+2.IF isNotSet(112) Then SKIP 2 (5)
+3.Print "burada bir adet kelp cesedi yatIyor. etrafInda ise balCIk gibi bir sos karISImI var. "
+
+4.Begin
+5.Show Image(23)
+6.[printRandom]
+- "hah hah haa!!!...... neden buraya geliyorsunuz ki? 
+"
+- "bu savaS sizin sonunuz olacak adi OlUmlUler!... nihohahahaaa!!! "
+7.[startFight: enemyId=23(kelp), count=1, ?: 22, 3, 21, 4]
+8.Print "aman bee! iyice abarttI bu herifler de ha. "
+
+9.Admit and Begin (0x0E) (0)
+
+10.End.
+
+11.Room End (4-0)
+
+

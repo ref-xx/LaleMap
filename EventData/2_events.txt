@@ -1,0 +1,638 @@
+﻿===== Event #1 =====
+Header: 00 06 00 31 00 34 00 36 
+
+0.Room Begin: (2)
+1.Talk with face 1,"inermiyiz bi daha o deliGe biz be! "
+2.[break]
+3.End 1.
+4.Begin Special 1
+
+5.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 0C 00 0B 01 24 01 26 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (8)
+2.IF isNotSet(82) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(33)
+5.Print "selamlar... bendeniz Phantom of the otopark.senaryonun burasInda bir bok varmIS gibi bir laf etmem gerekiyor. Ne desem Simdi....?.....!? Hah ! bu gUnler zor gUnler CocuklarIm..... "
+6.Print "hihoho hahihihihooooo...!!!!?? "
+7.Talk Random Face "manyak MI lan bu herif ! ne o Oyle Fantom neyin... "
+8.SetVariable (82).
+9.Begin Special 1
+
+10.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0F 00 0B 03 BE 03 C0 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (11)
+2.IF isNotSet(4) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(34)
+5.Talk Random Face "sen de kimsin babalIK? "
+6.Print "ben silikon baba. kIrk saattir sizi bekliyorum ! AGaC oldum burda. daha bir sUrU kahraman var sIrada, bitek siz misiniz lan bu oyunu oynayan. gelin yanIma, iyi dinleyin Simdi, bir daha anlatmam, ona gOre...: "
+7.[wordList]
+ - [35-13]: "tavsiye"
+ - [45-17]: "yeniden"
+ - [53-13]: "sey"
+ - [57-05]: "ekrani"
+ - [58-03]: "derleyici"
+ - [44-07]: "pismis"
+ - [43-12]: "dusunce"
+ - [41-11]: "yemegine"
+ - [40-08]: "sattiklarini"
+ - [36-12]: "alirlar"
+ - [36-02]: "bahcivanlar"
+ - [06-18]: "kopeklere"
+ - [11-06]: "once"
+ - [11-04]: "burayi"
+ - [14-05]: "dipteki"
+ - [16-10]: "ademoglu"
+ - [16-04]: "hepimizin"
+ - [17-13]: "kuvvetli"
+ - [17-16]: "yetenekleri"
+ - [18-08]: "butun"
+ - [18-12]: "millet"
+ - [19-06]: "curutup"
+ - [20-15]: "koprualti"
+ - [20-04]: "manevi"
+ - [21-11]: "ayrica"
+ - [25-03]: "soz"
+ - [26-17]: "altta"
+ - [27-05]: "pencere"
+ - [28-04]: "olabilir"
+ - [29-12]: "yerlerde"
+ - [45-03]: "pismesi"
+ - [46-05]: "canim"
+ - [53-04]: "yapandan"
+ - [57-07]: "grafikleri"
+ - [59-05]: "lafin"
+ - [58-06]: "cozucu"
+ - [30-08]: "vurus"
+ - [31-11]: "kareyi"
+ - [32-09]: "silahini"
+ - [32-04]: "esyalar"
+[end of word list]
+8.Show Image(34)
+9.Print "iSte bOyle Cocuklar. Simdi gidin ve kurtaRIN istanbul'u bakalIm. gidip barbaros'un karIsINI bulun, o size yardIM eder. benim gitmem lazIM eyvallah ! "
+10.Print "ve sakIn unutmayIn.   verecek ISIGI olmayan karanlIGI sever! "
+11.SetVariable (4).
+12.Begin Special 1
+
+13.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 13 00 0B 01 7E 01 80 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (15)
+2.IF isNotSet(24) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(5) Then SKIP 1 (6)
+
+5.Begin
+6.Show Image(35)
+7.Print "kimsiniz siz. ne istiyorsunuz ? "
+8.Talk with face 1,"size yarDIM etmek istiyoruz. "
+9.Print "sizi silikon baba MI gOnderdi ? "
+10.Input?  evet / haYIR
+11.IF AnswerWas(1) Then SKIP 2 (14)
+12.Print "o zaman nObetCileri CAGIRMADAN burdan gitseniz iyi olur. "
+
+13.Begin
+14.Print "kocam barbaros dUN zehirlendi. bundan sonra ne bana ne de istanbul'a kimsenin yardIM edebileceGini sanmIyorum. hele sizin gibi acemilerin. siz gidip saklanacak biryerler bulun "
+15.SetVariable (5).
+16.Begin Special 1
+
+17.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 1E 00 8B 01 90 02 90 
+
+0.Room Begin: (9)
+1.IF isNotSet(24) Then SKIP 7 (9)
+2.IF isNotSet(25) Then SKIP 1 (4)
+
+3.Begin
+4.Print "kapI kilitli... iCeriden patIrtIlaR geliyor. KapIYI zorlayalIm MI? "
+5.Input?  evet / hayIr
+6.IF AnswerWas(1) Then SKIP 2 (9)
+7.Talk Random Face "yaa, kIrsaydIk kapIyI keSke ! "
+8.[break]
+
+9.Admit and Begin (0x0E) (11)
+10.IF isNotSet(24) Then SKIP 9 (20)
+11.IF isNotSet(25) Then SKIP 2 (14)
+12.Print "barbi'nin cesedi ortadan yok olmuS "
+
+13.Begin
+14.Print "barbi yerde cansIZ yatIyor. OnUne de kanla birSeyler yazmIS:              katil...Sey....... "
+15.SetVariable (25).
+16.Talk with face 1,"bi dakka beyler, barbi daha yaSIyor. buraya gelin Cabuk... "
+17.Show Image(36)
+18.Print "barbaros.....evliya.......Cok geC.... "
+19.Print "OldU !.. "
+20.Begin Special 8
+21.IF isNotSet(24) Then SKIP 6 (28)
+22.Show Image(7)
+23.Print "olduGunuz yerde kalIN.. aman tanrIm, barbi'ye ne yaptInIz? lale savaSCILarI, yakalayIN bu hainleri! "
+24.Print "hangi hainleri kumandanIM ? "
+25.Print "salaaaak! "
+26.[startFight: enemyId=7(lale savaSCIsI), count=3, ?: 0, 0, 0, 0]
+27.Print "dISarIdan baSka lale saVaSCIlarInIN baGrISmalarI duyuluyor. burasI pek tekin bir yer deGil... "
+
+28.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 08 00 0B 00 86 00 88 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (4)
+2.IF isNotSet(25) Then SKIP 2 (5)
+3.Show Image(38)
+4.Print "onlara Su anda laf anlatamazsInIz, batIdaki duvarda gizli bir kaPI var. Simdi kACIN,belki sonra sizi dinlerler. "
+5.Begin Special 1
+
+6.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 0F 00 0B 00 E7 00 E9 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (11)
+2.IF isNotSet(25) Then SKIP 9 (12)
+3.IF isNotSet(26) Then SKIP 1 (5)
+
+4.Begin
+5.Show Image(7)
+6.Print "buradan geCmek yasak, geri dOnUN... bi dakka yaa, bi dakka bakIN bakiim. siz Su.........koSuuun, hainler burada. "
+7.Print "hangi hainler yaaa! "
+8.Print "gel buraya be, salak! "
+9.[startFight: enemyId=7(lale savaSCIsI), count=5, ?: 0, 0, 0, 0]
+10.SetVariable (26).
+11.Talk Random Face "buralarda dolaSmasak diyorum... "
+12.Begin Special 1
+
+13.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 0F 00 60 01 06 01 08 
+
+0.Room Begin: (4)
+1.IF isNotSet(108) Then SKIP 1 (3)
+
+2.Begin
+3.Talk with face 1,"top sahasINda bahCIvanlar vardIr yaa, iCeri girersek dellenmesinler Simdi... "
+
+4.Admit and Begin (0x0E) (8)
+5.IF isNotSet(108) Then SKIP 1 (7)
+
+6.Begin
+7.Show Image(6)
+8.Talk with face 1,"tamam iSte abi yaa! ben demedim mi? iSin yoksa uGraS Simdi bu heriflerle "
+9.[printRandom]
+- "HInaaaaaaar,ne basIyong leyn CUmlere
+"
+- "laaan, Cimlere basmayIIIIIIn  "
+10.[startFight: enemyId=6(bahCIvan), count=3, ?: 0, 0, 0, 0]
+11.SetVariable (108).
+12.Begin Special 1
+
+13.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 14 00 0B 02 8A 02 8C 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (16)
+2.IF isNotSet(9) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(37)
+5.IF isNotSet(8) Then SKIP 4 (10)
+6.Print "Cok teSekkUrler, hayatImI kurtarDINIZ. benim aDIM nahcIvan, her ne zaman  isterseniz, gelin, size yarDIM ederim. gel sezai, aSk yuvamIza gidelim.. artIk buna da ihtiyacIM kalmadI, alIN bu da benim hediyem olsun... "
+7.Loot $: 0, M: 0, K: 0
+  Loot 0  item #13(baCemak)
+  Loot Params: 0, 0, 0, 0
+8.SetVariable (9).
+
+9.Begin
+10.IF isNotSet(7) Then SKIP 2 (13)
+11.Print "makinami isteriiim, sezai geri dOn noolur bak sana bOrek aCIcam!!! "
+
+12.Begin
+13.Print "burada gayet UzgUn ve de sUzgUN bir bahCIvan oturuyor... "
+14.Talk Random Face "nedir kardeS,senin ne Simdi sovyet sosyalist,ne alakaysa, yani ne yani.. yaaa ! yaaa ! "
+15.Print "yaa, benim Cim biCme makinam sezai, filmdeki bahCIvana benzemiyorum diye beni terketti, karSI kOSede duruyor, ne olur onu geri getirin, ben onsuz yaSayamam, ohUHUhU.... "
+16.SetVariable (7).
+17.Begin Special 1
+
+18.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 11 00 0B 02 B2 02 B4 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (13)
+2.IF isNotSet(8) Then SKIP 1 (4)
+
+3.Begin
+4.IF isNotSet(7) Then SKIP 7 (12)
+5.Print "burada her tarafI pas iCinde duvara OnUnU bize arkasInI dOnmUS garip gOrUnUSlU bir Cim biCme makinasI var. bahCIvanIn makinasI bu olmalI. "
+6.Talk Random Face "Su karSIda oturan bahCIvanIn makinasI sen misin ? niye lOlO yapIyosun lan adama. "
+7.Print "Nee bee "bahCIvan" filminde milletin ne biCim bahCIvanlarI var OOOle psiSik neyin. sen gel bi de bizimkine bak pIsIrIk herif. "
+8.Talk Random Face "oooolum manyak mIsIn beee. sen harbiden inanIyo musun Simdi OOle PsiSik neyin...Filim o filim... inanma bunlara. "
+9.Print "Haaa iyi yaa. tamam o zaman   ben de sanmIStIm Ki gerCek... "
+10.SetVariable (8).
+
+11.Begin
+12.Print "burada duvara arkasInI dOnmUS bir Cim biCme makinasI var. "
+13.Print "gidin, rahat bIrakIn beni. zaten kafam bozuk bide sizinle uGraSmIyim... "
+14.Begin Special 1
+
+15.Room End (4-0)
+
+
+===== Event #11 =====
+Header: 00 10 00 4E 00 F9 00 FB 
+
+0.Room Begin: (4)
+1.IF isNotSet(10) Then SKIP 1 (3)
+
+2.Begin
+3.Print "iCerde garip bir karaltI var ama... boSverin, hadi girelim. "
+
+4.Admit and Begin (0x0E) (9)
+5.IF isNotSet(83) Then SKIP 1 (7)
+
+6.Begin
+7.Show Image(40)
+8.IF isNotSet(10) Then SKIP 2 (11)
+9.Print "Kusura bakmayIn Cok iSim var "
+
+10.Begin
+11.Print "HoSgeldiniz ama bugUn kapalIyIz. CUNKU niye? CUNKU dUN akSam barbaros OldU. son derece UzUcU bir olay... Kahroldum yani. "
+12.SetVariable (10).
+13.Begin Special 1
+
+14.Room End (4-0)
+
+
+===== Event #12 =====
+Header: 00 10 00 0B 01 CB 01 CD 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (12)
+2.IF isNotSet(83) Then SKIP 1 (4)
+
+3.Begin
+4.Talk Random Face "Aaa Su duran Seylere bakInIz yahu sanki biz alalIm diye konmuS. tesadUfUn bu kadarI yani... "
+5.Loot $: 10, M: 1, K: 2
+  Loot 0  item #1(zopa)
+  Loot Params: 0, 18, 0, 26
+6.Talk Random Face "ulan iyi kalKINDIK haa! "
+7.Show Image(40)
+8.Print "kusura bakmayIN Cocuklar, ama yolun sonu burasI. her Seye bu kadar burun sokulur mu canIIIM, alla allaaaa     nObetCiler, tutun bakayIM SunlarI. "
+9.[startFight: enemyId=24(karafatma), count=1, ?: 25, 1, 26, 1]
+10.Talk Random Face "kim bu herifler bOyle be ! ne iSleri var mecidiyekOy'de bunlarIN? "
+11.Print "yaa Cocuklar,iSte bOyle istanbul'uN hali iSimiz o kadar da kolay olmayacak... "
+12.SetVariable (83).
+13.Begin Special 1
+
+14.Room End (4-0)
+
+
+===== Event #13 =====
+Header: 00 06 00 2B 00 2E 00 30 
+
+0.Room Begin: (2)
+1.Print "arabalar Cok hIZLI geCiyor... "
+2.[break]
+3.End 1.
+4.Begin Special 1
+
+5.Room End (4-0)
+
+
+===== Event #14 =====
+Header: 00 06 00 21 00 24 00 26 
+
+0.Room Begin: (2)
+1.Talk with face 3,"gitmiycem iSte !!! "
+2.[break]
+3.End 1.
+4.Begin Special 1
+
+5.Room End (4-0)
+
+
+===== Event #15 =====
+Header: 00 09 00 0B 00 1F 00 21 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (5)
+2.IF isNotSet(84) Then SKIP 1 (4)
+
+3.Begin
+4.Loot $: 2, M: 0, K: 0
+  Loot 0  item #11(galvanometre)
+  Loot Params: 0, 0, 0, 0
+5.SetVariable (84).
+6.Begin Special 1
+
+7.Room End (4-0)
+
+
+===== Event #16 =====
+Header: 00 09 00 54 00 57 00 59 
+
+0.Room Begin: (5)
+[12] 1.IF AnswerWas(0) Then SKIP 1 (3)
+
+2.Begin
+3.Print "ameleler iCeride maC yapIyor. girmek saGlIGA zararlI olabilir... "
+4.[break]
+5.End 1.
+6.Begin Special 1
+
+7.Room End (4-0)
+
+
+===== Event #17 =====
+Header: 00 0A 00 0B 00 9B 00 9D 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (6)
+2.IF isNotSet(85) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (85).
+5.Loot $: 5, M: 5, K: 5
+  ?: 0  item#: 0
+  Loot Params: 0, 0, 0, 0
+6.Print "burada bir de not var : bu parayI iyi amaClar iCin kullanIN.. gidip silah neyin alIN...                         -bir dost "
+7.Begin Special 1
+
+8.Room End (4-0)
+
+
+===== Event #18 =====
+Header: 00 06 00 0B 00 1F 00 21 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "motel barbaros "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #19 =====
+Header: 00 08 00 44 00 B4 00 B6 
+
+0.Room Begin: (2)
+1.Print "hancI koridorda uyukluyor..... (HANcI kim beeee!!!!!!) "
+
+2.Admit and Begin (0x0E) (3)
+3.Show Image(41)
+4.Print "ne?...ha ? tUnaydIN Cocuklar. iCeri geCin bUtUn odalar boS...zaten hep Oyle olur. neyse, uyuyayIM ben... "
+5.Begin Special 1
+
+6.Room End (4-0)
+
+
+===== Event #20 =====
+Header: 00 06 00 0B 00 1D 00 1F 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "sevIn ilevIn "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #21 =====
+Header: 00 06 00 0B 00 26 00 28 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "kadIkOy otobUs duraGI "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #22 =====
+Header: 00 06 00 0B 00 26 00 28 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "kadIkOy otobUs duraGI "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #23 =====
+Header: 00 06 00 0B 00 27 00 29 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "sarIgazi otobUs duraGI "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #24 =====
+Header: 00 06 00 0B 00 27 00 29 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "Umraniye otobUs duraGI "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #25 =====
+Header: 00 15 00 0B 01 F8 01 FA 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (17)
+2.IF isNotSet(86) Then SKIP 2 (5)
+3.Print "SarapCI artIk burada deGil.. "
+
+4.Begin
+5.Show Image(45)
+6.Print "Cocuklar...bi dakka baKIN buraya... bana biraz para verin, size bir vecize OGretirim. ha, ne dersiniz? tamam MI? "
+7.Input?  evet / hayIr
+8.IF AnswerWas(1) Then SKIP 2 (11)
+9.Print "ulan ne gUNlere kalDIK bee ! "
+
+10.Begin
+[1A ($)] 11.Show Image(1)
+12.Print ""
+13.Print "?u"
+[62 (l)] [57 (a)] [64 (n)] [16 ( )] [58 (b)] [6B (u)] [16 ( )] [66 (p)] [57 (a)] [68 (r)] [57 (a)] [6F (y)] [62 (l)] [57 (a)] [16 ( )] [5D (g)] [4B (U)] [70 (z)] [5B (e)] [62 (l)] [16 ( )] [63 (m)] [57 (a)] [68 (r)] [63 (m)] [57 (a)] [68 (r)] [57 (a)] [16 ( )] [58 (b)] [5F (i)] [62 (l)] [5B (e)] [AC] [57 (a)] [62 (l)] [57 (a)] [63 (m)] [57 (a)] [63 (m)] [16 ( )] [62 (l)] [57 (a)] [64 (n)] [24 (.)] [16 ( )] [58 (b)] [57 (a)] [64 (n)] [57 (a)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [57 (a)] [70 (z)] [16 ( )] [66 (p)] [57 (a)] [68 (r)] [57 (a)] [16 ( )] [6C (v)] [5B (e)] [6F (y)] [57 (a)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [AC] [49 (S)] [5F (i)] [49 (S)] [5B (e)] [16 ( )] [49 (S)] [57 (a)] [68 (r)] [57 (a)] [66 (p)] [16 ( )] [5D (g)] [5B (e)] [6A (t)] [5F (i)] [68 (r)] [5F (i)] [64 (n)] [22 (,)] [16 ( )] [69 (s)] [5F (i)] [70 (z)] [5B (e)] [16 ( )] [5F (i)] [69 (s)] [6A (t)] [5B (e)] [5A (d)] [5F (i)] [3D (G)] [5F (i)] [64 (n)] [5F (i)] [70 (z)] [AC] [6C (v)] [5B (e)] [59 (c)] [5F (i)] [70 (z)] [5B (e)] [6F (y)] [5F (i)] [16 ( )] [45 (O)] [3D (G)] [68 (r)] [5B (e)] [6A (t)] [5F (i)] [6F (y)] [5F (i)] [63 (m)] [24 (.)] [AC] 
+14.Begin
+15.SetVariable (86).
+[1C (&)] 16.Print "unutmayIN bu vecizeyi yalNIZ, KOtUlUGe ve cehalete kaRSI kullanIN... KaranlIK tarafIN gUcUNU kUCUMsemeyin..... gUC sizinle olsun..iSte o kadar... "
+17.Begin Special 1
+
+18.Room End (4-0)
+
+
+===== Event #26 =====
+Header: 00 0E 00 0B 01 1E 01 20 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (10)
+2.IF isNotSet(111) Then SKIP 1 (4)
+
+3.Begin
+4.SetVariable (111).
+[19 (#)] 
+5.Begin
+[17 (!)] 6.IF Operator(14)->(2) Then SKIP 131 (138)
+[6C (v)] [5B (e)] [16 ( )] [5F (i)] [49 (S)] [6A (t)] [5B (e)] [16 ( )] [63 (m)] [5B (e)] [59 (c)] [5F (i)] [5A (d)] [5F (i)] [6F (y)] [5B (e)] [61 (k)] [45 (O)] [6F (y)] [1D (')] [5B (e)] [16 ( )] [39 (C)] [3F (I)] [61 (k)] [4A (T)] [3F (I)] [61 (k)] [24 (.)] [16 ( )] [57 (a)] [63 (m)] [57 (a)] [16 ( )] [5B (e)] [6A (t)] [68 (r)] [57 (a)] [5C (f)] [AC] [58 (b)] [5F (i)] [68 (r)] [16 ( )] [5D (g)] [57 (a)] [68 (r)] [5F (i)] [66 (p)] [24 (.)] [16 ( )] [45 (O)] [6F (y)] [62 (l)] [5B (e)] [16 ( )] [5D (g)] [45 (O)] [68 (r)] [4B (U)] [64 (n)] [4B (U)] [6F (y)] [65 (o)] [68 (r)] [16 ( )] [61 (k)] [5F (i)] [16 ( )] [5F (i)] [64 (n)] [69 (s)] [57 (a)] [64 (n)] [62 (l)] [57 (a)] [68 (r)] [AC] [5D (g)] [4B (U)] [64 (n)] [62 (l)] [4B (U)] [61 (k)] [16 ( )] [5E (h)] [57 (a)] [6F (y)] [57 (a)] [6A (t)] [62 (l)] [57 (a)] [68 (r)] [3F (I)] [6F (y)] [62 (l)] [57 (a)] [16 ( )] [6B (u)] [3D (G)] [68 (r)] [57 (a)] [49 (S)] [63 (m)] [57 (a)] [61 (k)] [6A (t)] [57 (a)] [64 (n)] [16 ( )] [58 (b)] [6B (u)] [64 (n)] [6B (u)] [AC] [5C (f)] [57 (a)] [68 (r)] [61 (k)] [5B (e)] [6A (t)] [63 (m)] [5B (e)] [63 (m)] [5F (i)] [49 (S)] [62 (l)] [5B (e)] [68 (r)] [24 (.)] [AC] 7.Print "etraf garip gOrUnUyor... bu her neyse bunu bizim halletmemiz gerektiGi anlaSIlIyor! "
+8.Talk with face 5,"ne olmuS bu mecidiyekOye bOyle yaa. "
+[19 (#)] 9.IF Operator(4)->(15) Then SKIP 1 (11)
+
+10.Room End (4-0)
+
+
+===== Event #27 =====
+Header: 00 08 00 0B 00 70 00 72 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (4)
+2.Print "burada bir Bmw var... "
+3.Talk with face 1,"bmw'ler hIRKA geymiS... yu giv lav e BeD Neym.. "
+4.Talk with face 2,"ne diyosun beee!!!! "
+5.Begin Special 1
+
+6.Room End (4-0)
+
+
+===== Event #28 =====
+Header: 00 06 00 0B 00 42 00 44 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "bir adet mercedes, buraya itinayla parkedilmiS... "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #29 =====
+Header: 00 06 00 0B 00 4A 00 4C 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "fm kUltUr merkezi... 12-17 mayIs 1994  hIdIrellez fuarI.. "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #30 =====
+Header: 00 06 00 0B 00 33 00 35 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "burasI dam, ama pabuC filan yok... "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #31 =====
+Header: 00 06 00 0B 00 26 00 28 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Print "mecidiyekOy karakolu. "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #32 =====
+Header: 00 08 00 63 00 66 00 68 
+
+0.Room Begin: (4)
+1.Print "kapIda irikIyIm bir polis durmuS bize bakIyor. "
+[17 (!)] [00] 2.End 17.
+[5B (e)] [64 (n)] [59 (c)] [5B (e)] [16 ( )] [5D (g)] [5B (e)] [39 (C)] [63 (m)] [5B (e)] [6F (y)] [5B (e)] [16 ( )] [39 (C)] [57 (a)] [62 (l)] [3F (I)] [49 (S)] [63 (m)] [57 (a)] [6F (y)] [57 (a)] [62 (l)] [3F (I)] [63 (m)] [16 ( )] [57 (a)] [57 (a)] [58 (b)] [5F (i)] [24 (.)] [AC] 3.[break]
+4.End 1.
+5.Begin Special 1
+
+6.Room End (4-0)
+
+
+===== Event #33 =====
+Header: 00 06 00 0B 00 37 00 39 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Talk Random Face "o yaSlI adam, kimi bulun demiSti yaa! "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+
+===== Event #34 =====
+Header: 00 06 00 0B 00 5A 00 5C 
+
+0.Room Begin: (1)
+
+1.Admit and Begin (0x0E) (2)
+2.Talk Random Face "ne biCim oyun bu bee,bIrakIN bunu da gidip civilization oynayalIM biz... "
+3.Begin Special 1
+
+4.Room End (4-0)
+
+

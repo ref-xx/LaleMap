@@ -1,0 +1,214 @@
+﻿===== Event #1 =====
+Header: 00 0D 00 0B 00 DE 00 E0 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(95) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(8)
+5.Print "oo,hoSgeldiniz,gOzUmUz yollarda kalDI valla...arkadaSlarIMIZ sizden Cok sOz ettiler, biz de merak ettik... bakaLIM o kadar var MIsINIZ... dadaSlar.....saldIRIN !!!! "
+6.[startFight: enemyId=8(dadaS), count=4, ?: 30, 3, 0, 0]
+[17 (!)] 7.IF Operator(14)->(17) Then SKIP 5 (13)
+[12] [66 (p)] [45 (O)] [5E (h)] [16 ( )] [17 (!)] [16 ( )] [3E (H)] [3F (I)] [6F (y)] [57 (a)] [68 (r)] [62 (l)] [57 (a)] [68 (r)] [24 (.)] [24 (.)] [24 (.)] [AC] 8.SetVariable (95).
+
+9.End.
+
+10.Room End (4-0)
+
+
+===== Event #2 =====
+Header: 00 0B 00 0B 00 BA 00 BC 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(19) Then SKIP 3 (6)
+[17 (!)] 3.IF Operator(14)->(17) Then SKIP 5 (9)
+[3D (G)] [58 (b)] [6B (u)] [16 ( )] [57 (a)] [5A (d)] [57 (a)] [63 (m)] [59 (c)] [57 (a)] [3D (G)] [3F (I)] [50 (Z)] [3F (I)] [16 ( )] [61 (k)] [5F (i)] [63 (m)] [16 ( )] [58 (b)] [6B (u)] [16 ( )] [5E (h)] [57 (a)] [62 (l)] [5B (e)] [16 ( )] [5D (g)] [5B (e)] [6A (t)] [5F (i)] [68 (r)] [5A (d)] [5F (i)] [6F (y)] [69 (s)] [5B (e)] [22 (,)] [AC] [58 (b)] [5B (e)] [64 (n)] [5A (d)] [5B (e)] [64 (n)] [16 ( )] [39 (C)] [5B (e)] [61 (k)] [5B (e)] [59 (c)] [5B (e)] [3D (G)] [5F (i)] [16 ( )] [6C (v)] [57 (a)] [68 (r)] [24 (.)] [24 (.)] [24 (.)] [AC] 
+4.Begin
+5.Print "burada OlU bir adam yaTIYor... her yanI tUKURUK iCinde ve iSkence ile OldURULDUGU anlaSIlIyor.. "
+6.SetVariable (19).
+
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #3 =====
+Header: 00 0E 00 0B 01 26 01 28 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(20) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(52)
+5.Print "bana yardIM edin, lUtfen.. o pezevenk haSmet beni dadaSlarIna katIlmadIm diye buraya hapsetti.yardIM edin...                    yardIm edecek miyiz? "
+6.Input?  evet / hayIr
+7.IF AnswerWas(1) Then SKIP 1 (9)
+
+8.Begin
+9.Print "Cok teSekkUrler..benim adIM Ucazet... hayatIMI kurtardInIz size elimden geldiGi kadar yardIm edicem. "
+10.SetVariable (20).
+
+11.End.
+
+12.Room End (4-0)
+
+
+===== Event #4 =====
+Header: 00 10 00 0B 00 A8 00 AA 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(21) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(8)
+5.Print "ne iSiniz var burada!!nasIl geldi bunlar buraya, allah kahretsin, salDIRIN !!! "
+6.SetVariable (21).
+7.IF isNotSet(20) Then SKIP 4 (12)
+8.[startFight: enemyId=8(dadaS), count=3, ?: 104, 1, 0, 0]
+9.Show Image(52)
+10.Print "pis herifler...Simdi de tUkUrsenize!!! "
+
+11.Begin
+12.[startFight: enemyId=8(dadaS), count=3, ?: 0, 0, 0, 0]
+
+13.End.
+
+14.Room End (4-0)
+
+
+===== Event #5 =====
+Header: 00 0A 00 0B 00 68 00 6A 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(22) Then SKIP 2 (5)
+3.Print "fareler iS baSINda... "
+
+4.Begin
+5.Print "fareler, yerde yatan OlU bir adamIN Uzerine CIKIYorlar.. "
+6.SetVariable (22).
+
+7.End.
+
+8.Room End (4-0)
+
+
+===== Event #6 =====
+Header: 00 08 00 0B 00 35 00 37 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(20) Then SKIP 1 (4)
+
+3.Begin
+4.Print "yandaki odadan sesler geliyor.. "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #7 =====
+Header: 00 08 00 0B 00 33 00 35 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(21) Then SKIP 1 (4)
+
+3.Begin
+4.Print "bu odadan da sesler geliyor.. "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #8 =====
+Header: 00 09 00 0B 00 57 00 59 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(22) Then SKIP 2 (5)
+3.Print "bUtUn fareler iCeri girmiS.. "
+
+4.Begin
+5.Print "fareler yandaki odaya koSuSuyorlar "
+
+6.End.
+
+7.Room End (4-0)
+
+
+===== Event #9 =====
+Header: 00 08 00 0B 00 43 00 45 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(23) Then SKIP 1 (4)
+
+3.Begin
+4.Print "iCeriden garip CIGlIKLar ve gUlmeler geliyor. "
+
+5.End.
+
+6.Room End (4-0)
+
+
+===== Event #10 =====
+Header: 00 11 00 0B 01 73 01 75 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(23) Then SKIP 1 (4)
+
+3.Begin
+4.Show Image(53)
+5.Print "demek beni buldunuz ha! vay anasINI.. sizde iS varmIS gerCekten...herneyse Simdi artIK oyun bitti gelin bakalIM babanIZIN kucaGIna.... "
+6.SetVariable (23).
+7.IF isNotSet(20) Then SKIP 4 (12)
+8.[startFight: enemyId=33(hasmet maap), count=1, ?: 30, 6, 104, 1]
+9.Show Image(52)
+10.Print "Cocuklar, size minnettarIM. gerCekten hem beni hem kadIkOy'U kurtarDInIZ.. bir gUN borcumu Oderim. sakIN ola manyak Ucazet'i unutmayIN. eyvallah!! "
+
+11.Begin
+12.[startFight: enemyId=33(hasmet maap), count=1, ?: 30, 6, 0, 0]
+13.Talk Random Face "gidip Su kImIllara haber verelim... "
+
+14.End.
+
+15.Room End (4-0)
+
+
+===== Event #11 =====
+Header: 00 0D 00 0B 00 B3 00 B5 
+
+0.Room Begin: (0)
+
+1.Admit and Begin (0x0E) (0)
+2.IF isNotSet(23) Then SKIP 3 (6)
+3.Talk Random Face "aa, burada bir merdiven varmIS.. hadi yukarI CIKalIM... "
+4.******* Next Map: 7, 0, 83, 0
+
+5.Begin
+[17 (!)] [00] 6.SetVariable (17).
+[5C (f)] [5C (f)] [22 (,)] [16 ( )] [58 (b)] [6B (u)] [68 (r)] [57 (a)] [69 (s)] [3F (I)] [16 ( )] [58 (b)] [65 (o)] [61 (k)] [16 ( )] [5D (g)] [5F (i)] [58 (b)] [5F (i)] [16 ( )] [61 (k)] [65 (o)] [61 (k)] [6B (u)] [6F (y)] [65 (o)] [16 ( )] [58 (b)] [5B (e)] [5B (e)] [17 (!)] [AC] [17 (!)] 7.IF Operator(7)->(17) Then SKIP 5 (13)
+[33 (=)] [69 (s)] [57 (a)] [62 (l)] [57 (a)] [61 (k)] [16 ( )] [17 (!)] [16 ( )] [62 (l)] [57 (a)] [3D (G)] [3F (I)] [43 (M)] [5A (d)] [57 (a)] [6F (y)] [3F (I)] [50 (Z)] [22 (,)] [16 ( )] [61 (k)] [65 (o)] [61 (k)] [57 (a)] [68 (r)] [16 ( )] [6A (t)] [57 (a)] [58 (b)] [5F (i)] [5F (i)] [16 ( )] [17 (!)] [AC] [69 (s)] [3F (I)] [41 (K)] [16 ( )] [58 (b)] [5F (i)] [68 (r)] [57 (a)] [70 (z)] [16 ( )] [5A (d)] [5F (i)] [49 (S)] [5F (i)] [64 (n)] [5F (i)] [AC] 
+8.End.
+
+9.Room End (4-0)
+
+
