@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+//using static System.Net.Mime.MediaTypeNames;
 
 namespace LaleMapTest
 {
@@ -298,7 +299,7 @@ namespace LaleMapTest
                 case 2: return Brushes.Brown;       // Ahşap Zemin
                 case 3: return Brushes.DarkGray;    // bilmediğim zemin
                 case 4: return Brushes.SandyBrown;  // bozuk ahşap Zemin
-                default: return Brushes.White;      // Varsayılan (Boş)
+                default: return Brushes.Orange;      // Varsayılan (Boş)
             }
         }
 
@@ -328,19 +329,34 @@ namespace LaleMapTest
                 MessageBox.Show("Eksik oda verisi!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return (0);
             }
-
+            int roomSize = 15;
             // Dungeon boyutları
             int margin = 1; // Oda araları boşluk
-            int roomSize = ((pictureBox1.Width - map.width * margin) / map.width); // Her oda 30x30 piksel olacak
 
-            int dungeonSize = map.width; // 10x10 grid
+            int totalRoomWidth = map.width;
+            int totalRoomHeight = map.height;
 
+            // Kaç adet boşluk (margin) olacak? Oda sayısından 1 fazla
+            int totalMarginX = (map.width + 1) * margin;
+            int totalMarginY = (map.height + 1) * margin;
+
+            // Mevcut kullanılabilir alanlar
+            int availableWidth = pictureBox1.Width - totalMarginX;
+            int availableHeight = pictureBox1.Height - totalMarginY;
+
+            // Hem X hem Y için uygun en büyük kare boyutu
+            roomSize = Math.Min(availableWidth / totalRoomWidth, availableHeight / totalRoomHeight);
+
+
+
+            int dungeonSizeW = map.width;
+            int dungeonSizeH = map.height;
             // Resmi oluştur
             Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 //g.Clear(Color.White);
-                g.FillRectangle(Brushes.LightGray, 0, 0, map.width * margin + roomSize * map.height, map.width * margin + roomSize * map.height);
+                g.FillRectangle(Brushes.LightGray, 0, 0, map.width * (margin + roomSize), (margin + roomSize) * map.height);
                 Font font = new Font("Arial", 6, FontStyle.Bold);
                 StringFormat sf = new StringFormat
                 {
@@ -348,11 +364,11 @@ namespace LaleMapTest
                     LineAlignment = StringAlignment.Center
                 };
 
-                for (int i = 0; i < dungeonSize; i++)
+                for (int i = 0; i < dungeonSizeH; i++)
                 {
-                    for (int j = 0; j < dungeonSize; j++)
+                    for (int j = 0; j < dungeonSizeW; j++)
                     {
-                        int index = i * dungeonSize + j;
+                        int index = i * dungeonSizeW + j;
                         if (index + 1 >= listBox1.Items.Count) continue;
 
                         string selectedLine = listBox1.Items[index + 1].ToString();
@@ -380,9 +396,6 @@ namespace LaleMapTest
                         int roomevent32 = int.Parse(parts[18]);
                         int roomevent64 = int.Parse(parts[17]);
 
-
-
-
                         // Odanın x, y konumunu belirle
                         int x = j * (roomSize + margin);
                         int y = i * (roomSize + margin);
@@ -390,23 +403,12 @@ namespace LaleMapTest
                         // **1. Zemin Tipine Göre Odanın Arkasını Doldur**
                         Brush floorBrush = GetFloorBrush(ceilingType);
                         // **2. Duvarları Çiz**
-                        ////int i1 = highlightEvent / 32;
-                        //int i2 = highlightEvent - (i1 * 32);
 
                         if (highlightEvent == (roomevent + (roomevent32 - 1) * 31))
                             g.FillRectangle(Brushes.Magenta, x, y, roomSize, roomSize);
                         else
                             g.FillRectangle(floorBrush, x, y, roomSize, roomSize);
-                        /*
-                                                DrawWall(g, x, y, x + roomSize, y, topWall, topWall); // Üst duvar
-                                                DrawWall(g, x + roomSize, y, x + roomSize, y + roomSize, rightWall, rightWall); // Sağ duvar
-                                                DrawWall(g, x, y + roomSize, x + roomSize, y + roomSize, bottomWall, bottomWall); // Alt duvar
-                                                DrawWall(g, x, y, x, y + roomSize, leftWall, leftWall); // Sol duvar
 
-
-                                                x += 3;
-                                                y += 3;// **2. Duvarları Çiz**
-                        */
                         DrawWall(g, x, y, x + roomSize, y, topWall, topType, x, y); // Üst duvar
                         DrawWall(g, x + roomSize, y, x + roomSize, y + roomSize, rightWall, rightType, x, y); // Sağ duvar
                         DrawWall(g, x, y + roomSize, x + roomSize, y + roomSize, bottomWall, bottomType, x, y); // Alt duvar
@@ -846,7 +848,7 @@ namespace LaleMapTest
                 listBox1.Items.Add("HAM başlığı bulunamadı, dosya formatı beklenenden farklı.");
             }
             if (checkBox4.Checked)
-            { 
+            {
                 for (int i = 0; i < 32; i++)
                 {
                     pic.palette[i] = BackupPalette[i];
@@ -1425,14 +1427,18 @@ namespace LaleMapTest
                 for (int i = 0; i < fileData.Length; i++)
                 {
                     decryptedBytes[i] = fileData[i];
-                    if ((i > 19))
+                    if ((i > 0x027e) && (i < 0x045f))
                     {
-                        if ((fileData[i] > 21) && (fileData[i] < 119)) decryptedBytes[i] = (byte)(fileData[i] + 10); // Her byte'ı 10 artır
-
+                        //40-7b
+                        byte decoded = (byte)(fileData[i] + 10);
+                        if ((decoded > 0x20 - 10) && (decoded < 0x7F))
+                        {
+                            decryptedBytes[i] = (byte)(fileData[i] + 10); // Her byte'ı 10 artır
+                        }
                     }
                 }
 
-                File.WriteAllBytes(filePath + "out.dat", decryptedBytes);
+                File.WriteAllBytes(filePath + "outy.dat", decryptedBytes);
 
             }
         }
@@ -1602,9 +1608,20 @@ namespace LaleMapTest
 
                                 string q1 = DecipherROT(opt1).Replace("\xAC", "\n");
                                 string q2 = DecipherROT(opt2).Replace("\xAC", "\n");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Input?  {q1} / {q2}");
+                                sb.AppendLine(linecounter++.ToString() + "." + $"Present Choice:  {q1} / {q2}");
                             }
                         }
+                        break;
+
+                    case 6:
+                        //06 05 07 81 03 17
+                        byte bilinmeyen62 = eventData[offset++];
+                        byte bilinmeyen63 = eventData[offset++];
+                        byte bilinmeyen64 = eventData[offset++];
+                        byte bilinmeyen65 = eventData[offset++];
+                        byte bilinmeyen66 = eventData[offset++];
+                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK5-{cmd:X2}] {bilinmeyen62}, {bilinmeyen63}, {bilinmeyen64}, {bilinmeyen65}, {bilinmeyen66}]");
+
                         break;
 
                     case 0x07:
@@ -1612,9 +1629,6 @@ namespace LaleMapTest
                         if (offset + 1 <= eventData.Length)
                         {
                             byte var = eventData[offset++];
-                            //byte val = eventData[offset++];
-                            //byte val2 = eventData[offset++];
-                            //byte val3 = eventData[offset++];
                             sb.AppendLine(linecounter++.ToString() + "." + $"SetVariable ({var})."); //, value ={ val}
                         }
                         break;
@@ -1630,7 +1644,7 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $"[startFight: enemyId={enemyId}({enemies[enemyId]}), count={count}, ?: {bilinmeyen2}, {bilinmeyen3}, {bilinmeyen4}, {bilinmeyen5}]");
+                            sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️  EnemyType1: [{enemyId}] {enemies[enemyId]} X {count}, EnemyType2: [{bilinmeyen2:x2}] {enemies[bilinmeyen2]} X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] {enemies[bilinmeyen4]} X {bilinmeyen5}");
 
                         }
                         break;
@@ -1706,7 +1720,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x0B:
+                    case 0x0B: //exit map and load another one param1= map number 
                         match = true;
                         if (offset + 4 < eventData.Length) // toplam 5 byte
                         {
@@ -1714,10 +1728,11 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $"******* Next Map: {bilinmeyen2}, {bilinmeyen3}, {bilinmeyen4}, {bilinmeyen5}");
+                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {bilinmeyen3}, {bilinmeyen4}, {bilinmeyen5}");
                         }
                         break;
-                    case 0x0E:
+
+                    case 0x0E: //unknown Event
                         match = true;
                         if (offset < eventData.Length)
                         {
@@ -1726,12 +1741,12 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x10:
+                    case 0x10:  //end event.
 
                         sb.AppendLine(linecounter++.ToString() + "." + "[break]");
                         break;
 
-                    case 0x11:
+                    case 0x11: //Konusan kafa ile konusma (0=random, 1-2-3-4 grup, 5+ npc)
                         match = true;
                         if (offset + 1 < eventData.Length)
                         {
@@ -1743,9 +1758,43 @@ namespace LaleMapTest
                                 Array.Copy(eventData, offset, txt, 0, len);
                                 offset += len;
                                 string text = DecipherROT(txt).Replace("\xAC", "\n");
-                                if (faceId == 0) sb.AppendLine(linecounter++.ToString() + "." + $"Talk Random Face \"{text}\""); else sb.AppendLine(linecounter++.ToString() + "." + $"Talk with face {faceId},\"{text}\"");
+                                if (faceId == 0) sb.AppendLine(linecounter++.ToString() + "." + $"Talk Random Face \"{text}\"");
+                                else if (faceId > 4) sb.AppendLine(linecounter++.ToString() + "." + $"Talk as NPC {faceId},\"{text}\"");
+                                else sb.AppendLine(linecounter++.ToString() + "." + $"Talk with Face {faceId},\"{text}\"");
                             }
                         }
+                        break;
+
+                    case 0x12:
+                        match = false;
+                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK0[12] Test?");
+                        break;
+                    case 0x17:
+                        match = true;
+                        byte var1 = eventData[offset++];
+                        byte var2 = eventData[offset++];
+                        sb.AppendLine(linecounter++.ToString() + "." + $"Set Face [17] {var1},\"{var2}\"");
+
+                        break;
+
+                    case 0x0C:
+                    case 0x16:
+                    case 0x1D:
+                    case 0x13:
+                        match = true;
+                        byte var4 = eventData[offset++];
+                        byte var5 = eventData[offset++];
+                        byte var6 = eventData[offset++];
+                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK3 [{cmd:X2}] {var4:X2}, {var5:X2}, {var6:X2}.");
+
+                        break;
+
+                    case 0x19:
+                    case 0x1A:
+                        match = true;
+                        byte var1A = eventData[offset++];
+                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK1 {cmd:X2}] {var1A}.");
+
                         break;
 
                     case 0x1B:
@@ -1798,7 +1847,10 @@ namespace LaleMapTest
                             }
                         }
                         break;
-
+                    case 0x20:
+                        match = false;
+                        sb.AppendLine(linecounter++.ToString() + "." + $"Retrace (Go Back [14]).");
+                        break;
 
 
                     default:
@@ -1969,6 +2021,39 @@ namespace LaleMapTest
             }
 
             paletteForm.ShowDialog();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            pictureBox1.Height = this.ClientSize.Height - pictureBox1.Top;
+        }
+
+        private int lastfoundindex = 0;
+
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F3)
+            {
+                string selectedText = textBox2.SelectedText;
+                if (string.IsNullOrEmpty(selectedText)) return;
+
+                int startIndex = textBox2.SelectionStart + textBox2.SelectionLength;
+                int foundIndex = textBox2.Text.IndexOf(selectedText, startIndex, StringComparison.CurrentCultureIgnoreCase);
+
+                if (foundIndex == -1 && startIndex > 0) // başa dönerek ara
+                {
+                    foundIndex = textBox2.Text.IndexOf(selectedText, 0, StringComparison.CurrentCultureIgnoreCase);
+                }
+
+                if (foundIndex != -1)
+                {
+                    textBox2.SelectionStart = foundIndex;
+                    textBox2.SelectionLength = selectedText.Length;
+                    textBox2.ScrollToCaret();
+                }
+
+                e.Handled = true;
+            }
         }
 
     }

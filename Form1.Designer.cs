@@ -122,6 +122,7 @@
             textBox2.Size = new Size(442, 379);
             textBox2.TabIndex = 6;
             textBox2.Text = "Senaryo";
+            textBox2.KeyDown += textBox2_KeyDown;
             // 
             // button4
             // 
@@ -297,6 +298,7 @@
             Controls.Add(button8);
             Name = "Form1";
             Text = "Lale Map Viewer 2025 Ref/retrojen.org";
+            Resize += Form1_Resize;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
