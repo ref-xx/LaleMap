@@ -1720,7 +1720,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x0B: //exit map and load another one param1= map number 
+                    case 0x0B: //exit map 0x0B [Harita No] [n1*256+n2 lokasyon] [bakış yönü]
                         match = true;
                         if (offset + 4 < eventData.Length) // toplam 5 byte
                         {
@@ -1728,7 +1728,8 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {bilinmeyen3}, {bilinmeyen4}, {bilinmeyen5}");
+                            string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️" };
+                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {(bilinmeyen3*256) + bilinmeyen4}, {yon[bilinmeyen5]}");
                         }
                         break;
 
