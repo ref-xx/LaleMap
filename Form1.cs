@@ -1119,7 +1119,7 @@ namespace LaleMapTest
                 }
                 else
                 {
-                    int x = 0;int y = 0; int maxh = 0;
+                    int x = 0; int y = 0; int maxh = 0;
                     byte[] searchBytes2 = { 0x06, 0x07, 0x19, 0x63 };
                     int index2 = IndexOf(fileData, searchBytes2);
                     bool first = true;
@@ -1145,11 +1145,11 @@ namespace LaleMapTest
                         // artık result, prefix + newData içeriyor
                         fileData = result;
 
-                        parsePic(fileData,x,y,first);
+                        parsePic(fileData, x, y, first);
                         if (maxh < PicBank.lumph) maxh = PicBank.lumph;
 
-                        x += PicBank.width*8;
-                        if (x>pictureBox1.Width)
+                        x += PicBank.width * 8;
+                        if (x+112 > pictureBox1.Width)
                         {
                             x = 0;
                             y += maxh;
@@ -1158,10 +1158,10 @@ namespace LaleMapTest
                         first = false;
                         index2 = IndexOf(fileData, searchBytes2, 21);
                     }
-                    
-                    
+
+
                 }
-                    return $"Bilinmeyen bank tipi (magic: '{magic}')";
+                return $"Bilinmeyen bank tipi (magic: '{magic}')";
             }
         }
 
@@ -1170,12 +1170,12 @@ namespace LaleMapTest
             PicBank = MakePalette(fileData);
             listBox1.Items.Add((PicBank.width * 8).ToString() + "x" + (PicBank.lumph * PicBank.lumps).ToString());
             PicBank = Decompress(PicBank);
-            PicBank = PaintAmigaPic(PicBank,x,y,clear);
+            PicBank = PaintAmigaPic(PicBank, x, y, clear);
 
         }
 
         // Byte array içinde başka bir byte array arayan metod
-        public static int IndexOf(byte[] haystack, byte[] needle, int start=0)
+        public static int IndexOf(byte[] haystack, byte[] needle, int start = 0)
         {
             for (int i = start; i <= haystack.Length - needle.Length; i++)
             {
@@ -1397,153 +1397,153 @@ namespace LaleMapTest
         }
 
 
- public AmigaPic PaintAmigaPic(AmigaPic pic, int destX=0, int destY=0, bool clearFirst=true)
-    {
-        int finalWidth = pic.width * 8;
-        int finalHeight = pic.lumph * pic.lumps;
-        int w = pic.width;
-        int h = pic.lumph;
-        int ll = pic.lumps;
-        int d = pic.dlumps;
-
-        byte[] chunky = new byte[finalWidth * finalHeight];
-        byte[,] chunkyPic = new byte[finalWidth, finalHeight];
-
-        for (int bp = 0; bp < d; bp++)
+        public AmigaPic PaintAmigaPic(AmigaPic pic, int destX = 0, int destY = 0, bool clearFirst = true)
         {
-            int bit = 1 << bp;
-            int planeOffset = bp * (w * h * ll);
+            int finalWidth = pic.width * 8;
+            int finalHeight = pic.lumph * pic.lumps;
+            int w = pic.width;
+            int h = pic.lumph;
+            int ll = pic.lumps;
+            int d = pic.dlumps;
 
-            for (int y = 0; y < h; y++)
+            byte[] chunky = new byte[finalWidth * finalHeight];
+            byte[,] chunkyPic = new byte[finalWidth, finalHeight];
+
+            for (int bp = 0; bp < d; bp++)
             {
-                for (int l = 0; l < ll; l++)
+                int bit = 1 << bp;
+                int planeOffset = bp * (w * h * ll);
+
+                for (int y = 0; y < h; y++)
                 {
-                    int row = y * ll + l;
-                    for (int x = 0; x < w; x++)
+                    for (int l = 0; l < ll; l++)
                     {
-                        int byteIndex = planeOffset + (row * w) + x;
-                        byte v = pic.uncompressedData[byteIndex];
-                        for (int j = 0; j < 8; j++)
+                        int row = y * ll + l;
+                        for (int x = 0; x < w; x++)
                         {
-                            int col = x * 8 + (7 - j);
-                            if ((v & (1 << j)) != 0)
+                            int byteIndex = planeOffset + (row * w) + x;
+                            byte v = pic.uncompressedData[byteIndex];
+                            for (int j = 0; j < 8; j++)
                             {
-                                chunky[row * finalWidth + col] |= (byte)bit;
+                                int col = x * 8 + (7 - j);
+                                if ((v & (1 << j)) != 0)
+                                {
+                                    chunky[row * finalWidth + col] |= (byte)bit;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        Bitmap targetBmp = null;
-        bool newBitmapCreated = false;
+            Bitmap targetBmp = null;
+            bool newBitmapCreated = false;
 
-        if (clearFirst || pictureBox1.Image == null)
-        {
-            if (pictureBox1.Image != null && clearFirst)
+            if (clearFirst || pictureBox1.Image == null)
             {
-                // Dispose previous image only if clearing explicitly
-                pictureBox1.Image.Dispose();
-            }
-            // Create a new bitmap with PictureBox dimensions if clearing or none exists
-            targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
-            using (Graphics g = Graphics.FromImage(targetBmp))
-            {
-                // Clear with PictureBox background or a default color (e.g., White)
-                g.Clear(pictureBox1.BackColor);
-            }
-            pictureBox1.Image = targetBmp;
-            newBitmapCreated = true;
-        }
-        else
-        {
-            // Attempt to use the existing image
-            targetBmp = pictureBox1.Image as Bitmap;
-            // If existing image is not a Bitmap or not 24bpp, create a new one and copy old content
-            if (targetBmp == null || targetBmp.PixelFormat != PixelFormat.Format24bppRgb)
-            {
-                    Bitmap oldImage = (Bitmap)pictureBox1.Image;
-                    targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
+                if (pictureBox1.Image != null && clearFirst)
+                {
+                    // Dispose previous image only if clearing explicitly
+                    pictureBox1.Image.Dispose();
+                }
+                // Create a new bitmap with PictureBox dimensions if clearing or none exists
+                targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
                 using (Graphics g = Graphics.FromImage(targetBmp))
                 {
-                    g.Clear(pictureBox1.BackColor); // Start with background
-                    if (oldImage != null)
-                    {
-                        g.DrawImageUnscaled(oldImage, 0, 0); // Copy old image content
-                        oldImage.Dispose(); // Dispose the old non-compatible image
-                    }
+                    // Clear with PictureBox background or a default color (e.g., White)
+                    g.Clear(pictureBox1.BackColor);
                 }
                 pictureBox1.Image = targetBmp;
-                newBitmapCreated = true; // Technically we created a new one here too
+                newBitmapCreated = true;
             }
-        }
-
-        if (targetBmp == null)
-        {
-            // Should not happen with the logic above, but as a safeguard
-            throw new InvalidOperationException("Failed to get or create a valid Bitmap for the PictureBox.");
-        }
-
-
-        int ncol = 1 << d;
-        BitmapData bmpData = targetBmp.LockBits(new Rectangle(0, 0, targetBmp.Width, targetBmp.Height),
-                                                ImageLockMode.ReadWrite, targetBmp.PixelFormat); // Use ReadWrite
-        int stride = bmpData.Stride;
-        IntPtr ptr = bmpData.Scan0;
-        int bytes = Math.Abs(stride) * targetBmp.Height;
-        byte[] rgbValues = new byte[bytes];
-
-        // Copy existing bitmap data into buffer *before* drawing onto it
-        System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-        for (int sourceY = 0; sourceY < finalHeight; sourceY++)
-        {
-            for (int sourceX = 0; sourceX < finalWidth; sourceX++)
+            else
             {
-                int targetX = destX + sourceX;
-                int targetY = destY + sourceY;
-
-                // Store chunky index regardless of whether it's drawn
-                byte index = chunky[sourceY * finalWidth + sourceX];
-                chunkyPic[sourceX, sourceY] = index;
-
-                // Check if the target pixel is within the bounds of the target bitmap
-                if (targetX >= 0 && targetX < targetBmp.Width && targetY >= 0 && targetY < targetBmp.Height)
+                // Attempt to use the existing image
+                targetBmp = pictureBox1.Image as Bitmap;
+                // If existing image is not a Bitmap or not 24bpp, create a new one and copy old content
+                if (targetBmp == null || targetBmp.PixelFormat != PixelFormat.Format24bppRgb)
                 {
-                    if (index >= ncol)
-                        index = 0;
-
-                    Color c = pic.palette[index];
-                    int pos = targetY * stride + targetX * 3;
-
-                    // Ensure position is valid within the buffer (safety check)
-                    if (pos >= 0 && pos + 2 < bytes)
+                    Bitmap oldImage = (Bitmap)pictureBox1.Image;
+                    targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
+                    using (Graphics g = Graphics.FromImage(targetBmp))
                     {
-                        rgbValues[pos] = c.B;
-                        rgbValues[pos + 1] = c.G;
-                        rgbValues[pos + 2] = c.R;
+                        g.Clear(pictureBox1.BackColor); // Start with background
+                        if (oldImage != null)
+                        {
+                            g.DrawImageUnscaled(oldImage, 0, 0); // Copy old image content
+                            oldImage.Dispose(); // Dispose the old non-compatible image
+                        }
+                    }
+                    pictureBox1.Image = targetBmp;
+                    newBitmapCreated = true; // Technically we created a new one here too
+                }
+            }
+
+            if (targetBmp == null)
+            {
+                // Should not happen with the logic above, but as a safeguard
+                throw new InvalidOperationException("Failed to get or create a valid Bitmap for the PictureBox.");
+            }
+
+
+            int ncol = 1 << d;
+            BitmapData bmpData = targetBmp.LockBits(new Rectangle(0, 0, targetBmp.Width, targetBmp.Height),
+                                                    ImageLockMode.ReadWrite, targetBmp.PixelFormat); // Use ReadWrite
+            int stride = bmpData.Stride;
+            IntPtr ptr = bmpData.Scan0;
+            int bytes = Math.Abs(stride) * targetBmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy existing bitmap data into buffer *before* drawing onto it
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            for (int sourceY = 0; sourceY < finalHeight; sourceY++)
+            {
+                for (int sourceX = 0; sourceX < finalWidth; sourceX++)
+                {
+                    int targetX = destX + sourceX;
+                    int targetY = destY + sourceY;
+
+                    // Store chunky index regardless of whether it's drawn
+                    byte index = chunky[sourceY * finalWidth + sourceX];
+                    chunkyPic[sourceX, sourceY] = index;
+
+                    // Check if the target pixel is within the bounds of the target bitmap
+                    if (targetX >= 0 && targetX < targetBmp.Width && targetY >= 0 && targetY < targetBmp.Height)
+                    {
+                        if (index >= ncol)
+                            index = 0;
+
+                        Color c = pic.palette[index];
+                        int pos = targetY * stride + targetX * 3;
+
+                        // Ensure position is valid within the buffer (safety check)
+                        if (pos >= 0 && pos + 2 < bytes)
+                        {
+                            rgbValues[pos] = c.B;
+                            rgbValues[pos + 1] = c.G;
+                            rgbValues[pos + 2] = c.R;
+                        }
                     }
                 }
             }
+
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+            targetBmp.UnlockBits(bmpData);
+
+            pic.indexedImage = chunkyPic;
+
+            // If we didn't create a new Bitmap instance, we need to refresh the PictureBox
+            // to show the changes made to the existing Bitmap object.
+            if (!newBitmapCreated)
+            {
+                pictureBox1.Refresh();
+            }
+            // If a new bitmap *was* created, assigning it to pictureBox1.Image handles the update.
+
+            return pic;
         }
-
-        System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-        targetBmp.UnlockBits(bmpData);
-
-        pic.indexedImage = chunkyPic;
-
-        // If we didn't create a new Bitmap instance, we need to refresh the PictureBox
-        // to show the changes made to the existing Bitmap object.
-        if (!newBitmapCreated)
-        {
-            pictureBox1.Refresh();
-        }
-        // If a new bitmap *was* created, assigning it to pictureBox1.Image handles the update.
-
-        return pic;
-    }
-    public AmigaPic PaintAmigaPic2(AmigaPic pic)
+        public AmigaPic PaintAmigaPic2(AmigaPic pic)
         {
             // Final resim boyutlarını hesaplayalım.
             // pic.width: satırdaki byte sayısı, her byte 8 piksel içerir.
@@ -2727,7 +2727,7 @@ namespace LaleMapTest
                 listBox2.Items.Add("Hiçbir string listesi bulunamadı veya okunamadı.");
             }
         }
-    
+
 
 
 
@@ -2753,95 +2753,95 @@ namespace LaleMapTest
         // gemini üretti bunu:
         private List<StringInfo> ParseWeaponList(int startOffset)
         {
-        List<StringInfo> list = new List<StringInfo>();
-        int currentPos = startOffset;
+            List<StringInfo> list = new List<StringInfo>();
+            int currentPos = startOffset;
 
-        Encoding encoding = Encoding.ASCII;
+            Encoding encoding = Encoding.ASCII;
 
-        while (currentPos < laleExe.Length)
-        {
-            int stringStartOffset = currentPos; // String'in başladığı yer
-
-            // 1. Null karakterini (0x00) bulana kadar ilerle
-            int stringEndPos = -1;
-            for (int i = currentPos; i < laleExe.Length; i++)
+            while (currentPos < laleExe.Length)
             {
-                if (laleExe[i] == 0x00)
+                int stringStartOffset = currentPos; // String'in başladığı yer
+
+                // 1. Null karakterini (0x00) bulana kadar ilerle
+                int stringEndPos = -1;
+                for (int i = currentPos; i < laleExe.Length; i++)
                 {
-                    stringEndPos = i; // Null karakterinin pozisyonu
+                    if (laleExe[i] == 0x00)
+                    {
+                        stringEndPos = i; // Null karakterinin pozisyonu
+                        break;
+                    }
+                }
+
+                // Eğer dosya sonuna kadar null bulunamadıysa, liste bitmiş veya veri bozuktur.
+                if (stringEndPos == -1)
+                {
+                    break; // Döngüden çık
+                }
+
+                // 2. String'i null karakterine kadar olan kısımdan al
+                int length = stringEndPos - currentPos;
+                string text = "";
+                if (length > 0)
+                {
+                    text = encoding.GetString(laleExe, currentPos, length);
+                }
+                // else: Boş string (sadece null karakter vardı), yine de eklenebilir istersen.
+                // Şimdilik sadece uzunluğu 0'dan büyükse ekleyelim.
+
+                // String'i ve başlangıç offset'ini listeye ekle
+                list.Add(new StringInfo(text, stringStartOffset));
+
+                // 3. Pozisyonu null karakterinden sonraya taşı
+                currentPos = stringEndPos + 1;
+
+                // Dosya sonuna geldik mi kontrol et
+                if (currentPos >= laleExe.Length) break;
+
+                // 4. Word Alignment için Padding kontrolü:
+                // Null'dan sonraki pozisyon (currentPos) çift ise, padding vardır.
+                // (Çünkü null tek adresteydi: stringEndPos tekti)
+                bool hasPadding = (currentPos % 2 == 0);
+
+                if (hasPadding)
+                {
+                    // Padding byte'ını atla (genellikle 0x00'dır)
+                    // Dosya sonu kontrolü yapalım
+                    if (currentPos < laleExe.Length)
+                    {
+                        // İsteğe bağlı: atlanan byte'ın 0 olup olmadığını kontrol edebilirsin
+                        // if(laleExe[currentPos] != 0x00) { Console.WriteLine($"Uyarı: Beklenmeyen padding byte: {laleExe[currentPos]} at {currentPos:X}"); }
+                        currentPos++;
+                    }
+                    else
+                    {
+                        // Padding bekleniyordu ama dosya bitti.
+                        break;
+                    }
+                }
+
+                // Dosya sonuna geldik mi tekrar kontrol et (padding sonrası)
+                if (currentPos >= laleExe.Length) break;
+
+                // 5. Bir sonraki string'in uzunluk byte'ını oku ve atla
+                // Bu byte'ın değerini kullanmıyoruz ama pozisyonu ilerletmeliyiz.
+                byte nextLengthByte = laleExe[currentPos];
+                currentPos++;
+
+                // Eğer okunan uzunluk 0 ise, bu genellikle listenin sonu demektir.
+                if (nextLengthByte == 0)
+                {
+                    // Liste sonu belirteci olabilir, döngüden çıkalım.
                     break;
                 }
+
+                // currentPos şimdi bir sonraki string'in başlangıcında, döngü devam edecek.
             }
 
-            // Eğer dosya sonuna kadar null bulunamadıysa, liste bitmiş veya veri bozuktur.
-            if (stringEndPos == -1)
-            {
-                break; // Döngüden çık
-            }
-
-            // 2. String'i null karakterine kadar olan kısımdan al
-            int length = stringEndPos - currentPos;
-            string text = "";
-            if (length > 0)
-            {
-                text = encoding.GetString(laleExe, currentPos, length);
-            }
-            // else: Boş string (sadece null karakter vardı), yine de eklenebilir istersen.
-            // Şimdilik sadece uzunluğu 0'dan büyükse ekleyelim.
-
-            // String'i ve başlangıç offset'ini listeye ekle
-            list.Add(new StringInfo(text, stringStartOffset));
-
-            // 3. Pozisyonu null karakterinden sonraya taşı
-            currentPos = stringEndPos + 1;
-
-            // Dosya sonuna geldik mi kontrol et
-            if (currentPos >= laleExe.Length) break;
-
-            // 4. Word Alignment için Padding kontrolü:
-            // Null'dan sonraki pozisyon (currentPos) çift ise, padding vardır.
-            // (Çünkü null tek adresteydi: stringEndPos tekti)
-            bool hasPadding = (currentPos % 2 == 0);
-
-            if (hasPadding)
-            {
-                // Padding byte'ını atla (genellikle 0x00'dır)
-                // Dosya sonu kontrolü yapalım
-                if (currentPos < laleExe.Length)
-                {
-                    // İsteğe bağlı: atlanan byte'ın 0 olup olmadığını kontrol edebilirsin
-                    // if(laleExe[currentPos] != 0x00) { Console.WriteLine($"Uyarı: Beklenmeyen padding byte: {laleExe[currentPos]} at {currentPos:X}"); }
-                    currentPos++;
-                }
-                else
-                {
-                    // Padding bekleniyordu ama dosya bitti.
-                    break;
-                }
-            }
-
-            // Dosya sonuna geldik mi tekrar kontrol et (padding sonrası)
-            if (currentPos >= laleExe.Length) break;
-
-            // 5. Bir sonraki string'in uzunluk byte'ını oku ve atla
-            // Bu byte'ın değerini kullanmıyoruz ama pozisyonu ilerletmeliyiz.
-            byte nextLengthByte = laleExe[currentPos];
-            currentPos++;
-
-            // Eğer okunan uzunluk 0 ise, bu genellikle listenin sonu demektir.
-            if (nextLengthByte == 0)
-            {
-                // Liste sonu belirteci olabilir, döngüden çıkalım.
-                break;
-            }
-
-            // currentPos şimdi bir sonraki string'in başlangıcında, döngü devam edecek.
+            return list;
         }
 
-        return list;
-    }
-
-    private List<StringInfo> ParseWeaponList2(int startOffset)
+        private List<StringInfo> ParseWeaponList2(int startOffset)
         {
             List<StringInfo> list = new List<StringInfo>();
             int pos = startOffset;
@@ -2956,5 +2956,29 @@ namespace LaleMapTest
             return (list, currentPos);
         }
 
+        public void ExportListBoxToTxt(ListBox listBox)
+        {
+            // openfilereq isimli SaveFileDialog kullanarak kaydetme penceresi açıyoruz
+            using (SaveFileDialog openfilereq = new SaveFileDialog())
+            {
+                openfilereq.Filter = "Metin Dosyası (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*";
+                openfilereq.Title = "ListBox içeriğini kaydet";
+                openfilereq.OverwritePrompt = true;
+
+                if (openfilereq.ShowDialog() == DialogResult.OK)
+                {
+                    // Seçilen dosya yoluna tüm öğeleri satır satır yaz
+                    File.WriteAllLines(openfilereq.FileName,
+                        listBox.Items
+                               .Cast<object>()
+                               .Select(item => item.ToString()));
+                }
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            ExportListBoxToTxt(listBox1);
+        }
     }
 }

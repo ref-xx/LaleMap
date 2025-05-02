@@ -44,6 +44,7 @@
             checkBox1 = new CheckBox();
             checkBox2 = new CheckBox();
             groupBox1 = new GroupBox();
+            button20 = new Button();
             button11 = new Button();
             button10 = new Button();
             checkBox4 = new CheckBox();
@@ -229,6 +230,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button20);
             groupBox1.Controls.Add(button11);
             groupBox1.Controls.Add(button10);
             groupBox1.Controls.Add(checkBox4);
@@ -239,11 +241,21 @@
             groupBox1.Controls.Add(button5);
             groupBox1.Location = new Point(1155, 34);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(153, 211);
+            groupBox1.Size = new Size(153, 244);
             groupBox1.TabIndex = 15;
             groupBox1.TabStop = false;
             groupBox1.Text = "Utilities";
             groupBox1.Visible = false;
+            // 
+            // button20
+            // 
+            button20.Location = new Point(6, 211);
+            button20.Name = "button20";
+            button20.Size = new Size(141, 23);
+            button20.TabIndex = 15;
+            button20.Text = "Dump Listbox1";
+            button20.UseVisualStyleBackColor = true;
+            button20.Click += button20_Click;
             // 
             // button11
             // 
@@ -537,5 +549,6 @@
         private Button button19;
         private Button button18;
         private Button button17;
+        private Button button20;
     }
 }
