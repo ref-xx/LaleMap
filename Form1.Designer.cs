@@ -49,8 +49,26 @@
             checkBox4 = new CheckBox();
             button9 = new Button();
             checkBox3 = new CheckBox();
+            button12 = new Button();
+            groupBox2 = new GroupBox();
+            label1 = new Label();
+            checkBox5 = new CheckBox();
+            button19 = new Button();
+            button18 = new Button();
+            button17 = new Button();
+            button16 = new Button();
+            comboBox3 = new ComboBox();
+            comboBox4 = new ComboBox();
+            button15 = new Button();
+            comboBox2 = new ComboBox();
+            comboBox1 = new ComboBox();
+            button14 = new Button();
+            textBox4 = new TextBox();
+            textBox3 = new TextBox();
+            button13 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -79,6 +97,8 @@
             pictureBox1.Size = new Size(656, 613);
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
+            pictureBox1.MouseClick += pictureBox1_MouseClick;
+            pictureBox1.MouseMove += pictureBox1_MouseMove;
             // 
             // button2
             // 
@@ -92,7 +112,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(674, 10);
+            button3.Location = new Point(570, 11);
             button3.Name = "button3";
             button3.Size = new Size(98, 23);
             button3.TabIndex = 4;
@@ -217,7 +237,7 @@
             groupBox1.Controls.Add(button4);
             groupBox1.Controls.Add(button7);
             groupBox1.Controls.Add(button5);
-            groupBox1.Location = new Point(503, 41);
+            groupBox1.Location = new Point(1155, 34);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(153, 211);
             groupBox1.TabIndex = 15;
@@ -258,9 +278,9 @@
             // 
             // button9
             // 
-            button9.Location = new Point(509, 10);
+            button9.Location = new Point(1155, 10);
             button9.Name = "button9";
-            button9.Size = new Size(147, 23);
+            button9.Size = new Size(153, 23);
             button9.TabIndex = 12;
             button9.Text = "File Operations...";
             button9.UseVisualStyleBackColor = true;
@@ -271,18 +291,186 @@
             checkBox3.AutoSize = true;
             checkBox3.Checked = true;
             checkBox3.CheckState = CheckState.Checked;
-            checkBox3.Location = new Point(778, 13);
+            checkBox3.Location = new Point(831, 12);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(109, 19);
             checkBox3.TabIndex = 16;
             checkBox3.Text = "Redraw on click";
             checkBox3.UseVisualStyleBackColor = true;
             // 
+            // button12
+            // 
+            button12.Location = new Point(408, 11);
+            button12.Name = "button12";
+            button12.Size = new Size(156, 23);
+            button12.TabIndex = 17;
+            button12.Text = "Level Editor";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(label1);
+            groupBox2.Controls.Add(checkBox5);
+            groupBox2.Controls.Add(button19);
+            groupBox2.Controls.Add(button18);
+            groupBox2.Controls.Add(button17);
+            groupBox2.Controls.Add(button16);
+            groupBox2.Controls.Add(comboBox3);
+            groupBox2.Controls.Add(comboBox4);
+            groupBox2.Controls.Add(button15);
+            groupBox2.Controls.Add(comboBox2);
+            groupBox2.Controls.Add(comboBox1);
+            groupBox2.Controls.Add(button14);
+            groupBox2.Controls.Add(textBox4);
+            groupBox2.Controls.Add(textBox3);
+            groupBox2.Controls.Add(button13);
+            groupBox2.Location = new Point(408, 34);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(156, 277);
+            groupBox2.TabIndex = 18;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "groupBox2";
+            groupBox2.Visible = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 103);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 14;
+            label1.Text = "label1";
+            // 
+            // checkBox5
+            // 
+            checkBox5.AutoSize = true;
+            checkBox5.Location = new Point(6, 22);
+            checkBox5.Name = "checkBox5";
+            checkBox5.Size = new Size(95, 19);
+            checkBox5.TabIndex = 13;
+            checkBox5.Text = "Enable Editor";
+            checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // button19
+            // 
+            button19.Location = new Point(6, 241);
+            button19.Name = "button19";
+            button19.Size = new Size(144, 23);
+            button19.TabIndex = 12;
+            button19.Text = "Attach Story";
+            button19.UseVisualStyleBackColor = true;
+            // 
+            // button18
+            // 
+            button18.Location = new Point(86, 182);
+            button18.Name = "button18";
+            button18.Size = new Size(64, 23);
+            button18.TabIndex = 11;
+            button18.Text = "F.Tool";
+            button18.UseVisualStyleBackColor = true;
+            // 
+            // button17
+            // 
+            button17.Location = new Point(86, 123);
+            button17.Name = "button17";
+            button17.Size = new Size(64, 23);
+            button17.TabIndex = 10;
+            button17.Text = "Wall Tool";
+            button17.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            button16.Location = new Point(86, 212);
+            button16.Name = "button16";
+            button16.Size = new Size(64, 23);
+            button16.TabIndex = 9;
+            button16.Text = "S.Floors";
+            button16.UseVisualStyleBackColor = true;
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(6, 212);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(74, 23);
+            comboBox3.TabIndex = 8;
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(6, 183);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(74, 23);
+            comboBox4.TabIndex = 7;
+            // 
+            // button15
+            // 
+            button15.Location = new Point(86, 153);
+            button15.Name = "button15";
+            button15.Size = new Size(64, 23);
+            button15.TabIndex = 6;
+            button15.Text = "Set Walls";
+            button15.UseVisualStyleBackColor = true;
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(6, 153);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(74, 23);
+            comboBox2.TabIndex = 5;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(6, 124);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(74, 23);
+            comboBox1.TabIndex = 4;
+            // 
+            // button14
+            // 
+            button14.Location = new Point(86, 71);
+            button14.Name = "button14";
+            button14.Size = new Size(64, 24);
+            button14.TabIndex = 3;
+            button14.Text = "Set Size";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += button14_Click;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(46, 72);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(34, 23);
+            textBox4.TabIndex = 2;
+            textBox4.Text = "3";
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(6, 72);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(34, 23);
+            textBox3.TabIndex = 1;
+            textBox3.Text = "3";
+            // 
+            // button13
+            // 
+            button13.Location = new Point(6, 47);
+            button13.Name = "button13";
+            button13.Size = new Size(144, 23);
+            button13.TabIndex = 0;
+            button13.Text = "New Map";
+            button13.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1320, 685);
+            Controls.Add(groupBox2);
+            Controls.Add(button12);
             Controls.Add(checkBox3);
             Controls.Add(button9);
             Controls.Add(groupBox1);
@@ -298,10 +486,13 @@
             Controls.Add(button8);
             Name = "Form1";
             Text = "Lale Map Viewer 2025 Ref/retrojen.org";
+            Load += Form1_Load;
             Resize += Form1_Resize;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -329,5 +520,22 @@
         private CheckBox checkBox4;
         private Button button10;
         private Button button11;
+        private Button button12;
+        private GroupBox groupBox2;
+        private Button button13;
+        private Button button16;
+        private ComboBox comboBox3;
+        private ComboBox comboBox4;
+        private Button button15;
+        private ComboBox comboBox2;
+        private ComboBox comboBox1;
+        private Button button14;
+        private TextBox textBox4;
+        private TextBox textBox3;
+        private Label label1;
+        private CheckBox checkBox5;
+        private Button button19;
+        private Button button18;
+        private Button button17;
     }
 }

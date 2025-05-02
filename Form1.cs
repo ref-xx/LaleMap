@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using static System.Net.Mime.MediaTypeNames;
 
 namespace LaleMapTest
@@ -44,7 +45,7 @@ namespace LaleMapTest
     public partial class Form1 : Form
     {
         private AmigaPic PicBank = new AmigaPic();
-        Color[] BackupPalette2 = new Color[]
+        Color[] BackupPalette1 = new Color[]
         {
             Color.FromArgb(0x00, 0x00, 0x00),    // COLOR00 = 000
             Color.FromArgb(0x00, 0x55, 0x66),     // COLOR01 = 056
@@ -79,7 +80,7 @@ namespace LaleMapTest
             Color.FromArgb(0xEE, 0x33, 0x00),     // COLOR30 = E30
             Color.FromArgb(0x99, 0x22, 0x00)      // COLOR31 = 920
         };
-        Color[] BackupPalette3 = new Color[]
+        Color[] BackupPalette2 = new Color[]
         {
             Color.FromArgb(0x00, 0x00, 0x00),    // COLOR00 = 000
             Color.FromArgb(0x00, 0x55, 0x00),    // COLOR01 = 050
@@ -114,7 +115,7 @@ namespace LaleMapTest
             Color.FromArgb(0x77, 0x00, 0x00),    // COLOR30 = 700
             Color.FromArgb(0x77, 0x77, 0x77)     // COLOR31 = 777
         };
-        Color[] BackupPalette = new Color[]
+        Color[] BackupPalette3 = new Color[]
         {
             Color.FromArgb(0x00, 0x00, 0x00), // COLOR01 = FF8
             Color.FromArgb(0xFF, 0xff, 0x88), // COLOR01 = FF8
@@ -149,6 +150,42 @@ namespace LaleMapTest
             Color.FromArgb(0x00, 0x00, 0x00), // COLOR30 = 000
             Color.FromArgb(0x00, 0x00, 0x00), // COLOR31 = 000
 };
+        Color[] BackupPalette = new Color[]
+{
+    Color.FromArgb(0x00, 0x00, 0x00), // COLOR00 = 000
+    Color.FromArgb(0x55, 0x11, 0x11), // COLOR01 = 511
+    Color.FromArgb(0x77, 0x22, 0x22), // COLOR02 = 722
+    Color.FromArgb(0x99, 0x33, 0x33), // COLOR03 = 933
+    Color.FromArgb(0x88, 0x77, 0x66), // COLOR04 = 876
+    Color.FromArgb(0x00, 0x33, 0x77), // COLOR05 = 037
+    Color.FromArgb(0x00, 0x22, 0x55), // COLOR06 = 025
+    Color.FromArgb(0x00, 0x11, 0x33), // COLOR07 = 013
+    Color.FromArgb(0x55, 0x33, 0x00), // COLOR08 = 530
+    Color.FromArgb(0x88, 0x66, 0x00), // COLOR09 = 860
+    Color.FromArgb(0x33, 0x22, 0x00), // COLOR10 = 320
+    Color.FromArgb(0x77, 0x66, 0x55), // COLOR11 = 765
+    Color.FromArgb(0x66, 0x55, 0x44), // COLOR12 = 654
+    Color.FromArgb(0x55, 0x44, 0x33), // COLOR13 = 543
+    Color.FromArgb(0x44, 0x33, 0x22), // COLOR14 = 432
+    Color.FromArgb(0x33, 0x22, 0x11), // COLOR15 = 321
+    Color.FromArgb(0x00, 0x00, 0x00), // COLOR16 = 000
+    Color.FromArgb(0xAA, 0x77, 0x00), // COLOR17 = A70
+    Color.FromArgb(0x77, 0x55, 0x00), // COLOR18 = 750
+    Color.FromArgb(0x66, 0x44, 0x00), // COLOR19 = 640
+    Color.FromArgb(0x00, 0x77, 0x00), // COLOR20 = 070
+    Color.FromArgb(0x44, 0x33, 0x00), // COLOR21 = 430
+    Color.FromArgb(0x00, 0x22, 0x00), // COLOR22 = 020
+    Color.FromArgb(0x00, 0x88, 0x00), // COLOR23 = 080
+    Color.FromArgb(0x55, 0x00, 0x00), // COLOR24 = 500
+    Color.FromArgb(0x99, 0x00, 0x00), // COLOR25 = 900
+    Color.FromArgb(0x22, 0x11, 0x00), // COLOR26 = 210
+    Color.FromArgb(0xDD, 0x00, 0x00), // COLOR27 = D00
+    Color.FromArgb(0x00, 0x44, 0x00), // COLOR28 = 040
+    Color.FromArgb(0x00, 0x55, 0x00), // COLOR29 = 050
+    Color.FromArgb(0x00, 0x66, 0x00), // COLOR30 = 060
+    Color.FromArgb(0xBB, 0xBB, 0xBB), // COLOR31 = BBB
+}; //ingame palette
+
 
 
 
@@ -156,6 +193,29 @@ namespace LaleMapTest
         private int searchindex = 0;
         List<byte[]> eventDataList = new List<byte[]>(); // form sınıfına ekle
         int eventOffset = 0;
+
+
+        public struct ClickedRoomInfo
+        {
+            public int index; // ListBox oda indexi
+            public int wall;  // 1=üst, 2=sağ, 3=alt, 4=sol, 5=orta
+        }
+
+        private int roomSize = 15;
+        private int margin = 1;
+        Bitmap dungeonMapBackup = null; // Orijinal haritanın kopyası
+        Rectangle? lastHighlightRect = null; // Son restore edilecek alan
+
+
+        private byte[] laleExe;
+
+        //editor data
+        private int highlightRoomIndex = -1;
+        private int highlightWallDirection = -1;
+
+
+
+
         string[] items = {
             "maus",
             "zopa",
@@ -187,7 +247,7 @@ namespace LaleMapTest
         };
 
         string[] enemies = {
-        "Player",
+        "Player", //0
         "irospa",
         "ipna",
         "lavuk",
@@ -197,7 +257,7 @@ namespace LaleMapTest
         "lale savaSCIsI",
         "dadaS",
         "meycik yuzIr",
-        "faytIr",
+        "faytIr", //10
         "kIlerik",
         "ayI",
         "kOpek",
@@ -207,7 +267,7 @@ namespace LaleMapTest
         "OmUrcek bOcUGU",
         "dev OmUrcek",
         "yobaz ograten",
-        "yobaz beSamel",
+        "yobaz beSamel", //20
         "yobaz bolonez",
         "yobaz napoliten",
         "kelp",
@@ -217,7 +277,7 @@ namespace LaleMapTest
         "leS gargasI",
         "dellenmiS OGrenci",
         "dellenmiS OGretmen",
-        "balgam",
+        "balgam", //30
         "afakan",
         "barut husam",
         "hasmet maap",
@@ -244,9 +304,11 @@ namespace LaleMapTest
             map = ListData(PicBank);
 
             eventOffset = drawDungeon() - 1;
-            textBox2.Text += "\r\nOffset:" + eventOffset.ToString();
+            textBox2.Text = "Level:" + textBox1.Text + "\r\n";
             byte[] result = File.ReadAllBytes("senaryo\\" + textBox1.Text);
             listEvents(result, eventOffset);
+
+            ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
         }
 
         public void drawRoom(int selectedListIndex)
@@ -317,8 +379,66 @@ namespace LaleMapTest
         }
 
 
+        public ClickedRoomInfo GetRoomAndWallFromPixel(int px, int py)
+        {
+            ClickedRoomInfo info = new ClickedRoomInfo { index = -1, wall = -1 };
+
+            int roomAndMargin = roomSize + margin;
+            int cellX = px / roomAndMargin;
+            int cellY = py / roomAndMargin;
+
+            int insideX = px % roomAndMargin;
+            int insideY = py % roomAndMargin;
+
+            if (insideX >= roomSize || insideY >= roomSize) return info;
+            if (cellX >= map.width || cellY >= map.height) return info;
+
+            int index = cellY * map.width + cellX + 1; // +1: listBox1'deki offset
+
+            // Oda içindeki konum (merkez 0,0)
+            float cx = roomSize / 2f;
+            float cy = roomSize / 2f;
+            float dx = insideX - cx;
+            float dy = insideY - cy;
+
+            int wall;
+            if (Math.Abs(dx) < roomSize * 0.3 && Math.Abs(dy) < roomSize * 0.3)
+                wall = 5; // orta
+            else if (Math.Abs(dx) > Math.Abs(dy))
+                wall = dx > 0 ? 2 : 4; // sağ veya sol
+            else
+                wall = dy > 0 ? 3 : 1; // alt veya üst
+
+            info.index = index;
+            info.wall = wall;
+
+            return info;
+        }
 
 
+        public int GetRoomIndexFromPixel(int px, int py)
+        {
+            int roomAndMargin = roomSize + margin;
+
+            // Hücre koordinatını bul
+            int cellX = px / roomAndMargin;
+            int cellY = py / roomAndMargin;
+
+            // Tıklanan noktanın margin içinde mi olduğunu kontrol et
+            int insideX = px % roomAndMargin;
+            int insideY = py % roomAndMargin;
+
+            // Eğer margin boşluğa denk geldiyse -1 döndür
+            if (insideX >= roomSize || insideY >= roomSize)
+                return -1;
+
+            // Map sınırları içinde mi kontrolü
+            if (cellX >= map.width || cellY >= map.height)
+                return -1;
+
+            // Oda indexini döndür
+            return cellY * map.width + cellX + 1; // +1 çünkü listBox1'de 0. satır genelde başlık
+        }
 
 
         public int drawDungeon(int highlightEvent = -1)
@@ -329,7 +449,7 @@ namespace LaleMapTest
                 MessageBox.Show("Eksik oda verisi!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return (0);
             }
-            int roomSize = 15;
+            roomSize = 15;
             // Dungeon boyutları
             int margin = 1; // Oda araları boşluk
 
@@ -395,6 +515,8 @@ namespace LaleMapTest
                         int roomevent = int.Parse(parts[19]);
                         int roomevent32 = int.Parse(parts[18]);
                         int roomevent64 = int.Parse(parts[17]);
+                        int enemySpawn = int.Parse(parts[15]); //random spawn
+                        int isShop = int.Parse(parts[16]); //dükkanlar
 
                         // Odanın x, y konumunu belirle
                         int x = j * (roomSize + margin);
@@ -406,6 +528,8 @@ namespace LaleMapTest
 
                         if (highlightEvent == (roomevent + (roomevent32 - 1) * 31))
                             g.FillRectangle(Brushes.Magenta, x, y, roomSize, roomSize);
+                        else if (isShop == 31)
+                            g.FillRectangle(Brushes.RoyalBlue, x, y, roomSize, roomSize);
                         else
                             g.FillRectangle(floorBrush, x, y, roomSize, roomSize);
 
@@ -419,20 +543,173 @@ namespace LaleMapTest
                         Brush eventBrush = Brushes.Yellow;
 
                         // **4. Oda Index'ini Ortaya Yaz**
+
                         g.DrawString((index + 1).ToString(), font, textBrush, new RectangleF(x, y, roomSize, roomSize), sf);
                         if (roomevent > 0)
                         {
                             g.DrawString((roomevent + (roomevent32 - 1) * 31).ToString(), font, eventBrush, new RectangleF(x, y - 10, roomSize, roomSize), sf);
                             if (minEvent > (roomevent + (roomevent32 - 1) * 31)) minEvent = (roomevent + (roomevent32 - 1) * 31);
                         }
+                        string enemies = "";
+                        if (enemySpawn > 0)
+                        {
+                            enemies = "⚔" + enemySpawn.ToString().Trim();
+                            g.DrawString(enemies, font, Brushes.Red, new RectangleF(x, y + 10, roomSize, roomSize), sf);
+                        }
                     }
                 }
             }
 
             pictureBox1.Image = bmp; // Çizimi PictureBox'a aktar
+
+            // Haritayı yedekle (bir kere çizim sonrası)
+            dungeonMapBackup?.Dispose();
+            dungeonMapBackup = (Bitmap)bmp.Clone();
+
             return minEvent;
         }
 
+        public void updateWallWithNeighbor(ClickedRoomInfo info, int newWallExists, int newWallType)
+        {
+            // Mevcut odayı güncelle
+            string oldLine = listBox1.Items[info.index].ToString();
+            string newLine = updateWallLine(oldLine, info.wall, newWallExists, newWallType);
+            listBox1.Items[info.index] = newLine;
+
+            // Komşu oda varsa, onu da güncelle
+            var opp = findOppositeWall(info);
+            if (opp.index > 0 && opp.wall > 0 && opp.index < listBox1.Items.Count)
+            {
+                string oldLine2 = listBox1.Items[opp.index].ToString();
+                string newLine2 = updateWallLine(oldLine2, opp.wall, newWallExists, newWallType);
+                listBox1.Items[opp.index] = newLine2;
+            }
+        }
+
+
+        public string updateWallLine(string line, int wallDirection, int newWallExists, int newWallType)
+        {
+            string[] parts = line.Split('\t');
+
+            if (parts.Length < 20) return line; // Geçersiz satır
+
+            int typeIndex = -1;
+            int existsIndex = -1;
+
+            switch (wallDirection)
+            {
+                case 1: typeIndex = 5; existsIndex = 6; break; // üst
+                case 2: typeIndex = 7; existsIndex = 8; break; // sağ
+                case 3: typeIndex = 9; existsIndex = 10; break; // alt
+                case 4: typeIndex = 11; existsIndex = 12; break; // sol
+                default: return line;
+            }
+
+            parts[typeIndex] = newWallType.ToString();
+            parts[existsIndex] = newWallExists.ToString();
+
+            return string.Join("\t", parts);
+        }
+
+
+        public void updateRoomHighlight(int roomIndex, int wallDirection)
+        {
+            if (dungeonMapBackup == null || roomIndex < 1 || roomIndex > map.width * map.height)
+                return;
+
+            // Önceki highlight'ı geri al
+            if (lastHighlightRect.HasValue)
+            {
+                using (Graphics g = Graphics.FromImage(pictureBox1.Image))
+                {
+                    g.DrawImage(dungeonMapBackup, lastHighlightRect.Value, lastHighlightRect.Value, GraphicsUnit.Pixel);
+                }
+                lastHighlightRect = null;
+            }
+
+            int index = roomIndex - 1;
+            int row = index / map.width;
+            int col = index % map.width;
+
+            int x = col * (roomSize + margin);
+            int y = row * (roomSize + margin);
+
+            int lineWidth = Math.Max(3, roomSize / 5);
+            int oversize = lineWidth + 2; // ekstra güvenli alan
+            Rectangle MarkerroomRect = new Rectangle(x + 2, y + 2, roomSize - 4, roomSize - 4);
+            Rectangle roomRect = new Rectangle(
+                x - oversize,
+                y - oversize,
+                roomSize + oversize * 2,
+                roomSize + oversize * 2);
+
+            lastHighlightRect = roomRect;
+
+            using (Pen pen = new Pen(Color.Red, lineWidth))
+            {
+                pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Center;
+                using (Graphics g = Graphics.FromImage(pictureBox1.Image))
+                {
+                    switch (wallDirection)
+                    {
+                        case 1: g.DrawLine(pen, x, y, x + roomSize, y); break; // üst
+                        case 2: g.DrawLine(pen, x + roomSize, y, x + roomSize, y + roomSize); break; // sağ
+                        case 3: g.DrawLine(pen, x, y + roomSize, x + roomSize, y + roomSize); break; // alt
+                        case 4: g.DrawLine(pen, x, y, x, y + roomSize); break; // sol
+                        case 5:
+                            using (Brush brush = new SolidBrush(Color.FromArgb(100, Color.Red)))
+                            {
+                                g.FillRectangle(brush, MarkerroomRect);
+                            }
+                            break;
+                    }
+                }
+            }
+
+            pictureBox1.Invalidate(roomRect);
+        }
+
+        public ClickedRoomInfo findOppositeWall(ClickedRoomInfo roomInfo)
+        {
+            ClickedRoomInfo opposite = new ClickedRoomInfo { index = -1, wall = -1 };
+
+            if (roomInfo.wall < 1 || roomInfo.wall > 4) return opposite; // sadece 1–4 duvarlar için geçerli
+
+            int roomId = roomInfo.index;
+            Point p = RoomCoordsFromId(roomId);
+            int col = p.X;
+            int row = p.Y;
+
+            int oppositeCol = col;
+            int oppositeRow = row;
+            int oppositeWall = -1;
+
+            switch (roomInfo.wall)
+            {
+                case 1: oppositeRow = row - 1; oppositeWall = 3; break; // üst → alt
+                case 2: oppositeCol = col + 1; oppositeWall = 4; break; // sağ → sol
+                case 3: oppositeRow = row + 1; oppositeWall = 1; break; // alt → üst
+                case 4: oppositeCol = col - 1; oppositeWall = 2; break; // sol → sağ
+            }
+
+            if (oppositeCol < 0 || oppositeRow < 0 || oppositeCol >= map.width || oppositeRow >= map.height)
+                return opposite; // sınır dışı
+
+            int oppositeIndex = oppositeRow * map.width + oppositeCol + 1;
+
+            opposite.index = oppositeIndex;
+            opposite.wall = oppositeWall;
+            return opposite;
+        }
+
+
+        private Point RoomCoordsFromId(int roomId)
+        {
+            int index = roomId - 1;
+            int row = index / map.width;
+            int col = index % map.width;
+            return new Point(col, row);
+        }
 
 
         private void DrawWall(Graphics g, int x1, int y1, int x2, int y2, int wallExists, int wallType, int xc, int yc)
@@ -647,8 +924,74 @@ namespace LaleMapTest
             if (listBox1.SelectedIndex != -1)
             {
                 // drawRoom(listBox1.SelectedIndex);
+                if (listBox1.SelectedIndex == 0)
+                {
+                    ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+                }
             }
         }
+
+        private int[] ParseHeaderString(string headerStr)
+        {
+            if (string.IsNullOrWhiteSpace(headerStr))
+                return new int[0];
+
+            return headerStr
+                .Split('\t') // Tab karakterine göre ayır
+                .Select(s =>
+                {
+                    if (int.TryParse(s.Trim(), out int val))
+                        return val;
+                    return -1; // Hatalıysa -1 döndür (istersen burada hata mesajı da ekleyebilirsin)
+                })
+                .Where(i => i >= 0) // Geçerli değerleri al
+                .ToArray();
+        }
+
+
+        private void ParseMapHeader(int[] header)
+        {
+            if (header.Length < 32)
+            {
+                textBox2.Text = "Geçersiz header, 32 değer bekleniyor.";
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            // 0-3: Bilinmiyor
+            sb.AppendLine("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
+
+            // 4: Genişlik
+            sb.AppendLine("4 : Genişlik  = " + header[4]);
+
+            // 5: Yükseklik
+            sb.AppendLine("5 : Yükseklik = " + header[5]);
+
+            // 6-12: Bilinmiyor
+            sb.AppendLine("6-12 : (bilinmeyen) " + string.Join(" ", header.Skip(6).Take(7)));
+
+            // 13-20: Düşman numaraları
+            sb.AppendLine("13-20 : Süpriz Düşman Listesi");
+            for (int i = 13; i <= 20; i++)
+            {
+                int enemyId = header[i];
+                string name = (enemyId >= 0 && enemyId < enemies.Length) ? enemies[enemyId] : "???";
+                sb.AppendLine($"  {i}: #{enemyId} - {name}");
+            }
+
+            // 21-24: Bilinmiyor
+            sb.AppendLine("21-24 : (bilinmeyen) " + string.Join(" ", header.Skip(21).Take(4)));
+
+            // 25: Bilinmiyor
+            sb.AppendLine("25 : (bilinmeyen) " + header[25]);
+
+            // 26-31: Bilinmiyor
+            sb.AppendLine("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
+
+            textBox2.Text += sb.ToString();
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -716,6 +1059,17 @@ namespace LaleMapTest
 
             return Encoding.ASCII.GetString(decryptedBytes); // Byte dizisini döndür
         }
+        public byte[] CipherROT(string input)
+        {
+            byte[] encryptedBytes = new byte[input.Length]; // Yeni byte dizisi oluştur
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                encryptedBytes[i] = (byte)(input[i] - 10); // Her karakterin byte değerini 10 azalt
+            }
+
+            return encryptedBytes; // Byte dizisini döndür
+        }
 
         public string CheckBankType(byte[] fileData)
         {
@@ -763,24 +1117,67 @@ namespace LaleMapTest
                     parsePic(fileData);
                     return "Pac.Pic Forced.";
                 }
+                else
+                {
+                    int x = 0;int y = 0; int maxh = 0;
+                    byte[] searchBytes2 = { 0x06, 0x07, 0x19, 0x63 };
+                    int index2 = IndexOf(fileData, searchBytes2);
+                    bool first = true;
+                    while (index2 >= 0)
+                    {
+                        int offset = index2;
+                        // Baştan offset kadar byte at
+                        byte[] newData = new byte[fileData.Length - offset];
+                        Buffer.BlockCopy(fileData, offset, newData, 0, newData.Length);
+                        fileData = newData;
+                        byte[] prefix = new byte[] {
+                            0x00, 0x00, 0x00, 0x0C,
+                            0x00, 0x01, 0x00, 0x00,
+                            0x50, 0x61, 0x63, 0x2E,
+                            0x50, 0x69, 0x63, 0x2E,
+                            0x00, 0x00, 0x00, 0x0C
+                        };
 
-                return $"Bilinmeyen bank tipi (magic: '{magic}')";
+                        byte[] result = new byte[prefix.Length + fileData.Length];
+                        Buffer.BlockCopy(prefix, 0, result, 0, prefix.Length);
+                        Buffer.BlockCopy(fileData, 0, result, prefix.Length, fileData.Length);
+
+                        // artık result, prefix + newData içeriyor
+                        fileData = result;
+
+                        parsePic(fileData,x,y,first);
+                        if (maxh < PicBank.lumph) maxh = PicBank.lumph;
+
+                        x += PicBank.width*8;
+                        if (x>pictureBox1.Width)
+                        {
+                            x = 0;
+                            y += maxh;
+                            maxh = 0;
+                        }
+                        first = false;
+                        index2 = IndexOf(fileData, searchBytes2, 21);
+                    }
+                    
+                    
+                }
+                    return $"Bilinmeyen bank tipi (magic: '{magic}')";
             }
         }
 
-        void parsePic(byte[] fileData)
+        void parsePic(byte[] fileData, int x = 0, int y = 0, bool clear = true)
         {
             PicBank = MakePalette(fileData);
             listBox1.Items.Add((PicBank.width * 8).ToString() + "x" + (PicBank.lumph * PicBank.lumps).ToString());
             PicBank = Decompress(PicBank);
-            PicBank = PaintAmigaPic(PicBank);
+            PicBank = PaintAmigaPic(PicBank,x,y,clear);
 
         }
 
         // Byte array içinde başka bir byte array arayan metod
-        public static int IndexOf(byte[] haystack, byte[] needle)
+        public static int IndexOf(byte[] haystack, byte[] needle, int start=0)
         {
-            for (int i = 0; i <= haystack.Length - needle.Length; i++)
+            for (int i = start; i <= haystack.Length - needle.Length; i++)
             {
                 bool found = true;
                 for (int j = 0; j < needle.Length; j++)
@@ -860,8 +1257,9 @@ namespace LaleMapTest
 
             uint picHeader = (uint)((fileData[o] << 24) | (fileData[o + 1] << 16) | (fileData[o + 2] << 8) | fileData[o + 3]);
             if (picHeader != 0x06071963)
+            {
                 listBox1.Items.Add("Resim başlığı bulunamadı.");
-
+            }
             // Genişlik ve yüksekliği oku (big-endian: 2 bayt)
             pic.width = ((fileData[o + 8] << 8) | fileData[o + 9]); //width as bytes
             pic.lumph = (fileData[o + 10] << 8) | fileData[o + 11]; //lump count
@@ -999,7 +1397,153 @@ namespace LaleMapTest
         }
 
 
-        public AmigaPic PaintAmigaPic(AmigaPic pic)
+ public AmigaPic PaintAmigaPic(AmigaPic pic, int destX=0, int destY=0, bool clearFirst=true)
+    {
+        int finalWidth = pic.width * 8;
+        int finalHeight = pic.lumph * pic.lumps;
+        int w = pic.width;
+        int h = pic.lumph;
+        int ll = pic.lumps;
+        int d = pic.dlumps;
+
+        byte[] chunky = new byte[finalWidth * finalHeight];
+        byte[,] chunkyPic = new byte[finalWidth, finalHeight];
+
+        for (int bp = 0; bp < d; bp++)
+        {
+            int bit = 1 << bp;
+            int planeOffset = bp * (w * h * ll);
+
+            for (int y = 0; y < h; y++)
+            {
+                for (int l = 0; l < ll; l++)
+                {
+                    int row = y * ll + l;
+                    for (int x = 0; x < w; x++)
+                    {
+                        int byteIndex = planeOffset + (row * w) + x;
+                        byte v = pic.uncompressedData[byteIndex];
+                        for (int j = 0; j < 8; j++)
+                        {
+                            int col = x * 8 + (7 - j);
+                            if ((v & (1 << j)) != 0)
+                            {
+                                chunky[row * finalWidth + col] |= (byte)bit;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Bitmap targetBmp = null;
+        bool newBitmapCreated = false;
+
+        if (clearFirst || pictureBox1.Image == null)
+        {
+            if (pictureBox1.Image != null && clearFirst)
+            {
+                // Dispose previous image only if clearing explicitly
+                pictureBox1.Image.Dispose();
+            }
+            // Create a new bitmap with PictureBox dimensions if clearing or none exists
+            targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
+            using (Graphics g = Graphics.FromImage(targetBmp))
+            {
+                // Clear with PictureBox background or a default color (e.g., White)
+                g.Clear(pictureBox1.BackColor);
+            }
+            pictureBox1.Image = targetBmp;
+            newBitmapCreated = true;
+        }
+        else
+        {
+            // Attempt to use the existing image
+            targetBmp = pictureBox1.Image as Bitmap;
+            // If existing image is not a Bitmap or not 24bpp, create a new one and copy old content
+            if (targetBmp == null || targetBmp.PixelFormat != PixelFormat.Format24bppRgb)
+            {
+                    Bitmap oldImage = (Bitmap)pictureBox1.Image;
+                    targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
+                using (Graphics g = Graphics.FromImage(targetBmp))
+                {
+                    g.Clear(pictureBox1.BackColor); // Start with background
+                    if (oldImage != null)
+                    {
+                        g.DrawImageUnscaled(oldImage, 0, 0); // Copy old image content
+                        oldImage.Dispose(); // Dispose the old non-compatible image
+                    }
+                }
+                pictureBox1.Image = targetBmp;
+                newBitmapCreated = true; // Technically we created a new one here too
+            }
+        }
+
+        if (targetBmp == null)
+        {
+            // Should not happen with the logic above, but as a safeguard
+            throw new InvalidOperationException("Failed to get or create a valid Bitmap for the PictureBox.");
+        }
+
+
+        int ncol = 1 << d;
+        BitmapData bmpData = targetBmp.LockBits(new Rectangle(0, 0, targetBmp.Width, targetBmp.Height),
+                                                ImageLockMode.ReadWrite, targetBmp.PixelFormat); // Use ReadWrite
+        int stride = bmpData.Stride;
+        IntPtr ptr = bmpData.Scan0;
+        int bytes = Math.Abs(stride) * targetBmp.Height;
+        byte[] rgbValues = new byte[bytes];
+
+        // Copy existing bitmap data into buffer *before* drawing onto it
+        System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+        for (int sourceY = 0; sourceY < finalHeight; sourceY++)
+        {
+            for (int sourceX = 0; sourceX < finalWidth; sourceX++)
+            {
+                int targetX = destX + sourceX;
+                int targetY = destY + sourceY;
+
+                // Store chunky index regardless of whether it's drawn
+                byte index = chunky[sourceY * finalWidth + sourceX];
+                chunkyPic[sourceX, sourceY] = index;
+
+                // Check if the target pixel is within the bounds of the target bitmap
+                if (targetX >= 0 && targetX < targetBmp.Width && targetY >= 0 && targetY < targetBmp.Height)
+                {
+                    if (index >= ncol)
+                        index = 0;
+
+                    Color c = pic.palette[index];
+                    int pos = targetY * stride + targetX * 3;
+
+                    // Ensure position is valid within the buffer (safety check)
+                    if (pos >= 0 && pos + 2 < bytes)
+                    {
+                        rgbValues[pos] = c.B;
+                        rgbValues[pos + 1] = c.G;
+                        rgbValues[pos + 2] = c.R;
+                    }
+                }
+            }
+        }
+
+        System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+        targetBmp.UnlockBits(bmpData);
+
+        pic.indexedImage = chunkyPic;
+
+        // If we didn't create a new Bitmap instance, we need to refresh the PictureBox
+        // to show the changes made to the existing Bitmap object.
+        if (!newBitmapCreated)
+        {
+            pictureBox1.Refresh();
+        }
+        // If a new bitmap *was* created, assigning it to pictureBox1.Image handles the update.
+
+        return pic;
+    }
+    public AmigaPic PaintAmigaPic2(AmigaPic pic)
         {
             // Final resim boyutlarını hesaplayalım.
             // pic.width: satırdaki byte sayısı, her byte 8 piksel içerir.
@@ -1491,16 +2035,13 @@ namespace LaleMapTest
                 int ofs = offset;
                 switch (cmd)
                 {
-                    case 0x0D:
-
-
-
+                    case 0x0D: //oda başlangıcı (1 parametre)
                         byte blokimg = eventData[offset];
                         offset++;
                         sb.AppendLine(linecounter++.ToString() + "." + "Room Begin: (" + blokimg.ToString() + ")");
                         break;
 
-                    case 0x01:
+                    case 0x01: //IF
                         match = true;
                         if (offset + 3 <= eventData.Length)
                         {
@@ -1514,10 +2055,7 @@ namespace LaleMapTest
                         }
                         break;
 
-
-
-
-                    case 0x02:
+                    case 0x02: //sadece yazı göster
                         match = true;
                         if (offset < eventData.Length)
                         {
@@ -1533,7 +2071,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x03:
+                    case 0x03: //overlay icon göster
                         match = true;
                         if (offset < eventData.Length)
                         {
@@ -1542,7 +2080,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x04:
+                    case 0x04: //odaya kabul et ve blok başlat
                         match = true;
                         if (offset + 2 <= eventData.Length)
                         {
@@ -1591,7 +2129,7 @@ namespace LaleMapTest
 
                         break;
 
-                    case 0x05:
+                    case 0x05: //seçim yap (0xAC ile ayrılmış 2 parametre)
                         match = true;
                         if (offset + 2 <= eventData.Length)
                         {
@@ -1613,18 +2151,18 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 6:
+                    case 0x06: //bilinmeyen 6 parametreli komut (tahminen 3 adet 2 byte parametre)
                         //06 05 07 81 03 17
                         byte bilinmeyen62 = eventData[offset++];
                         byte bilinmeyen63 = eventData[offset++];
                         byte bilinmeyen64 = eventData[offset++];
                         byte bilinmeyen65 = eventData[offset++];
-                        byte bilinmeyen66 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK5-{cmd:X2}] {bilinmeyen62}, {bilinmeyen63}, {bilinmeyen64}, {bilinmeyen65}, {bilinmeyen66}]");
+                        //byte bilinmeyen66 = eventData[offset++];
+                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK4-{cmd:X2}] {bilinmeyen62}, {bilinmeyen63}, {bilinmeyen64}, {bilinmeyen65}]");
 
                         break;
 
-                    case 0x07:
+                    case 0x07: //Değişkeni set et (0-255 değişken numarası)
                         match = true;
                         if (offset + 1 <= eventData.Length)
                         {
@@ -1633,7 +2171,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x08:
+                    case 0x08: //savaş ekranını başlatır, 7 parametre
                         match = true;
                         if (offset + 7 <= eventData.Length)
                         {
@@ -1644,11 +2182,17 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️  EnemyType1: [{enemyId}] {enemies[enemyId]} X {count}, EnemyType2: [{bilinmeyen2:x2}] {enemies[bilinmeyen2]} X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] {enemies[bilinmeyen4]} X {bilinmeyen5}");
-
+                            if ((bilinmeyen4 < enemies.Length) && (bilinmeyen2 < enemies.Length) && (enemyId < enemies.Length))
+                            {
+                                sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️ {zero} EnemyType1: [{enemyId}] {enemies[enemyId]} X {count}, EnemyType2: [{bilinmeyen2:x2}] {enemies[bilinmeyen2]} X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] {enemies[bilinmeyen4]} X {bilinmeyen5}");
+                            }
+                            else
+                            {
+                                sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️ {zero} EnemyType1: [{enemyId}]  X {count}, EnemyType2: [{bilinmeyen2:x2}] X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] X {bilinmeyen5}");
+                            }
                         }
                         break;
-                    case 0x09:
+                    case 0x09: // loot ver 9 parametre
                         match = true;
                         if (offset + 9 < eventData.Length) // toplam 10 byte
                         {
@@ -1673,7 +2217,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x0A:
+                    case 0x0A: //rastgele iki metinden birini bas
                         match = true;
                         sb.AppendLine(linecounter++.ToString() + "." + "[printRandom]");
 
@@ -1712,7 +2256,7 @@ namespace LaleMapTest
                                 }
                             }
 
-                            // İkinci AC'yi geç (isteğe bağlı)
+
                             if (offset < eventData.Length && eventData[offset] == 0xAC)
                             {
                                 offset++;
@@ -1729,11 +2273,11 @@ namespace LaleMapTest
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
                             string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️" };
-                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {(bilinmeyen3*256) + bilinmeyen4}, {yon[bilinmeyen5]}");
+                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {(bilinmeyen3 * 256) + bilinmeyen4}, {yon[bilinmeyen5]}");
                         }
                         break;
 
-                    case 0x0E: //unknown Event
+                    case 0x0E: //Blok sonu
                         match = true;
                         if (offset < eventData.Length)
                         {
@@ -1742,7 +2286,7 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x10:  //end event.
+                    case 0x10:  //exit event.
 
                         sb.AppendLine(linecounter++.ToString() + "." + "[break]");
                         break;
@@ -1766,11 +2310,13 @@ namespace LaleMapTest
                         }
                         break;
 
-                    case 0x12:
+
+                    case 0x12:  //bilinmeyen parametresiz komut
                         match = false;
-                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK0[12] Test?");
+                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK0[{cmd:X2}] Test?");
                         break;
-                    case 0x17:
+
+                    case 0x17: //gösterilecek yüzü ayarla
                         match = true;
                         byte var1 = eventData[offset++];
                         byte var2 = eventData[offset++];
@@ -1778,7 +2324,7 @@ namespace LaleMapTest
 
                         break;
 
-                    case 0x0C:
+                    case 0x0C:  //bilinmeyen 3 parametreli komutlar
                     case 0x16:
                     case 0x1D:
                     case 0x13:
@@ -1790,23 +2336,28 @@ namespace LaleMapTest
 
                         break;
 
-                    case 0x19:
+                    case 0x19: //bilinmeyen 1 parametreli komut
                     case 0x1A:
                         match = true;
                         byte var1A = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK1 {cmd:X2}] {var1A}.");
+                        if (var1A == 255)
+                        {
+                            sb.AppendLine(linecounter++.ToString() + "." + $"[ Envanterdeki tüm paraları sıfırla ].");
+                        }
+                        else
+                            sb.AppendLine(linecounter++.ToString() + "." + $"[UNK1 {cmd:X2}] {var1A}.");
 
                         break;
 
-                    case 0x1B:
+                    case 0x1B: //oyunun hikayesini anlatan cutscene ve copyprotection
                         match = true;
-                        sb.AppendLine(linecounter++.ToString() + "." + "[wordList]");
-
+                        sb.AppendLine(linecounter++.ToString() + "." + "[Show Demo And Check WordList]");
+                        int wc = 0;
                         while (offset < eventData.Length)
                         {
                             byte len = eventData[offset++];
 
-                            if (len == 0x03)
+                            if (len == 0x03 || len == 0x02)
                             {
                                 sb.AppendLine("[end of word list]");
                                 offset--;
@@ -1839,8 +2390,8 @@ namespace LaleMapTest
                             string wordNo = word.Length >= 4 ? word.Substring(2, 2) : "??";
                             string realWord = word.Length > 4 ? word.Substring(4) : "";
 
-                            sb.AppendLine($" - [{page}-{wordNo}]: \"{realWord}\"");
-
+                            sb.AppendLine($"{wc} - [{page}-{wordNo}]: \"{realWord}\"");
+                            wc++;
                             if (textEnd < raw.Length && control == 0x03)
                             {
                                 sb.AppendLine("[end of word list]");
@@ -1848,7 +2399,7 @@ namespace LaleMapTest
                             }
                         }
                         break;
-                    case 0x20:
+                    case 0x20: //bir adım geri git (odaya girilmişse geri çıkarır)
                         match = false;
                         sb.AppendLine(linecounter++.ToString() + "." + $"Retrace (Go Back [14]).");
                         break;
@@ -2055,6 +2606,354 @@ namespace LaleMapTest
 
                 e.Handled = true;
             }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            groupBox2.Visible = !groupBox2.Visible;
+
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = Encoding.ASCII.GetString(CipherROT(textBox2.Text));
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            var result = GetRoomAndWallFromPixel(e.X, e.Y);
+            if (result.index > 0 && result.index < listBox1.Items.Count)
+            {
+                textBox2.Text = ($"Tıklanan oda numarası: {result.index}");
+                listBox1.SelectedIndex = result.index;
+                //0x0B [Harita No] [n1*256+n2 lokasyon] [bakış yönü]
+                string input = textBox1.Text;
+                string c = "";
+                if (byte.TryParse(input, out byte value))
+                {
+                    //{ (bilinmeyen3 * 256) + bilinmeyen4}
+                    int b2 = (int)(result.index / 256);
+                    int b1 = result.index - b2;
+                    c = "W 0000ADAB " + value.ToString("X2") + b2.ToString("X2") + b1.ToString("X2") + "04";
+                    textBox2.Text += "\r\n" + c;
+
+                }
+
+                ClickedRoomInfo opposite = findOppositeWall(result);
+
+                // veya bir düzenleme penceresi açabilirsiniz
+            }
+        }
+
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!checkBox5.Checked) return;
+            var result = GetRoomAndWallFromPixel(e.X, e.Y);
+            if (result.index > 0)
+            {
+                updateRoomHighlight(result.index, result.wall);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                laleExe = File.ReadAllBytes(@"execs\Lale");
+                // Önce listeyi al
+                var weaponList = ParseWeaponList(0x03ca1c);// 0x3eb38);
+
+                // Sonra ListBox'ı temizleyip yükle
+                listBox1.Items.Clear();
+                listBox1.Items.AddRange(weaponList.Cast<object>().ToArray());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Dosya yüklenirken hata oluştu: {ex.Message}");
+            }
+        }
+
+
+
+        private void parseAll()
+        {
+            List<StringInfo> allStrings = new List<StringInfo>();
+            int currentOffset = 0x037180; // String verilerinin başladığı genel alan
+
+            while (currentOffset < laleExe.Length)
+            {
+                var result = ParseAmosStyleList(currentOffset);
+
+                if (result.ParsedList.Count > 0)
+                {
+                    allStrings.AddRange(result.ParsedList);
+                    currentOffset = result.NextOffset;
+                }
+                else
+                {
+                    break;
+                }
+
+                // Basit sonsuz döngü kontrolü
+                if (result.NextOffset <= currentOffset && result.ParsedList.Count > 0)
+                {
+                    // Offset ilerlemiyorsa bir sorun var demektir.
+                    // Güvenlik için döngüden çıkalım.
+                    // İsteğe bağlı: Hata mesajı gösterilebilir.
+                    break;
+                }
+                // Eğer result.ParsedList boşsa zaten yukarıdaki else bloğu çalışır.
+                // Bu kontrol sadece offset'in ilerlediğinden emin olmak için.
+                // Daha sağlam bir kontrol: currentOffset'in result.NextOffset'e eşit olup olmadığını kontrol et.
+                // Eğer eşitse ve liste boş değilse, ilerleme yok demektir.
+                if (currentOffset == result.NextOffset && result.ParsedList.Count > 0)
+                {
+                    // Offset ilerlemedi, çık.
+                    break;
+                }
+
+
+            }
+
+            listBox2.Items.Clear();
+            if (allStrings.Count > 0)
+            {
+                listBox2.Items.AddRange(allStrings.Cast<object>().ToArray());
+            }
+            else
+            {
+                listBox2.Items.Add("Hiçbir string listesi bulunamadı veya okunamadı.");
+            }
+        }
+    
+
+
+
+
+        public struct StringInfo
+        {
+            public string Text;
+            public int Offset;
+
+            public StringInfo(string text, int offset)
+            {
+                Text = text;
+                Offset = offset;
+            }
+
+            public override string ToString()
+            {
+                return $"[{Offset:X6}] {Text}";
+            }
+        }
+
+
+        // gemini üretti bunu:
+        private List<StringInfo> ParseWeaponList(int startOffset)
+        {
+        List<StringInfo> list = new List<StringInfo>();
+        int currentPos = startOffset;
+
+        Encoding encoding = Encoding.ASCII;
+
+        while (currentPos < laleExe.Length)
+        {
+            int stringStartOffset = currentPos; // String'in başladığı yer
+
+            // 1. Null karakterini (0x00) bulana kadar ilerle
+            int stringEndPos = -1;
+            for (int i = currentPos; i < laleExe.Length; i++)
+            {
+                if (laleExe[i] == 0x00)
+                {
+                    stringEndPos = i; // Null karakterinin pozisyonu
+                    break;
+                }
+            }
+
+            // Eğer dosya sonuna kadar null bulunamadıysa, liste bitmiş veya veri bozuktur.
+            if (stringEndPos == -1)
+            {
+                break; // Döngüden çık
+            }
+
+            // 2. String'i null karakterine kadar olan kısımdan al
+            int length = stringEndPos - currentPos;
+            string text = "";
+            if (length > 0)
+            {
+                text = encoding.GetString(laleExe, currentPos, length);
+            }
+            // else: Boş string (sadece null karakter vardı), yine de eklenebilir istersen.
+            // Şimdilik sadece uzunluğu 0'dan büyükse ekleyelim.
+
+            // String'i ve başlangıç offset'ini listeye ekle
+            list.Add(new StringInfo(text, stringStartOffset));
+
+            // 3. Pozisyonu null karakterinden sonraya taşı
+            currentPos = stringEndPos + 1;
+
+            // Dosya sonuna geldik mi kontrol et
+            if (currentPos >= laleExe.Length) break;
+
+            // 4. Word Alignment için Padding kontrolü:
+            // Null'dan sonraki pozisyon (currentPos) çift ise, padding vardır.
+            // (Çünkü null tek adresteydi: stringEndPos tekti)
+            bool hasPadding = (currentPos % 2 == 0);
+
+            if (hasPadding)
+            {
+                // Padding byte'ını atla (genellikle 0x00'dır)
+                // Dosya sonu kontrolü yapalım
+                if (currentPos < laleExe.Length)
+                {
+                    // İsteğe bağlı: atlanan byte'ın 0 olup olmadığını kontrol edebilirsin
+                    // if(laleExe[currentPos] != 0x00) { Console.WriteLine($"Uyarı: Beklenmeyen padding byte: {laleExe[currentPos]} at {currentPos:X}"); }
+                    currentPos++;
+                }
+                else
+                {
+                    // Padding bekleniyordu ama dosya bitti.
+                    break;
+                }
+            }
+
+            // Dosya sonuna geldik mi tekrar kontrol et (padding sonrası)
+            if (currentPos >= laleExe.Length) break;
+
+            // 5. Bir sonraki string'in uzunluk byte'ını oku ve atla
+            // Bu byte'ın değerini kullanmıyoruz ama pozisyonu ilerletmeliyiz.
+            byte nextLengthByte = laleExe[currentPos];
+            currentPos++;
+
+            // Eğer okunan uzunluk 0 ise, bu genellikle listenin sonu demektir.
+            if (nextLengthByte == 0)
+            {
+                // Liste sonu belirteci olabilir, döngüden çıkalım.
+                break;
+            }
+
+            // currentPos şimdi bir sonraki string'in başlangıcında, döngü devam edecek.
+        }
+
+        return list;
+    }
+
+    private List<StringInfo> ParseWeaponList2(int startOffset)
+        {
+            List<StringInfo> list = new List<StringInfo>();
+            int pos = startOffset;
+
+            while (pos < laleExe.Length)
+            {
+                byte length = laleExe[pos];
+                pos++;
+
+                if (length == 0)
+                    break; // Bitti
+
+                if (pos + length > laleExe.Length)
+                    break; // Hatalı veri önlemi
+
+                string text = System.Text.Encoding.ASCII.GetString(laleExe, pos, length);
+                int offset = pos - 1; // length byte'ı da dahil edelim
+
+                list.Add(new StringInfo(text, offset));
+
+                pos += length;
+                if (pos < laleExe.Length && laleExe[pos] == 0x00)
+                    pos++; // Null sonlandırıcıyı atla
+                if (pos < laleExe.Length && laleExe[pos] == 0x00)
+                    pos++; // Alignment için varsa bir tane daha atla
+            }
+
+            return list;
+        }
+
+        private static readonly Encoding AmigaEncoding = Encoding.GetEncoding("iso-8859-1");
+        private (List<StringInfo> ParsedList, int NextOffset) ParseAmosStyleList(int startOffset)
+        {
+            List<StringInfo> list = new List<StringInfo>();
+            int currentPos = startOffset;
+
+            if (laleExe == null || laleExe.Length == 0 || startOffset < 0 || startOffset >= laleExe.Length)
+            {
+                return (list, startOffset);
+            }
+
+            List<byte> currentStringBytes = new List<byte>();
+
+            while (currentPos < laleExe.Length)
+            {
+                int currentStringStartOffset = currentPos;
+                currentStringBytes.Clear();
+
+                bool foundNull = false;
+                while (currentPos < laleExe.Length)
+                {
+                    byte currentByte = laleExe[currentPos];
+                    if (currentByte == 0x00)
+                    {
+                        foundNull = true;
+                        currentPos++;
+                        break;
+                    }
+                    currentStringBytes.Add(currentByte);
+                    currentPos++;
+                }
+
+                if (!foundNull || (currentStringBytes.Count == 0 && list.Count == 0))
+                {
+                    if (foundNull && currentStringBytes.Count == 0 && list.Count > 0)
+                    {
+                        // Potansiyel liste sonu durumu, şimdilik çıkıyoruz.
+                    }
+                    return (list, startOffset);
+                }
+
+                if (currentStringBytes.Count > 0)
+                {
+                    string text = AmigaEncoding.GetString(currentStringBytes.ToArray());
+                    list.Add(new StringInfo(text, currentStringStartOffset));
+                }
+                else
+                {
+                    // Boş string okundu, muhtemelen liste sonu veya yapı dışı durum.
+                }
+
+                if (currentPos == laleExe.Length) break;
+
+                bool hasPadding = (currentPos % 2 == 0);
+                if (hasPadding)
+                {
+                    if (currentPos < laleExe.Length && laleExe[currentPos] == 0x00)
+                    {
+                        currentPos++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (currentPos < laleExe.Length)
+                {
+                    byte nextLength = laleExe[currentPos];
+                    currentPos++;
+                    if (nextLength == 0)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return (list, currentPos);
         }
 
     }
