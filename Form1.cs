@@ -1,4 +1,6 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -152,7 +154,7 @@ namespace LaleMapTest
 };
         Color[] BackupPalette = new Color[]
 {
-    Color.FromArgb(0x00, 0x00, 0x00), // COLOR00 = 000
+    Color.FromArgb(0xff, 0x00, 0xff), // COLOR00 = 000
     Color.FromArgb(0x55, 0x11, 0x11), // COLOR01 = 511
     Color.FromArgb(0x77, 0x22, 0x22), // COLOR02 = 722
     Color.FromArgb(0x99, 0x33, 0x33), // COLOR03 = 933
@@ -185,8 +187,65 @@ namespace LaleMapTest
     Color.FromArgb(0x00, 0x66, 0x00), // COLOR30 = 060
     Color.FromArgb(0xBB, 0xBB, 0xBB), // COLOR31 = BBB
 }; //ingame palette
+        Color[] BackupPalette5 = new Color[]  
+        {
+            Color.FromArgb(0xff, 0x00, 0xff), // COLOR00 = 000
+            Color.FromArgb(0x00, 0x55, 0x00), // COLOR01 = 050
+            Color.FromArgb(0x00, 0x44, 0x00), // COLOR02 = 040
+            Color.FromArgb(0x00, 0x33, 0x00), // COLOR03 = 030
+            Color.FromArgb(0x00, 0x22, 0x88), // COLOR04 = 028
+            Color.FromArgb(0x00, 0x11, 0x66), // COLOR05 = 016
+            Color.FromArgb(0x00, 0x00, 0x44), // COLOR06 = 004
+            Color.FromArgb(0x55, 0x22, 0x00), // COLOR07 = 520
+            Color.FromArgb(0x44, 0x11, 0x00), // COLOR08 = 410
+            Color.FromArgb(0x33, 0x00, 0x00), // COLOR09 = 300
+            Color.FromArgb(0x55, 0x55, 0x55), // COLOR10 = 555
+            Color.FromArgb(0x44, 0x44, 0x44), // COLOR11 = 444
+            Color.FromArgb(0x33, 0x33, 0x33), // COLOR12 = 333
+            Color.FromArgb(0x22, 0x22, 0x22), // COLOR13 = 222
+            Color.FromArgb(0x11, 0x11, 0x11), // COLOR14 = 111
+            Color.FromArgb(0x66, 0x66, 0x66), // COLOR15 = 666
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR16 = 000
+            Color.FromArgb(0x22, 0x00, 0x22), // COLOR17 = 202
+            Color.FromArgb(0x44, 0x00, 0x55), // COLOR18 = 405
+            Color.FromArgb(0x77, 0x00, 0x88), // COLOR19 = 708
+            Color.FromArgb(0x00, 0x66, 0x00), // COLOR20 = 060
+            Color.FromArgb(0x00, 0x00, 0x00), // COLOR21 = 000
+            Color.FromArgb(0x66, 0x33, 0x00), // COLOR22 = 630
+            Color.FromArgb(0x11, 0x00, 0x00), // COLOR23 = 100
+            Color.FromArgb(0x00, 0x33, 0x99), // COLOR24 = 039
+            Color.FromArgb(0x33, 0x00, 0x00), // COLOR25 = 300
+            Color.FromArgb(0x55, 0x11, 0x11), // COLOR26 = 511
+            Color.FromArgb(0x77, 0x22, 0x22), // COLOR27 = 722
+            Color.FromArgb(0x88, 0x88, 0x88), // COLOR28 = 888
+            Color.FromArgb(0xCC, 0x00, 0x00), // COLOR29 = C00
+            Color.FromArgb(0x77, 0x00, 0x00), // COLOR30 = 700
+            Color.FromArgb(0x77, 0x77, 0x77), // COLOR31 = 777
+        };  //Battle palette
 
 
+        Dictionary<ushort, string> LevelNames = new Dictionary<ushort, string>
+                    {
+                        { 0,   "Boş" },
+                        { 1,   "Otopark" },
+                        { 2,   "Mecidiyeköy" },
+                        { 3,   "Beşiktaş" },
+                        { 4,   "Eminönü" },
+                        { 5,   "Üsküdar" },
+                        { 6,   "???" },
+                        { 7,   "Kadıköy" },
+                        { 8,   "Saray Önü" },
+                        { 9,   "???" },
+                        { 10,   "???" },
+                        { 11,   "Savaş Girişi" },
+                        { 12,   "Sarıyer" },
+                        { 13,   "Kanalizasyon x" },
+                        { 14,   "???" },
+                        { 15,   "Topkapı Sarayı" },
+                        { 16,   "Sarıyer Kanalizasyonu" },
+                        { 17,   "Kız Kulesi" },
+                        { 18,   "Savaş" }
+                    };
 
 
         private LaleMap map = new LaleMap();
@@ -958,7 +1017,8 @@ namespace LaleMapTest
             }
 
             StringBuilder sb = new StringBuilder();
-
+            string desc =  LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
+            sb.AppendLine("Bölüm " + textBox1.Text + ": " + desc);
             // 0-3: Bilinmiyor
             sb.AppendLine("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
 
@@ -981,8 +1041,9 @@ namespace LaleMapTest
             }
 
             // 21-24: Bilinmiyor
-            sb.AppendLine("21-24 : (bilinmeyen) " + string.Join(" ", header.Skip(21).Take(4)));
-
+            eventOffset = header[24] + (header[23] - 1) * 31;
+            sb.AppendLine("21-24 : (Event Offset) " + string.Join(" ", eventOffset.ToString())); //header.Skip(21).Take(4)));
+            
             // 25: Bilinmiyor
             sb.AppendLine("25 : (bilinmeyen) " + header[25]);
 
@@ -990,6 +1051,85 @@ namespace LaleMapTest
             sb.AppendLine("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
 
             textBox2.Text += sb.ToString();
+        }
+
+        public string describeRoom(string line)
+        {
+            string[] parts = line.Split('\t');
+            if (parts.Length < 20) return "Geçersiz oda verisi.";
+
+            try
+            {
+                int ceilingType = int.Parse(parts[13]);
+                int floorType = int.Parse(parts[14]);
+
+                int topType = int.Parse(parts[5]);
+                int rightType = int.Parse(parts[7]);
+                int bottomType = int.Parse(parts[9]);
+                int leftType = int.Parse(parts[11]);
+
+                int topWall = int.Parse(parts[6]);
+                int rightWall = int.Parse(parts[8]);
+                int bottomWall = int.Parse(parts[10]);
+                int leftWall = int.Parse(parts[12]);
+
+                int enemySpawn = int.Parse(parts[15]);
+                int isShop = int.Parse(parts[16]);
+
+                int roomevent64 = int.Parse(parts[17]);
+                int roomevent32 = int.Parse(parts[18]);
+                int roomevent = int.Parse(parts[19]);
+
+                int eventIndex = ( roomevent + (roomevent32 - 1) * 31)- eventOffset;
+
+                string desc = "";
+
+                var idDescriptions = new Dictionary<ushort, string>
+                    {
+                        { 0,   "Boş" },
+                        { 1,   "Ahşap" },
+                        { 2,   "Tuğla-Demir" },
+                        { 3,   "Taş-Ahşap" },
+                        { 4,   "Ağaçlık" },
+                        { 5,   "Kanalizasyon" },
+                        { 6,   "Kemik" },
+                        { 7,   "Sunta" },
+                        { 8,   "Deniz" },
+                        { 9,   "İniş/çıkış" },
+                    };
+
+
+                desc += $"\r\n- Tavan: {ceilingType}\r\n\r\n";
+
+                desc += $"Doku Seti:\r\n";
+                desc += $"- \tÜst: {topType},\r\n Sol: {leftType}\t\tSağ: {rightType}\r\n\tAlt: {bottomType}\r\n \r\n";
+
+                desc += $"Fonsiyon:\r\n";
+                desc += $"- \tÜst: {topWall},\r\n Sol: {leftWall}\t\tSağ: {rightWall}\r\n\tAlt: {bottomWall}\r\n \r\n";   
+
+                desc += $"- Zemin: {floorType}\r\n";
+
+                // Event bilgisi
+                if (eventIndex >= 0 && eventIndex < eventDataList.Count)
+                {
+                    byte[] data = eventDataList[eventIndex];
+                    string eventText = ViewEvent(data);
+                    if (checkBox1.Checked) eventText += ViewEvent2(data);
+                    desc += $"Oda Eventleri (#{eventIndex}):\r\n{eventText}\r\n\r\n";
+                }
+
+                // Özel durumlar
+                if (isShop == 31)
+                    desc += "🛒 Bu oda bir dükkandır.\r\n";
+                if (enemySpawn == 15)
+                    desc += "⚠️ Bu odada rastgele düşman spawn olabilir.\r\n";
+
+                return desc;
+            }
+            catch
+            {
+                return "Oda verisi parse edilirken hata oluştu.";
+            }
         }
 
 
@@ -1146,7 +1286,7 @@ namespace LaleMapTest
                         fileData = result;
 
                         parsePic(fileData, x, y, first);
-                        if (maxh < PicBank.lumph) maxh = PicBank.lumph;
+                        if (maxh < PicBank.lumph * PicBank.lumps) maxh = PicBank.lumph * PicBank.lumps;
 
                         x += PicBank.width * 8;
                         if (x+112 > pictureBox1.Width)
@@ -2634,10 +2774,14 @@ namespace LaleMapTest
                     //{ (bilinmeyen3 * 256) + bilinmeyen4}
                     int b2 = (int)(result.index / 256);
                     int b1 = result.index - b2;
-                    c = "W 0000ADAB " + value.ToString("X2") + b2.ToString("X2") + b1.ToString("X2") + "04";
+                    c = "Entry point winuae patch: W 0000ADAB " + value.ToString("X2") + b2.ToString("X2") + b1.ToString("X2") + "04";
                     textBox2.Text += "\r\n" + c;
 
                 }
+                textBox2.Text += "\r\n" + describeRoom(listBox1.Items[listBox1.SelectedIndex].ToString());
+
+
+
 
                 ClickedRoomInfo opposite = findOppositeWall(result);
 
@@ -2963,6 +3107,7 @@ namespace LaleMapTest
             {
                 openfilereq.Filter = "Metin Dosyası (*.txt)|*.txt|Tüm Dosyalar (*.*)|*.*";
                 openfilereq.Title = "ListBox içeriğini kaydet";
+                openfilereq.FileName = lastfile + ".dim.txt";
                 openfilereq.OverwritePrompt = true;
 
                 if (openfilereq.ShowDialog() == DialogResult.OK)

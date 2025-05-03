@@ -1,0 +1,26 @@
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x9
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x8
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x10
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x9
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x8
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x10
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x9
+Dosya boyutu yetersiz.
+HAM başlığı bulunamadı, dosya formatı beklenenden farklı.
+Render tamam.
+16x10
+Bilinmeyen bank tipi (magic: 'AmBk')
