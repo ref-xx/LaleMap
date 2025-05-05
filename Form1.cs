@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-//using static System.Net.Mime.MediaTypeNames;
+
+
 
 namespace LaleMapTest
 {
@@ -276,12 +272,31 @@ namespace LaleMapTest
         private int highlightRoomIndex = -1;
         private int highlightWallDirection = -1;
 
-
-
+        string[] haritalar =
+        {
+            "otopark",
+            "Mecidiyeköy",
+            "Beşiktaş",
+            "Eminönü",
+            "Üsküdar",
+            "Ümraniye Koruluğu",
+            "Kadıköy",
+            "Beyoğlu",
+            "9",
+            "Beyazıt",
+            "savaş girişi",
+            "Sarıyer",
+            "Kadıköy Kanalizasyonları",
+            "Üsküdar Kanalizasyonları",
+            "Topkapı Sarayı",
+            "Sarıyer kanalizasyonları",
+            "Kız Kulesi",
+            "18"
+        };
 
         string[] items = {
             "maus",
-            "zopa",
+            "zopa", //1
             "sivri daS",
             "kIsa zopa",
             "lale",
@@ -290,7 +305,7 @@ namespace LaleMapTest
             "levrek",
             "cetvel",
             "t-cetveli",
-            "mezura",
+            "mezura", //10
             "galvanometre",
             "terlik",
             "baCemak",
@@ -300,24 +315,32 @@ namespace LaleMapTest
             "ing. anahtarI",
             "fra. anahtarI",
             "kazma",
-            "Catal",
+            "Catal", //20
             "DaS",
             "tUftUf",
             "sapan",
             "tebeSir",
             "fIstIk",
-            "COtek"
-        };
-
-        string[] armor =
-        {
-            "megadet tiSOrtU",
+            "COtek",
+            "megadet tiSOrtU",  //27
             "deryjacket", //5
             "ekose ceket",
-            "oduncu gOyneGi", //3
+            "oduncu gOyneGi", //3 //30
             "yUn yelek",
-            "Fanila"
+            "Fanila",
+            "simit",   //33
+            "su",
+            "padiSah macunu",
+            "dondurma",
+            "bira",
+            "hIyar",
+            "leblebi tozu",
+            "pul biber",
+            "zeytinyaGI",
+            "Ciklet",
+            "kIlICartIbeS" //43
         };
+
 
         string[] enemies = {
         "Player", //0
@@ -365,11 +388,17 @@ namespace LaleMapTest
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string filename = "haritalar\\" + textBox1.Text;
+            fetchMap(textBox1.Text);
+        }
+
+        public void fetchMap(string mapNo)
+        {
+            string filename = "haritalar\\" + mapNo;
             // Dosya var mı kontrol et
             if (!File.Exists(filename))
                 return;
@@ -378,11 +407,11 @@ namespace LaleMapTest
             map = ListData(PicBank);
 
             eventOffset = drawDungeon() - 1;
-            textBox2.Text = "Level:" + textBox1.Text + "\r\n";
-            byte[] result = File.ReadAllBytes("senaryo\\" + textBox1.Text);
+            textBox2.Text = "Level:" + mapNo + "\r\n";
+            byte[] result = File.ReadAllBytes("senaryo\\" + mapNo);
             listEvents(result, eventOffset);
-
-            textBox2.Text= ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+            textBox1.Text = mapNo;
+            textBox2.Text = ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
         }
 
         public void drawRoom(int selectedListIndex)
@@ -635,7 +664,7 @@ namespace LaleMapTest
                                     text = "🛒🍦";
                                     break;
                                 default:
-                                    text=(roomevent + (roomevent32 - 1) * 31).ToString();
+                                    text = (roomevent + (roomevent32 - 1) * 31).ToString();
                                     break;
 
                             }
@@ -955,7 +984,7 @@ namespace LaleMapTest
         }
 
         //Story
-        private void listEvents(byte[] storyData, int eOffset, bool updateListbox=true)
+        private void listEvents(byte[] storyData, int eOffset, bool updateListbox = true)
         {
             if (updateListbox) listBox2.Items.Clear();
             eventDataList.Clear();
@@ -963,7 +992,7 @@ namespace LaleMapTest
 
             if (storyData == null || storyData.Length < 22)
             {
-                if (updateListbox)  listBox2.Items.Add("Veri geçersiz veya eksik.");
+                if (updateListbox) listBox2.Items.Add("Veri geçersiz veya eksik.");
                 return;
             }
 
@@ -998,7 +1027,7 @@ namespace LaleMapTest
 
                 eventDataList.Add(eventData);
 
-                if (updateListbox)  listBox2.Items.Add($"Event #{i + 1 + eOffset} ({eventLength} byte)");
+                if (updateListbox) listBox2.Items.Add($"Event #{i + 1 + eOffset} ({eventLength} byte)");
 
             }
             return;
@@ -1018,7 +1047,7 @@ namespace LaleMapTest
                 // drawRoom(listBox1.SelectedIndex);
                 if (listBox1.SelectedIndex == 0)
                 {
-                    textBox2.Text= ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+                    textBox2.Text = ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
                 }
             }
         }
@@ -1054,16 +1083,16 @@ namespace LaleMapTest
             string desc = LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
             restext += "\r\n" + ("Bölüm " + textBox1.Text + ": " + desc);
             // 0-3: Bilinmiyor
-            restext += "\r\n"+("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
+            restext += "\r\n" + ("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
 
             // 4: Genişlik
-            restext += "\r\n"+("4 : Genişlik  = " + header[4]);
+            restext += "\r\n" + ("4 : Genişlik  = " + header[4]);
 
             // 5: Yükseklik
-            restext += "\r\n"+("5 : Yükseklik = " + header[5]);
+            restext += "\r\n" + ("5 : Yükseklik = " + header[5]);
 
             // 6-12: Bilinmiyor
-            restext += "\r\n"+("6-10 : Duvar Setleri = " + string.Join(" ", header.Skip(6).Take(5)));
+            restext += "\r\n" + ("6-10 : Duvar Setleri = " + string.Join(" ", header.Skip(6).Take(5)));
 
             setler[0] = header[6];
             setler[1] = header[7];
@@ -1071,31 +1100,31 @@ namespace LaleMapTest
             setler[3] = header[9];
             setler[4] = header[10];
 
-            restext += "\r\n"+("10-12 : (Bilinmeyen) " + string.Join(" ", header.Skip(11).Take(2)));
+            restext += "\r\n" + ("10-12 : (Bilinmeyen) " + string.Join(" ", header.Skip(11).Take(2)));
 
             // 13-20: Düşman numaraları
-            restext += "\r\n"+("13-20 : Süpriz Düşman Listesi");
+            restext += "\r\n" + ("13-20 : Süpriz Düşman Listesi");
             for (int i = 13; i <= 20; i++)
             {
                 int enemyId = header[i];
                 string name = (enemyId >= 0 && enemyId < enemies.Length) ? enemies[enemyId] : "???";
-                restext += "\r\n"+($"  {i}: #{enemyId} - {name}");
+                restext += "\r\n" + ($"  {i}: #{enemyId} - {name}");
             }
 
             // 21-24: Bilinmiyor
             eventOffset = header[24] + (header[23] - 1) * 31;
-            restext += "\r\n"+("21-24 : Event Offset = " + string.Join(" ", eventOffset.ToString())); //header.Skip(21).Take(4)));
+            restext += "\r\n" + ("21-24 : Event Offset = " + string.Join(" ", eventOffset.ToString())); //header.Skip(21).Take(4)));
 
             // 25: Bilinmiyor
-            restext += "\r\n"+("25 : (bilinmeyen) " + header[25]);
+            restext += "\r\n" + ("25 : (bilinmeyen) " + header[25]);
 
             // 26-31: Bilinmiyor
-            restext += "\r\n"+("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
+            restext += "\r\n" + ("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
 
             return restext;
         }
 
-        public string describeRoom(int roomIdx, int facing=0)
+        public string describeRoom(int roomIdx, int facing = 0)
         {
             var idDescriptions = new Dictionary<ushort, string>
                     {
@@ -1167,7 +1196,7 @@ namespace LaleMapTest
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 39, clip);
 
-                        tavan =9 + (floorType * 3);
+                        tavan = 9 + (floorType * 3);
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 96 - 44, clip);
 
@@ -1213,14 +1242,14 @@ namespace LaleMapTest
 
                         tavan = 10 + (floorType * 3);
                         clip = getclipart(10, tavan);
-                        putclipart(pictureBox2, -4, 96 -33, clip);
+                        putclipart(pictureBox2, -4, 96 - 33, clip);
 
 
-                        
+
                         //orta seviye
                         if (topType > 0)
                         {
-                            clip = getclipart(setler[topType], topWall+4);
+                            clip = getclipart(setler[topType], topWall + 4);
                             putclipart(pictureBox2, 35, 37, clip);
                         }
                         if (leftType > 0)
@@ -1247,39 +1276,39 @@ namespace LaleMapTest
                     break;
             }
 
-             line = listBox1.Items[roomIdx].ToString();
-             parts = line.Split('\t');
+            line = listBox1.Items[roomIdx].ToString();
+            parts = line.Split('\t');
             if (parts.Length < 20) return "Geçersiz oda verisi.";
 
             try
             {
                 ceilingType = int.Parse(parts[13]);
                 floorType = int.Parse(parts[14]);
-                
+
                 topType = int.Parse(parts[5]);
                 rightType = int.Parse(parts[7]);
                 bottomType = int.Parse(parts[9]);
                 leftType = int.Parse(parts[11]);
-                
+
                 topWall = int.Parse(parts[6]);
                 rightWall = int.Parse(parts[8]);
                 bottomWall = int.Parse(parts[10]);
                 leftWall = int.Parse(parts[12]);
-                
+
                 enemySpawn = int.Parse(parts[15]);
                 isShop = int.Parse(parts[16]);
-                
+
                 roomevent64 = int.Parse(parts[17]);
                 roomevent32 = int.Parse(parts[18]);
                 roomevent = int.Parse(parts[19]);
-                
+
                 eventIndex = (roomevent + (roomevent32 - 1) * 31) - eventOffset;
 
                 string desc = "";
 
 
 
-                
+
 
 
                 tavan = 0;
@@ -1295,7 +1324,7 @@ namespace LaleMapTest
                 //yakın seviye
                 if (topType > 0)
                 {
-                    clip = getclipart(setler[topType], topWall-1);
+                    clip = getclipart(setler[topType], topWall - 1);
                     putclipart(pictureBox2, 15, 17, clip);
                 }
                 if (leftType > 0)
@@ -1309,9 +1338,9 @@ namespace LaleMapTest
                     putclipart(pictureBox2, 96 - 32, 0, clip);
                 }
 
-                
+
                 //orta seviye
-                
+
                 desc += $"\r\n- Tavan: {ceilingType}\r\n\r\n";
 
                 desc += $"Doku Seti:\r\n";
@@ -2688,8 +2717,8 @@ namespace LaleMapTest
                         int length = Math.Min(endPos - start, 16);
 
                         if (length < 0) length = 0;
-                        string crop = haystack.Substring(contains , length+ needle.Length);
-                        
+                        string crop = haystack.Substring(contains, length + needle.Length);
+
                         resultx += $"Bölüm:{i} // Olay: {eventOffset + idx} içerik: {crop}\r\n";
                     }
 
@@ -2724,7 +2753,7 @@ namespace LaleMapTest
             StringBuilder sb = new StringBuilder();
             int offset = 0;
             int linecounter = 0;
-            int girinti = 0; 
+            int girinti = 0;
             // İlk 8 baytı atla
             if (eventData.Length < 9) return "[Geçersiz event]";
 
@@ -2776,7 +2805,7 @@ namespace LaleMapTest
                             {
                                 byte[] txt = new byte[len];
                                 Array.Copy(eventData, offset, txt, 0, len);
-                                string text = TurkceYap( DecipherROT(txt).Replace("\xAC", " "));
+                                string text = TurkceYap(DecipherROT(txt).Replace("\xAC", " "));
                                 sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Yaz \"{text}\"");
                                 offset += len;
                             }
@@ -2799,37 +2828,37 @@ namespace LaleMapTest
                             byte len2 = eventData[offset + 1];
                             byte len1 = eventData[offset];
 
-                            if (len1 == 0x0E )
+                            if (len1 == 0x0E)
                             {
                                 offset++;
                                 offset++;
                                 sb.AppendLine("");
-                                string temp= len2==0?"":$"({ len2: X2})";
+                                string temp = len2 == 0 ? "" : $"({len2: X2})";
                                 sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Oyuncuyu odaya al. {temp}");
-                                
+
                             }
-                            
+
                             else if (len1 == 0x0F)
                             {
                                 offset++;
                                 offset++;
-                                girinti=0;
+                                girinti = 0;
                                 if (len2 == 0x00)
                                 {
                                     sb.AppendLine("");
-                                    sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " Blok Sonu.");
+                                    sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " Blok Sonu.");
                                 }
                                 else
                                 {
-                                    sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " Blok Sonu" +$" ({len2} ile).");
+                                    sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " Blok Sonu" + $" ({len2} ile).");
                                 }
-                                
+
                             }
                             else
                             {
                                 match = false;
                                 sb.AppendLine("");
-                                sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " {"); //{başla
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " {"); //{başla
                                 girinti++;
                             }
                         }
@@ -2913,15 +2942,7 @@ namespace LaleMapTest
                                 .DefaultIfEmpty("Hiç düşman yok")
                               )
                             );
-                            /*
-                            if ((bilinmeyen4 < enemies.Length) && (bilinmeyen2 < enemies.Length) && (enemyId < enemies.Length))
-                            {
-                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ⚔️⚔️ Savaş ⚔️⚔️ {zero} Düşmanlar: {count} adet [{enemyId}] {enemies[enemyId]}, {bilinmeyen3} adet [{bilinmeyen2:x2}] {enemies[bilinmeyen2]}, {bilinmeyen5} adet [{bilinmeyen4:x2}] {enemies[bilinmeyen4]}");
-                            }
-                            else
-                            {
-                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ⚔️⚔️ Savaş ⚔️⚔️ {zero} EnemyType1: [{enemyId}]  X {count}, EnemyType2: [{bilinmeyen2:x2}] X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] X {bilinmeyen5}");
-                            }*/
+
                         }
                         break;
                     case 0x09: // loot ver 9 parametre
@@ -2932,18 +2953,26 @@ namespace LaleMapTest
                             byte mark = eventData[offset++];
                             byte kıvrık = eventData[offset++];
                             byte bilinmeyen1 = eventData[offset++];
-                            byte itemNo = eventData[offset++];
+                            byte ritemNo1 = eventData[offset++];
                             byte bilinmeyen2 = eventData[offset++];
-                            byte itemNo2 = eventData[offset++];
+                            byte ritemNo2 = eventData[offset++];
                             byte bilinmeyen3 = eventData[offset++];
-                            byte itemNo3 = eventData[offset++];
+                            byte ritemNo3 = eventData[offset++];
+                            int mod1 = ritemNo1 / 100;
+                            int mod2 = ritemNo2 / 100;
+                            int mod3 = ritemNo3 / 100;
+                            int itemNo = (byte)(ritemNo1 - mod1 * 100);
+                            int itemNo2 = (byte)(ritemNo2 - mod2 * 100);
+                            int itemNo3 = (byte)(ritemNo3 - mod3 * 100);
+
+                            if (itemNo == 66) { mod1 = 4; itemNo = 22; } //166 numarali item=tüftüf+4 silikon baba special
 
                             sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" 💵💰💵 Ganimet $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
-                            if (itemNo > 0 && itemNo < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo}({items[itemNo]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen1}  item#: {itemNo}");
-                            if (itemNo2 > 0 && itemNo2 < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen2}  item #{itemNo2}({items[itemNo2]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen2}  item#: {itemNo2}");
-                            if (itemNo3 > 0 && itemNo3 < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen3}  item #{itemNo3}({items[itemNo3]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen3}  item#: {itemNo3}");
+                            if (itemNo > 0 && itemNo < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo} {items[itemNo]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen1 > 0? $"     ?:  {bilinmeyen1}  item#: {ritemNo1}":""));
+                            if (itemNo2 > 0 && itemNo2 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen2}  item #{itemNo2} {items[itemNo2]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen2 > 0 ? $"     ?:  {bilinmeyen2}  item#: {ritemNo2}" : ""));
+                            if (itemNo3 > 0 && itemNo3 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen3}  item #{itemNo3} {items[itemNo3]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen3 > 0 ? $"     ?:  {bilinmeyen3}  item#: {ritemNo3}" : ""));
 
-                            
+
                         }
                         else
                         {
@@ -3025,7 +3054,7 @@ namespace LaleMapTest
                         {
                             byte dolar = eventData[offset++];
                             sb.AppendLine(linecounter++.ToString("00") + ". } devam et:");
-                            girinti=0;
+                            girinti = 0;
                         }
                         break;
                     case 0x0F: //Blok sonu
@@ -3078,9 +3107,9 @@ namespace LaleMapTest
 
                         break;
 
-                      //bilinmeyen 3 parametreli komutlar
+                    //bilinmeyen 3 parametreli komutlar
                     case 0x16:
-                    
+
                         match = true;
                         byte var4 = eventData[offset++];
                         byte var5 = eventData[offset++];
@@ -3106,18 +3135,18 @@ namespace LaleMapTest
                         byte stat1 = eventData[offset++];
                         byte stat2 = eventData[offset++];
                         byte stat3 = eventData[offset++];
-                        if (stat2==0x1d)
+                        if (stat2 == 0x1d)
                             sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini x {stat3}% düşür. [{cmd:X2}] {stat1:X2}, {stat2:X2},  {stat3:X2}].");
                         else
                             sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grup durumu değiştir: [{cmd:X2}] {stat1:X2}, {stat2:X2}, {stat3:X2}].");
 
                         break;
-                        
+
                     case 0x19: //play music
                         match = true;
                         byte muzik = eventData[offset++];
 
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Müzik Çal ({muzik}).");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Müzik Çal ({muzik}).");
 
                         break;
 
@@ -3197,12 +3226,12 @@ namespace LaleMapTest
                             if (offset + len <= eventData.Length)
                             {
                                 byte[] txt = new byte[len];
-                                byte inputatla= eventData[offset++];
+                                byte inputatla = eventData[offset++];
                                 Array.Copy(eventData, offset, txt, 0, len);
                                 string text = TurkceYap(DecipherROT(txt));
 
 
-                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Sor ve eğer cevap (\"{text}\") DEĞİL ise {inputatla} ATLA (Satır: {inputatla+linecounter}). ");
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Sor ve eğer cevap (\"{text}\") DEĞİL ise {inputatla} ATLA (Satır: {inputatla + linecounter}). ");
                                 offset += len;
                             }
                         }
@@ -3219,7 +3248,7 @@ namespace LaleMapTest
                     case 0x13:
                         match = true;
                         byte var06 = eventData[offset++];
-                        
+
                         sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [UNK1 {cmd:X2} {var06:X2}].");
                         break;
 
@@ -3481,6 +3510,14 @@ namespace LaleMapTest
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            comboBox1.Items.Clear();
+            for (int i = 0; i < haritalar.Length; i++)
+            {
+                // i+1 ile 1’den başlayan numara, ardından nokta ve boşluk
+                comboBox5.Items.Add($"{i + 1}. {haritalar[i]}");
+            }
+            comboBox5.SelectedIndex = 0;
+            /*
             try
             {
                 laleExe = File.ReadAllBytes(@"execs\Lale");
@@ -3491,11 +3528,13 @@ namespace LaleMapTest
                 listBox1.Items.Clear();
                 listBox1.Items.AddRange(weaponList.Cast<object>().ToArray());
 
+            
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Dosya yüklenirken hata oluştu: {ex.Message}");
-            }
+            }*/
         }
 
 
@@ -3836,7 +3875,14 @@ namespace LaleMapTest
             return form.ShowDialog() == DialogResult.OK ? tb.Text : null;
         }
 
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox5.SelectedIndex > -1)
+            {
+                textBox1.Text = (comboBox5.SelectedIndex + 1).ToString();
+                fetchMap(textBox1.Text);
+            }
 
-
+        }
     }
 }

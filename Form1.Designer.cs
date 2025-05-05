@@ -69,6 +69,7 @@
             button13 = new Button();
             pictureBox2 = new PictureBox();
             button21 = new Button();
+            comboBox5 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -77,7 +78,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(175, 11);
+            button1.Location = new Point(175, 13);
             button1.Name = "button1";
             button1.Size = new Size(99, 23);
             button1.TabIndex = 0;
@@ -87,9 +88,9 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(12, 12);
+            textBox1.Location = new Point(280, 13);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(157, 23);
+            textBox1.Size = new Size(33, 23);
             textBox1.TabIndex = 1;
             textBox1.Text = "1";
             // 
@@ -501,11 +502,22 @@
             button21.UseVisualStyleBackColor = true;
             button21.Click += button21_Click;
             // 
+            // comboBox5
+            // 
+            comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(12, 10);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(157, 23);
+            comboBox5.TabIndex = 21;
+            comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1320, 685);
+            Controls.Add(comboBox5);
             Controls.Add(button21);
             Controls.Add(pictureBox2);
             Controls.Add(groupBox2);
@@ -580,5 +592,6 @@
         private Button button20;
         private PictureBox pictureBox2;
         private Button button21;
+        private ComboBox comboBox5;
     }
 }
