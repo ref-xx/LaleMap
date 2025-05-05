@@ -67,9 +67,12 @@
             textBox4 = new TextBox();
             textBox3 = new TextBox();
             button13 = new Button();
+            pictureBox2 = new PictureBox();
+            button21 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -129,13 +132,14 @@
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(674, 432);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(634, 214);
+            listBox1.Size = new Size(430, 214);
             listBox1.TabIndex = 5;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // textBox2
             // 
             textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBox2.Font = new Font("Courier New", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             textBox2.Location = new Point(866, 41);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
@@ -476,11 +480,34 @@
             button13.Text = "New Map";
             button13.UseVisualStyleBackColor = true;
             // 
+            // pictureBox2
+            // 
+            pictureBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            pictureBox2.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox2.Location = new Point(1110, 432);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(192, 192);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 19;
+            pictureBox2.TabStop = false;
+            // 
+            // button21
+            // 
+            button21.Location = new Point(674, 12);
+            button21.Name = "button21";
+            button21.Size = new Size(75, 23);
+            button21.TabIndex = 20;
+            button21.Text = "Find...";
+            button21.UseVisualStyleBackColor = true;
+            button21.Click += button21_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1320, 685);
+            Controls.Add(button21);
+            Controls.Add(pictureBox2);
             Controls.Add(groupBox2);
             Controls.Add(button12);
             Controls.Add(checkBox3);
@@ -505,6 +532,7 @@
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -550,5 +578,7 @@
         private Button button18;
         private Button button17;
         private Button button20;
+        private PictureBox pictureBox2;
+        private Button button21;
     }
 }

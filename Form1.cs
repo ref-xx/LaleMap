@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using static System.Net.Mime.MediaTypeNames;
 
@@ -154,40 +158,40 @@ namespace LaleMapTest
 };
         Color[] BackupPalette = new Color[]
 {
-    Color.FromArgb(0xff, 0x00, 0xff), // COLOR00 = 000
-    Color.FromArgb(0x55, 0x11, 0x11), // COLOR01 = 511
-    Color.FromArgb(0x77, 0x22, 0x22), // COLOR02 = 722
-    Color.FromArgb(0x99, 0x33, 0x33), // COLOR03 = 933
-    Color.FromArgb(0x88, 0x77, 0x66), // COLOR04 = 876
-    Color.FromArgb(0x00, 0x33, 0x77), // COLOR05 = 037
-    Color.FromArgb(0x00, 0x22, 0x55), // COLOR06 = 025
-    Color.FromArgb(0x00, 0x11, 0x33), // COLOR07 = 013
-    Color.FromArgb(0x55, 0x33, 0x00), // COLOR08 = 530
-    Color.FromArgb(0x88, 0x66, 0x00), // COLOR09 = 860
-    Color.FromArgb(0x33, 0x22, 0x00), // COLOR10 = 320
-    Color.FromArgb(0x77, 0x66, 0x55), // COLOR11 = 765
-    Color.FromArgb(0x66, 0x55, 0x44), // COLOR12 = 654
-    Color.FromArgb(0x55, 0x44, 0x33), // COLOR13 = 543
-    Color.FromArgb(0x44, 0x33, 0x22), // COLOR14 = 432
-    Color.FromArgb(0x33, 0x22, 0x11), // COLOR15 = 321
-    Color.FromArgb(0x00, 0x00, 0x00), // COLOR16 = 000
-    Color.FromArgb(0xAA, 0x77, 0x00), // COLOR17 = A70
-    Color.FromArgb(0x77, 0x55, 0x00), // COLOR18 = 750
-    Color.FromArgb(0x66, 0x44, 0x00), // COLOR19 = 640
-    Color.FromArgb(0x00, 0x77, 0x00), // COLOR20 = 070
-    Color.FromArgb(0x44, 0x33, 0x00), // COLOR21 = 430
-    Color.FromArgb(0x00, 0x22, 0x00), // COLOR22 = 020
-    Color.FromArgb(0x00, 0x88, 0x00), // COLOR23 = 080
-    Color.FromArgb(0x55, 0x00, 0x00), // COLOR24 = 500
-    Color.FromArgb(0x99, 0x00, 0x00), // COLOR25 = 900
-    Color.FromArgb(0x22, 0x11, 0x00), // COLOR26 = 210
-    Color.FromArgb(0xDD, 0x00, 0x00), // COLOR27 = D00
-    Color.FromArgb(0x00, 0x44, 0x00), // COLOR28 = 040
-    Color.FromArgb(0x00, 0x55, 0x00), // COLOR29 = 050
-    Color.FromArgb(0x00, 0x66, 0x00), // COLOR30 = 060
-    Color.FromArgb(0xBB, 0xBB, 0xBB), // COLOR31 = BBB
+    Color.FromArgb(0x00,0x00, 0x00, 0x00), // COLOR00 = 000
+    Color.FromArgb(0xff,0x55, 0x11, 0x11), // COLOR01 = 511
+    Color.FromArgb(0xff,0x77, 0x22, 0x22), // COLOR02 = 722
+    Color.FromArgb(0xff,0x99, 0x33, 0x33), // COLOR03 = 933
+    Color.FromArgb(0xff,0x88, 0x77, 0x66), // COLOR04 = 876
+    Color.FromArgb(0xff,0x00, 0x33, 0x77), // COLOR05 = 037
+    Color.FromArgb(0xff,0x00, 0x22, 0x55), // COLOR06 = 025
+    Color.FromArgb(0xff,0x00, 0x11, 0x33), // COLOR07 = 013
+    Color.FromArgb(0xff,0x55, 0x33, 0x00), // COLOR08 = 530
+    Color.FromArgb(0xff,0x88, 0x66, 0x00), // COLOR09 = 860
+    Color.FromArgb(0xff,0x33, 0x22, 0x00), // COLOR10 = 320
+    Color.FromArgb(0xff,0x77, 0x66, 0x55), // COLOR11 = 765
+    Color.FromArgb(0xff,0x66, 0x55, 0x44), // COLOR12 = 654
+    Color.FromArgb(0xff,0x55, 0x44, 0x33), // COLOR13 = 543
+    Color.FromArgb(0xff,0x44, 0x33, 0x22), // COLOR14 = 432
+    Color.FromArgb(0xff,0x33, 0x22, 0x11), // COLOR15 = 321
+    Color.FromArgb(0xff,0x00, 0x00, 0x00), // COLOR16 = 000
+    Color.FromArgb(0xff,0xAA, 0x77, 0x00), // COLOR17 = A70
+    Color.FromArgb(0xff,0x77, 0x55, 0x00), // COLOR18 = 750
+    Color.FromArgb(0xff,0x66, 0x44, 0x00), // COLOR19 = 640
+    Color.FromArgb(0xff,0x00, 0x77, 0x00), // COLOR20 = 070
+    Color.FromArgb(0xff,0x44, 0x33, 0x00), // COLOR21 = 430
+    Color.FromArgb(0xff,0x00, 0x22, 0x00), // COLOR22 = 020
+    Color.FromArgb(0xff,0x00, 0x88, 0x00), // COLOR23 = 080
+    Color.FromArgb(0xff,0x55, 0x00, 0x00), // COLOR24 = 500
+    Color.FromArgb(0xff,0x99, 0x00, 0x00), // COLOR25 = 900
+    Color.FromArgb(0xff,0x22, 0x11, 0x00), // COLOR26 = 210
+    Color.FromArgb(0xff,0xDD, 0x00, 0x00), // COLOR27 = D00
+    Color.FromArgb(0xff,0x00, 0x44, 0x00), // COLOR28 = 040
+    Color.FromArgb(0xff,0x00, 0x55, 0x00), // COLOR29 = 050
+    Color.FromArgb(0xff,0x00, 0x66, 0x00), // COLOR30 = 060
+    Color.FromArgb(0xff,0xBB, 0xBB, 0xBB), // COLOR31 = BBB
 }; //ingame palette
-        Color[] BackupPalette5 = new Color[]  
+        Color[] BackupPalette5 = new Color[]
         {
             Color.FromArgb(0xff, 0x00, 0xff), // COLOR00 = 000
             Color.FromArgb(0x00, 0x55, 0x00), // COLOR01 = 050
@@ -232,7 +236,7 @@ namespace LaleMapTest
                         { 3,   "Beşiktaş" },
                         { 4,   "Eminönü" },
                         { 5,   "Üsküdar" },
-                        { 6,   "???" },
+                        { 6,   "Ümraniye Koruluğu" },
                         { 7,   "Kadıköy" },
                         { 8,   "Saray Önü" },
                         { 9,   "???" },
@@ -252,7 +256,7 @@ namespace LaleMapTest
         private int searchindex = 0;
         List<byte[]> eventDataList = new List<byte[]>(); // form sınıfına ekle
         int eventOffset = 0;
-
+        private int[] setler = new int[5];
 
         public struct ClickedRoomInfo
         {
@@ -305,6 +309,16 @@ namespace LaleMapTest
             "COtek"
         };
 
+        string[] armor =
+        {
+            "megadet tiSOrtU",
+            "deryjacket", //5
+            "ekose ceket",
+            "oduncu gOyneGi", //3
+            "yUn yelek",
+            "Fanila"
+        };
+
         string[] enemies = {
         "Player", //0
         "irospa",
@@ -345,6 +359,7 @@ namespace LaleMapTest
         "kIl sItkI",
         "dragon"
     };
+        // monster #68 = savaşa Dost Öğrenci ekler
 
 
         public Form1()
@@ -367,7 +382,7 @@ namespace LaleMapTest
             byte[] result = File.ReadAllBytes("senaryo\\" + textBox1.Text);
             listEvents(result, eventOffset);
 
-            ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+            textBox2.Text= ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
         }
 
         public void drawRoom(int selectedListIndex)
@@ -536,7 +551,7 @@ namespace LaleMapTest
             {
                 //g.Clear(Color.White);
                 g.FillRectangle(Brushes.LightGray, 0, 0, map.width * (margin + roomSize), (margin + roomSize) * map.height);
-                Font font = new Font("Arial", 6, FontStyle.Bold);
+                Font font = new Font("Segoe UI Emoji", 6, FontStyle.Bold);
                 StringFormat sf = new StringFormat
                 {
                     Alignment = StringAlignment.Center,
@@ -606,7 +621,25 @@ namespace LaleMapTest
                         g.DrawString((index + 1).ToString(), font, textBrush, new RectangleF(x, y, roomSize, roomSize), sf);
                         if (roomevent > 0)
                         {
-                            g.DrawString((roomevent + (roomevent32 - 1) * 31).ToString(), font, eventBrush, new RectangleF(x, y - 10, roomSize, roomSize), sf);
+                            int roomeventLong = (roomevent + (roomevent32 - 1) * 31);
+                            string text = "";
+                            switch (roomeventLong)
+                            {
+                                case 958:
+                                    text = "🍔🍗";
+                                    break;
+                                case 959:
+                                    text = "🦾⚒️";
+                                    break;
+                                case 960:
+                                    text = "🛒🍦";
+                                    break;
+                                default:
+                                    text=(roomevent + (roomevent32 - 1) * 31).ToString();
+                                    break;
+
+                            }
+                            g.DrawString(text, font, eventBrush, new RectangleF(x, y - 10, roomSize, roomSize), sf);
                             if (minEvent > (roomevent + (roomevent32 - 1) * 31)) minEvent = (roomevent + (roomevent32 - 1) * 31);
                         }
                         string enemies = "";
@@ -922,15 +955,15 @@ namespace LaleMapTest
         }
 
         //Story
-        private void listEvents(byte[] storyData, int eOffset)
+        private void listEvents(byte[] storyData, int eOffset, bool updateListbox=true)
         {
-            listBox2.Items.Clear();
+            if (updateListbox) listBox2.Items.Clear();
             eventDataList.Clear();
 
 
             if (storyData == null || storyData.Length < 22)
             {
-                listBox2.Items.Add("Veri geçersiz veya eksik.");
+                if (updateListbox)  listBox2.Items.Add("Veri geçersiz veya eksik.");
                 return;
             }
 
@@ -944,7 +977,7 @@ namespace LaleMapTest
             {
                 if (offset + 2 > storyData.Length)
                 {
-                    listBox2.Items.Add($"Event #{i + 1 + eOffset}: Başlık okunamıyor (veri bitti)");
+                    if (updateListbox) listBox2.Items.Add($"Event #{i + 1 + eOffset}: Başlık okunamıyor (veri bitti)");
                     break;
                 }
 
@@ -953,7 +986,7 @@ namespace LaleMapTest
 
                 if (offset + eventLength > storyData.Length)
                 {
-                    listBox2.Items.Add($"Event #{i + 1 + eOffset}: Veri eksik (uzunluk={eventLength})");
+                    if (updateListbox) listBox2.Items.Add($"Event #{i + 1 + eOffset}: Veri eksik (uzunluk={eventLength})");
                     break;
                 }
 
@@ -961,11 +994,11 @@ namespace LaleMapTest
                 Array.Copy(storyData, offset, eventData, 0, eventLength);
                 offset += eventLength;
 
-                string eventText = DecipherROT(eventData);
+                string eventText = TurkceYap(DecipherROT(eventData));
 
                 eventDataList.Add(eventData);
 
-                listBox2.Items.Add($"Event #{i + 1 + eOffset} ({eventLength} byte)");
+                if (updateListbox)  listBox2.Items.Add($"Event #{i + 1 + eOffset} ({eventLength} byte)");
 
             }
             return;
@@ -985,7 +1018,7 @@ namespace LaleMapTest
                 // drawRoom(listBox1.SelectedIndex);
                 if (listBox1.SelectedIndex == 0)
                 {
-                    ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+                    textBox2.Text= ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
                 }
             }
         }
@@ -1008,83 +1041,63 @@ namespace LaleMapTest
         }
 
 
-        private void ParseMapHeader(int[] header)
+        private string ParseMapHeader(int[] header)
         {
+            string restext = "";
             if (header.Length < 32)
             {
-                textBox2.Text = "Geçersiz header, 32 değer bekleniyor.";
-                return;
+                restext = "Geçersiz header, 32 değer bekleniyor.";
+                return restext;
             }
 
             StringBuilder sb = new StringBuilder();
-            string desc =  LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
-            sb.AppendLine("Bölüm " + textBox1.Text + ": " + desc);
+            string desc = LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
+            restext += "\r\n" + ("Bölüm " + textBox1.Text + ": " + desc);
             // 0-3: Bilinmiyor
-            sb.AppendLine("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
+            restext += "\r\n"+("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
 
             // 4: Genişlik
-            sb.AppendLine("4 : Genişlik  = " + header[4]);
+            restext += "\r\n"+("4 : Genişlik  = " + header[4]);
 
             // 5: Yükseklik
-            sb.AppendLine("5 : Yükseklik = " + header[5]);
+            restext += "\r\n"+("5 : Yükseklik = " + header[5]);
 
             // 6-12: Bilinmiyor
-            sb.AppendLine("6-12 : (bilinmeyen) " + string.Join(" ", header.Skip(6).Take(7)));
+            restext += "\r\n"+("6-10 : Duvar Setleri = " + string.Join(" ", header.Skip(6).Take(5)));
+
+            setler[0] = header[6];
+            setler[1] = header[7];
+            setler[2] = header[8];
+            setler[3] = header[9];
+            setler[4] = header[10];
+
+            restext += "\r\n"+("10-12 : (Bilinmeyen) " + string.Join(" ", header.Skip(11).Take(2)));
 
             // 13-20: Düşman numaraları
-            sb.AppendLine("13-20 : Süpriz Düşman Listesi");
+            restext += "\r\n"+("13-20 : Süpriz Düşman Listesi");
             for (int i = 13; i <= 20; i++)
             {
                 int enemyId = header[i];
                 string name = (enemyId >= 0 && enemyId < enemies.Length) ? enemies[enemyId] : "???";
-                sb.AppendLine($"  {i}: #{enemyId} - {name}");
+                restext += "\r\n"+($"  {i}: #{enemyId} - {name}");
             }
 
             // 21-24: Bilinmiyor
             eventOffset = header[24] + (header[23] - 1) * 31;
-            sb.AppendLine("21-24 : (Event Offset) " + string.Join(" ", eventOffset.ToString())); //header.Skip(21).Take(4)));
-            
+            restext += "\r\n"+("21-24 : Event Offset = " + string.Join(" ", eventOffset.ToString())); //header.Skip(21).Take(4)));
+
             // 25: Bilinmiyor
-            sb.AppendLine("25 : (bilinmeyen) " + header[25]);
+            restext += "\r\n"+("25 : (bilinmeyen) " + header[25]);
 
             // 26-31: Bilinmiyor
-            sb.AppendLine("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
+            restext += "\r\n"+("26-31 : (bilinmeyen) " + string.Join(" ", header.Skip(26).Take(6)));
 
-            textBox2.Text += sb.ToString();
+            return restext;
         }
 
-        public string describeRoom(string line)
+        public string describeRoom(int roomIdx, int facing=0)
         {
-            string[] parts = line.Split('\t');
-            if (parts.Length < 20) return "Geçersiz oda verisi.";
-
-            try
-            {
-                int ceilingType = int.Parse(parts[13]);
-                int floorType = int.Parse(parts[14]);
-
-                int topType = int.Parse(parts[5]);
-                int rightType = int.Parse(parts[7]);
-                int bottomType = int.Parse(parts[9]);
-                int leftType = int.Parse(parts[11]);
-
-                int topWall = int.Parse(parts[6]);
-                int rightWall = int.Parse(parts[8]);
-                int bottomWall = int.Parse(parts[10]);
-                int leftWall = int.Parse(parts[12]);
-
-                int enemySpawn = int.Parse(parts[15]);
-                int isShop = int.Parse(parts[16]);
-
-                int roomevent64 = int.Parse(parts[17]);
-                int roomevent32 = int.Parse(parts[18]);
-                int roomevent = int.Parse(parts[19]);
-
-                int eventIndex = ( roomevent + (roomevent32 - 1) * 31)- eventOffset;
-
-                string desc = "";
-
-                var idDescriptions = new Dictionary<ushort, string>
+            var idDescriptions = new Dictionary<ushort, string>
                     {
                         { 0,   "Boş" },
                         { 1,   "Ahşap" },
@@ -1099,13 +1112,213 @@ namespace LaleMapTest
                     };
 
 
+            ClearPictureBoxToBlack(pictureBox2);
+            int ceilingType;
+            int floorType;
+
+            int topType;
+            int rightType;
+            int bottomType;
+            int leftType;
+
+            int topWall;
+            int rightWall;
+            int bottomWall;
+            int leftWall;
+
+            int enemySpawn;
+            int isShop;
+
+
+            int roomevent64;
+            int roomevent32;
+            int roomevent;
+
+            int eventIndex;
+            string line;
+            string[] parts;
+            int tavan;
+            Bitmap clip;
+
+
+
+            switch (facing)
+            {
+                case 0://Kuzey
+                    if (roomIdx - map.width * 2 > 0)
+                    {
+                        line = listBox1.Items[roomIdx - map.width * 2].ToString();
+                        parts = line.Split('\t');
+                        if (parts.Length < 20) return "Geçersiz oda verisi.";
+                        ceilingType = int.Parse(parts[13]);
+                        floorType = int.Parse(parts[14]);
+
+                        topType = int.Parse(parts[5]);
+                        rightType = int.Parse(parts[7]);
+                        bottomType = int.Parse(parts[9]);
+                        leftType = int.Parse(parts[11]);
+
+                        topWall = int.Parse(parts[6]);
+                        rightWall = int.Parse(parts[8]);
+                        bottomWall = int.Parse(parts[10]);
+                        leftWall = int.Parse(parts[12]);
+                        tavan = 0;
+                        if (ceilingType > 0) tavan = 5 + (ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 39, clip);
+
+                        tavan =9 + (floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 44, clip);
+
+                        //uzak seviye
+                        if (topType > 0)
+                        {
+                            clip = getclipart(setler[topType], topWall + 10);
+                            putclipart(pictureBox2, 33, 49, clip);
+                        }
+                        if (leftType > 0)
+                        {
+                            clip = getclipart(setler[leftType], leftWall + 8);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (rightType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 8));
+                            putclipart(pictureBox2, 42, 36, clip);
+                        }
+                    }
+
+                    if (roomIdx - map.width > 0)
+                    {
+                        line = listBox1.Items[roomIdx - map.width].ToString();
+                        parts = line.Split('\t');
+                        if (parts.Length < 20) return "Geçersiz oda verisi.";
+                        ceilingType = int.Parse(parts[13]);
+                        floorType = int.Parse(parts[14]);
+
+                        topType = int.Parse(parts[5]);
+                        rightType = int.Parse(parts[7]);
+                        bottomType = int.Parse(parts[9]);
+                        leftType = int.Parse(parts[11]);
+
+                        topWall = int.Parse(parts[6]);
+                        rightWall = int.Parse(parts[8]);
+                        bottomWall = int.Parse(parts[10]);
+                        leftWall = int.Parse(parts[12]);
+                        tavan = 0;
+                        if (ceilingType > 0) tavan = 4 + (ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 20, clip);
+
+                        tavan = 10 + (floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 -33, clip);
+
+
+                        
+                        //orta seviye
+                        if (topType > 0)
+                        {
+                            clip = getclipart(setler[topType], topWall+4);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (leftType > 0)
+                        {
+                            clip = getclipart(setler[leftType], leftWall + 6);
+                            putclipart(pictureBox2, 19, 18, clip);
+                        }
+                        if (rightType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 6));
+                            putclipart(pictureBox2, 96 - 51, 18, clip);
+                        }
+
+                    }
+                    break;
+
+                case 1://doğu
+
+                    break;
+                case 2://güney
+
+                    break;
+                case 3://batı
+                    break;
+            }
+
+             line = listBox1.Items[roomIdx].ToString();
+             parts = line.Split('\t');
+            if (parts.Length < 20) return "Geçersiz oda verisi.";
+
+            try
+            {
+                ceilingType = int.Parse(parts[13]);
+                floorType = int.Parse(parts[14]);
+                
+                topType = int.Parse(parts[5]);
+                rightType = int.Parse(parts[7]);
+                bottomType = int.Parse(parts[9]);
+                leftType = int.Parse(parts[11]);
+                
+                topWall = int.Parse(parts[6]);
+                rightWall = int.Parse(parts[8]);
+                bottomWall = int.Parse(parts[10]);
+                leftWall = int.Parse(parts[12]);
+                
+                enemySpawn = int.Parse(parts[15]);
+                isShop = int.Parse(parts[16]);
+                
+                roomevent64 = int.Parse(parts[17]);
+                roomevent32 = int.Parse(parts[18]);
+                roomevent = int.Parse(parts[19]);
+                
+                eventIndex = (roomevent + (roomevent32 - 1) * 31) - eventOffset;
+
+                string desc = "";
+
+
+
+                
+
+
+                tavan = 0;
+                if (ceilingType > 0) tavan = 3 + (ceilingType * 3);
+                clip = getclipart(10, tavan);
+                putclipart(pictureBox2, -4, 0, clip);
+
+                tavan = 11 + (floorType * 3);
+                clip = getclipart(10, tavan);
+                putclipart(pictureBox2, -4, 96 - 13, clip);
+
+
+                //yakın seviye
+                if (topType > 0)
+                {
+                    clip = getclipart(setler[topType], topWall-1);
+                    putclipart(pictureBox2, 15, 17, clip);
+                }
+                if (leftType > 0)
+                {
+                    clip = getclipart(setler[leftType], leftWall + 2);
+                    putclipart(pictureBox2, 0, 0, clip);
+                }
+                if (rightType > 0)
+                {
+                    clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 2));
+                    putclipart(pictureBox2, 96 - 32, 0, clip);
+                }
+
+                
+                //orta seviye
+                
                 desc += $"\r\n- Tavan: {ceilingType}\r\n\r\n";
 
                 desc += $"Doku Seti:\r\n";
                 desc += $"- \tÜst: {topType},\r\n Sol: {leftType}\t\tSağ: {rightType}\r\n\tAlt: {bottomType}\r\n \r\n";
 
                 desc += $"Fonsiyon:\r\n";
-                desc += $"- \tÜst: {topWall},\r\n Sol: {leftWall}\t\tSağ: {rightWall}\r\n\tAlt: {bottomWall}\r\n \r\n";   
+                desc += $"- \tÜst: {topWall},\r\n Sol: {leftWall}\t\tSağ: {rightWall}\r\n\tAlt: {bottomWall}\r\n \r\n";
 
                 desc += $"- Zemin: {floorType}\r\n";
 
@@ -1131,6 +1344,111 @@ namespace LaleMapTest
                 return "Oda verisi parse edilirken hata oluştu.";
             }
         }
+
+        private Bitmap FlipHorizontal(Bitmap original)
+        {
+            if (original == null) return null;
+            Bitmap flipped = new Bitmap(original.Width, original.Height, PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(flipped))
+            {
+                g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height),
+                    new Rectangle(original.Width - 1, 0, -original.Width, original.Height),
+                    GraphicsUnit.Pixel);
+            }
+
+            return flipped;
+        }
+
+        private void ClearPictureBoxToBlack(PictureBox picBox)
+        {
+            if (picBox.Image == null)
+            {
+                picBox.Image = new Bitmap(96, 96, PixelFormat.Format32bppArgb);
+            }
+
+            using (Graphics g = Graphics.FromImage(picBox.Image))
+            {
+                g.Clear(Color.Black);
+            }
+
+            picBox.Invalidate();
+        }
+        private void putclipart(PictureBox picBox, int x, int y, Bitmap image)
+        {
+            if (picBox.Image == null || image == null) return;
+
+            Bitmap baseImage = new Bitmap(picBox.Image.Width, picBox.Image.Height, PixelFormat.Format32bppArgb);
+            using (Graphics g = Graphics.FromImage(baseImage))
+            {
+                g.DrawImage(picBox.Image, 0, 0); // mevcut resmi kopyala
+                g.DrawImage(image, x, y, image.Width, image.Height); // clipart'ı yapıştır
+            }
+
+            picBox.Image.Dispose();
+            picBox.Image = baseImage;
+        }
+
+        private Bitmap getclipart(int dataNo, int clipartNo)
+        {
+            if (dataNo == 0 || clipartNo < 0) return null;
+
+            string pngPath = $"setler\\data{dataNo}.png";
+            string txtPath = $"setler\\data{dataNo}.dim.txt";
+
+            if (!File.Exists(pngPath) || !File.Exists(txtPath))
+            {
+                return null;
+            }
+            //clipartNo--;
+            Bitmap sourceImage = new Bitmap(pngPath);
+            string[] lines = File.ReadAllLines(txtPath);
+
+            int yOffset = 0;
+            int targetWidth = 0;
+            int targetHeight = 0;
+            int foundCount = 0;
+
+            foreach (string line in lines)
+            {
+                string trimmed = line.Trim();
+
+                if (trimmed.Length == 0 || !char.IsDigit(trimmed[0]))
+                    continue;
+
+                string[] parts = trimmed.Split('x');
+
+                if (parts.Length != 2) continue;
+
+                if (!int.TryParse(parts[0], out int w)) continue;
+                if (!int.TryParse(parts[1], out int h)) continue;
+
+                if (foundCount == clipartNo)
+                {
+                    targetWidth = w;
+                    targetHeight = h;
+                    break;
+                }
+
+                yOffset += h;
+                foundCount++;
+            }
+
+            if (targetWidth == 0 || targetHeight == 0)
+                return null;
+
+            Rectangle cropRect = new Rectangle(0, yOffset, targetWidth, targetHeight);
+            Bitmap clipped = new Bitmap(targetWidth, targetHeight, PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(clipped))
+            {
+                g.DrawImage(sourceImage, new Rectangle(0, 0, targetWidth, targetHeight), cropRect, GraphicsUnit.Pixel);
+            }
+
+            sourceImage.Dispose();
+            return clipped;
+        }
+
 
 
         private void button3_Click(object sender, EventArgs e)
@@ -1286,17 +1604,26 @@ namespace LaleMapTest
                         fileData = result;
 
                         parsePic(fileData, x, y, first);
-                        if (maxh < PicBank.lumph * PicBank.lumps) maxh = PicBank.lumph * PicBank.lumps;
+                        int h = PicBank.lumph * PicBank.lumps;
 
-                        x += PicBank.width * 8;
-                        if (x+112 > pictureBox1.Width)
+                        y += h;
+
+                        if (maxh < PicBank.width * 8) maxh = PicBank.width * 8;
+
+                        //x += PicBank.width * 8;
+                        /*if (x+112 > pictureBox1.Width)
                         {
                             x = 0;
                             y += maxh;
                             maxh = 0;
-                        }
+                        }*/
                         first = false;
                         index2 = IndexOf(fileData, searchBytes2, 21);
+                    }
+                    if (y > 0)
+                    {
+                        //we have an image
+                        CropImageInPictureBox(pictureBox1, maxh, y);
                     }
 
 
@@ -1304,6 +1631,45 @@ namespace LaleMapTest
                 return $"Bilinmeyen bank tipi (magic: '{magic}')";
             }
         }
+
+        private void CropImageInPictureBox(PictureBox picBox, int w, int h)
+        {
+            if (picBox.Image == null) return;
+
+            Rectangle cropRect = new Rectangle(0, 0, w, h);
+            Bitmap source = new Bitmap(picBox.Image);
+            Bitmap cropped = new Bitmap(w, h);
+
+            using (Graphics g = Graphics.FromImage(cropped))
+            {
+                g.DrawImage(source, new Rectangle(0, 0, w, h), cropRect, GraphicsUnit.Pixel);
+            }
+
+            picBox.Image.Dispose(); // eski resmi serbest bırak
+            picBox.Image = cropped;
+            source.Dispose();
+        }
+
+
+        private void SavePartialImage(PictureBox picBox, int maxh, int h, string filePath)
+        {
+            if (picBox.Image == null) return;
+
+            Rectangle cropRect = new Rectangle(0, 0, maxh, h);
+            Bitmap source = new Bitmap(picBox.Image);
+            Bitmap cropped = new Bitmap(cropRect.Width, cropRect.Height);
+
+            using (Graphics g = Graphics.FromImage(cropped))
+            {
+                g.DrawImage(source, new Rectangle(0, 0, cropped.Width, cropped.Height), cropRect, GraphicsUnit.Pixel);
+            }
+
+            cropped.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+            cropped.Dispose();
+            source.Dispose();
+        }
+
 
         void parsePic(byte[] fileData, int x = 0, int y = 0, bool clear = true)
         {
@@ -1537,7 +1903,152 @@ namespace LaleMapTest
         }
 
 
+
         public AmigaPic PaintAmigaPic(AmigaPic pic, int destX = 0, int destY = 0, bool clearFirst = true)
+        {
+            int finalWidth = pic.width * 8;
+            int finalHeight = pic.lumph * pic.lumps;
+            int w = pic.width;
+            int h = pic.lumph;
+            int ll = pic.lumps;
+            int d = pic.dlumps;
+
+            byte[] chunky = new byte[finalWidth * finalHeight];
+            byte[,] chunkyPic = new byte[finalWidth, finalHeight];
+
+            for (int bp = 0; bp < d; bp++)
+            {
+                int bit = 1 << bp;
+                int planeOffset = bp * (w * h * ll);
+
+                for (int y = 0; y < h; y++)
+                {
+                    for (int l = 0; l < ll; l++)
+                    {
+                        int row = y * ll + l;
+                        for (int x = 0; x < w; x++)
+                        {
+                            int byteIndex = planeOffset + (row * w) + x;
+                            byte v = pic.uncompressedData[byteIndex];
+                            for (int j = 0; j < 8; j++)
+                            {
+                                int col = x * 8 + (7 - j);
+                                if ((v & (1 << j)) != 0)
+                                {
+                                    chunky[row * finalWidth + col] |= (byte)bit;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Bitmap targetBmp = null;
+            bool newBitmapCreated = false;
+            PixelFormat targetPixelFormat = PixelFormat.Format32bppArgb; // Use 32bpp Argb
+
+            if (clearFirst || pictureBox1.Image == null)
+            {
+                if (pictureBox1.Image != null && clearFirst)
+                {
+                    pictureBox1.Image.Dispose();
+                }
+
+                // Create a new 32bppArgb bitmap
+                targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, targetPixelFormat);
+                using (Graphics g = Graphics.FromImage(targetBmp))
+                {
+                    g.Clear(pictureBox1.BackColor);
+                }
+                pictureBox1.Image = targetBmp;
+                newBitmapCreated = true;
+            }
+            else
+            {
+                targetBmp = pictureBox1.Image as Bitmap;
+                // If existing image is not a Bitmap or not 32bppArgb, create a new one and copy old content
+                if (targetBmp == null || targetBmp.PixelFormat != targetPixelFormat)
+                {
+                    Image oldImage = pictureBox1.Image; // Use Image type for broader compatibility before casting
+                    targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, targetPixelFormat);
+                    using (Graphics g = Graphics.FromImage(targetBmp))
+                    {
+                        g.Clear(pictureBox1.BackColor);
+                        if (oldImage != null)
+                        {
+                            g.DrawImageUnscaled(oldImage, 0, 0);
+                            oldImage.Dispose();
+                        }
+                    }
+                    pictureBox1.Image = targetBmp;
+                    newBitmapCreated = true;
+                }
+            }
+
+            if (targetBmp == null)
+            {
+                throw new InvalidOperationException("Failed to get or create a valid Bitmap for the PictureBox.");
+            }
+
+
+            int ncol = 1 << d;
+            // Lock the bitmap's bits using the correct PixelFormat.
+            BitmapData bmpData = targetBmp.LockBits(new Rectangle(0, 0, targetBmp.Width, targetBmp.Height),
+                                                    ImageLockMode.ReadWrite, targetPixelFormat);
+            int stride = bmpData.Stride;
+            IntPtr ptr = bmpData.Scan0;
+            int bytes = Math.Abs(stride) * targetBmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy existing bitmap data into buffer
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            for (int sourceY = 0; sourceY < finalHeight; sourceY++)
+            {
+                for (int sourceX = 0; sourceX < finalWidth; sourceX++)
+                {
+                    int targetX = destX + sourceX;
+                    int targetY = destY + sourceY;
+
+                    byte index = chunky[sourceY * finalWidth + sourceX];
+                    chunkyPic[sourceX, sourceY] = index;
+
+                    // Check bounds
+                    if (targetX >= 0 && targetX < targetBmp.Width && targetY >= 0 && targetY < targetBmp.Height)
+                    {
+                        if (index >= ncol)
+                            index = 0;
+
+                        Color c = pic.palette[index];
+                        // Calculate position for 32bpp (4 bytes per pixel)
+                        int pos = targetY * stride + targetX * 4;
+
+                        // Ensure position is valid within the buffer (BGRA order for 32bppArgb)
+                        if (pos >= 0 && pos + 3 < bytes) // Check for 4 bytes
+                        {
+                            rgbValues[pos] = c.B;       // Blue component
+                            rgbValues[pos + 1] = c.G;   // Green component
+                            rgbValues[pos + 2] = c.R;   // Red component
+                            rgbValues[pos + 3] = c.A;   // Alpha component (fully opaque)
+                        }
+                    }
+                }
+            }
+
+            // Copy the modified byte array back to the bitmap.
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+            targetBmp.UnlockBits(bmpData);
+
+            pic.indexedImage = chunkyPic;
+
+            if (!newBitmapCreated)
+            {
+                pictureBox1.Refresh();
+            }
+
+            return pic;
+        }
+        public AmigaPic PaintAmigaPic24(AmigaPic pic, int destX = 0, int destY = 0, bool clearFirst = true)
         {
             int finalWidth = pic.width * 8;
             int finalHeight = pic.lumph * pic.lumps;
@@ -1586,6 +2097,8 @@ namespace LaleMapTest
                     // Dispose previous image only if clearing explicitly
                     pictureBox1.Image.Dispose();
                 }
+
+
                 // Create a new bitmap with PictureBox dimensions if clearing or none exists
                 targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
                 using (Graphics g = Graphics.FromImage(targetBmp))
@@ -2138,19 +2651,80 @@ namespace LaleMapTest
             if (checkBox3.Checked)
             {
                 if (listBox2.SelectedIndex >= 0)
-                    drawDungeon(1 + listBox2.SelectedIndex + eventOffset);
+                    drawDungeon(listBox2.SelectedIndex + eventOffset);
                 else
                     drawDungeon();
             }
         }
 
+        private string findCommand(string needle)
+        {
+            string resultx = $"'{needle}' aranıyor...\r\n\r\n";
+            for (int i = 1; i < 19; i++)
+            {
 
+                string filename = "haritalar\\" + i.ToString();
+                LoadAbkPic(filename);
+                map = ListData(PicBank);
+                string temp = ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+                byte[] result = File.ReadAllBytes("senaryo\\" + i.ToString());
+                listEvents(result, eventOffset, false);
+                //resultx += $"\r\n{i} aranıyor...\r\n";
+                for (int idx = 0; idx < eventDataList.Count; idx++)
+                {
+                    byte[] data = eventDataList[idx];
+                    string haystack = ViewEvent(data);
+                    int contains = haystack.IndexOf(needle, StringComparison.OrdinalIgnoreCase);
+                    if (contains >= 0)
+                    {
+                        int start = contains + needle.Length;
+                        //string sonu kontrolü kodunu yazmadım gereksiz?
 
+                        // Bir sonraki satır sonunu ara
+                        int newlinePos = haystack.IndexOf('\n', start);
+                        // Bulamazsak dize sonuna kadar al
+                        int endPos = (newlinePos != -1 ? newlinePos : haystack.Length);
+
+                        int length = Math.Min(endPos - start, 16);
+
+                        if (length < 0) length = 0;
+                        string crop = haystack.Substring(contains , length+ needle.Length);
+                        
+                        resultx += $"Bölüm:{i} // Olay: {eventOffset + idx} içerik: {crop}\r\n";
+                    }
+
+                }
+            }
+            resultx += "Arama tamamlandı.";
+            return resultx;
+
+        }
+
+        public static string TurkceYap(string s)
+        {
+            if (s == null) return null;
+            return s
+                .Replace("C", "ç")
+                .Replace("S", "ş")
+                .Replace("I", "ı")
+                .Replace("U", "ü")
+                .Replace("O", "ö")
+                .Replace("G", "ğ")
+                .ToLower();
+        }
+        private string bosluk(int count)
+        {
+            count = count * 4;
+            count = count < 0 ? 0 : count;
+            // count kadar boşluk döner
+            return new string(' ', count);
+        }
         private string ViewEvent(byte[] eventData)
         {
             StringBuilder sb = new StringBuilder();
             int offset = 0;
             int linecounter = 0;
+            int girinti = 0; 
             // İlk 8 baytı atla
             if (eventData.Length < 9) return "[Geçersiz event]";
 
@@ -2175,11 +2749,7 @@ namespace LaleMapTest
                 int ofs = offset;
                 switch (cmd)
                 {
-                    case 0x0D: //oda başlangıcı (1 parametre)
-                        byte blokimg = eventData[offset];
-                        offset++;
-                        sb.AppendLine(linecounter++.ToString() + "." + "Room Begin: (" + blokimg.ToString() + ")");
-                        break;
+
 
                     case 0x01: //IF
                         match = true;
@@ -2188,10 +2758,12 @@ namespace LaleMapTest
                             byte var = eventData[offset++];
                             byte equals = eventData[offset++];
                             byte jumpOver = eventData[offset++];
+                            string cevab = "negatif";
+                            if (equals == 1) cevab = "pozitif"; else if (equals != 0) cevab = $"belirsiz {equals}";
                             //byte jumpElse = eventData[offset++];
-                            if (var == 1) sb.AppendLine(linecounter++.ToString() + "." + $"IF isNotSet({equals}) Then SKIP {jumpOver} ({(jumpOver + linecounter)})");//,  else={jumpElse}]");
-                            else if (var == 2) sb.AppendLine(linecounter++.ToString() + "." + $"IF AnswerWas({equals}) Then SKIP {jumpOver} ({(jumpOver + linecounter)})");
-                            else sb.AppendLine(linecounter++.ToString() + "." + $"IF Operator({var})->({equals}) Then SKIP {jumpOver} ({(jumpOver + linecounter)})");
+                            if (var == 1) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Eğer ({equals}) ayarlı DEĞİL ise {jumpOver} ATLA (Satır: {(jumpOver + linecounter)})");
+                            else if (var == 2) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Eğer cevap ({cevab}) ise {jumpOver} ATLA (Satır: {(jumpOver + linecounter)})");
+                            else sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Eğer Operatör({var})->({equals}) ise {jumpOver} ATLA (Satır:{(jumpOver + linecounter)})");
                         }
                         break;
 
@@ -2204,8 +2776,8 @@ namespace LaleMapTest
                             {
                                 byte[] txt = new byte[len];
                                 Array.Copy(eventData, offset, txt, 0, len);
-                                string text = DecipherROT(txt).Replace("\xAC", " ");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Print \"{text}\"");
+                                string text = TurkceYap( DecipherROT(txt).Replace("\xAC", " "));
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Yaz \"{text}\"");
                                 offset += len;
                             }
                         }
@@ -2216,7 +2788,7 @@ namespace LaleMapTest
                         if (offset < eventData.Length)
                         {
                             byte imageId = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $"Show Image({imageId})");
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Resmi göster({imageId})");
                         }
                         break;
 
@@ -2227,33 +2799,38 @@ namespace LaleMapTest
                             byte len2 = eventData[offset + 1];
                             byte len1 = eventData[offset];
 
-                            if (len1 == 0x0E || len1 == 0x00)
+                            if (len1 == 0x0E )
                             {
-
                                 offset++;
                                 offset++;
                                 sb.AppendLine("");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Admit and Begin (0x{len1:X2}) ({len2})");
+                                string temp= len2==0?"":$"({ len2: X2})";
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Oyuncuyu odaya al. {temp}");
+                                
                             }
+                            
                             else if (len1 == 0x0F)
                             {
                                 offset++;
                                 offset++;
+                                girinti=0;
                                 if (len2 == 0x00)
                                 {
                                     sb.AppendLine("");
-                                    sb.AppendLine(linecounter++.ToString() + "." + $"End.");
+                                    sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " Blok Sonu.");
                                 }
                                 else
                                 {
-                                    sb.AppendLine(linecounter++.ToString() + $".Begin Special {len2}");
+                                    sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " Blok Sonu" +$" ({len2} ile).");
                                 }
+                                
                             }
                             else
                             {
                                 match = false;
                                 sb.AppendLine("");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Begin");
+                                sb.AppendLine(linecounter++.ToString("00") + "."+ bosluk(girinti) + " {"); //{başla
+                                girinti++;
                             }
                         }
                         else if (offset + 1 <= eventData.Length)
@@ -2263,7 +2840,7 @@ namespace LaleMapTest
                             {
                                 offset++;
                                 sb.AppendLine("");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Room End (4-0)");
+                                sb.AppendLine(linecounter++.ToString("00") + "." + $"Oda Sonu (4-0).");
                             }
                         }
 
@@ -2284,21 +2861,21 @@ namespace LaleMapTest
                                 Array.Copy(eventData, offset, opt2, 0, len2);
                                 offset += len2;
 
-                                string q1 = DecipherROT(opt1).Replace("\xAC", "\n");
-                                string q2 = DecipherROT(opt2).Replace("\xAC", "\n");
-                                sb.AppendLine(linecounter++.ToString() + "." + $"Present Choice:  {q1} / {q2}");
+                                string q1 = TurkceYap(DecipherROT(opt1).Replace("\xAC", "\n"));
+                                string q2 = TurkceYap(DecipherROT(opt2).Replace("\xAC", "\n"));
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Seçim yaptır:  {q1} / {q2}");
                             }
                         }
                         break;
 
-                    case 0x06: //bilinmeyen 6 parametreli komut (tahminen 3 adet 2 byte parametre)
+                    case 0x9F: //bilinmeyen 6 parametreli komut (tahminen 3 adet 2 byte parametre)
                         //06 05 07 81 03 17
                         byte bilinmeyen62 = eventData[offset++];
                         byte bilinmeyen63 = eventData[offset++];
                         byte bilinmeyen64 = eventData[offset++];
                         byte bilinmeyen65 = eventData[offset++];
                         //byte bilinmeyen66 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString() + "." + $"[UNK4-{cmd:X2}] {bilinmeyen62}, {bilinmeyen63}, {bilinmeyen64}, {bilinmeyen65}]");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [UNK4-{cmd:X2}] {bilinmeyen62}, {bilinmeyen63}, {bilinmeyen64}, {bilinmeyen65}]");
 
                         break;
 
@@ -2307,7 +2884,7 @@ namespace LaleMapTest
                         if (offset + 1 <= eventData.Length)
                         {
                             byte var = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $"SetVariable ({var})."); //, value ={ val}
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Değişkeni ayarla ({var})."); //, value ={ val}
                         }
                         break;
 
@@ -2322,14 +2899,29 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
+                            sb.AppendLine(
+                              $"{linecounter++:00}.{bosluk(girinti)} ⚔️⚔️ Savaş ⚔️⚔️ " +
+                              string.Join(
+                                ", ",
+                                new[]
+                                {
+                                  count       > 0 && enemyId     >= 0 && enemyId     < enemies.Length ? $"{count} adet [{enemyId}] {enemies[enemyId]}"     : count > 0? $"{count} adet [{enemyId}]":null,
+                                  bilinmeyen3 > 0 && bilinmeyen2 >= 0 && bilinmeyen2 < enemies.Length ? $"{bilinmeyen3} adet [{bilinmeyen2:x2}] {enemies[bilinmeyen2]}" :bilinmeyen3 > 0? $"{bilinmeyen3} adet [{bilinmeyen2:x2}]":null,
+                                  bilinmeyen5 > 0 && bilinmeyen4 >= 0 && bilinmeyen4 < enemies.Length ? $"{bilinmeyen5} adet [{bilinmeyen4:x2}] {enemies[bilinmeyen4]}" : bilinmeyen5 > 0? $"{bilinmeyen5} adet [{bilinmeyen4:x2}]":null
+                                }
+                                .Where(s => s != null)
+                                .DefaultIfEmpty("Hiç düşman yok")
+                              )
+                            );
+                            /*
                             if ((bilinmeyen4 < enemies.Length) && (bilinmeyen2 < enemies.Length) && (enemyId < enemies.Length))
                             {
-                                sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️ {zero} EnemyType1: [{enemyId}] {enemies[enemyId]} X {count}, EnemyType2: [{bilinmeyen2:x2}] {enemies[bilinmeyen2]} X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] {enemies[bilinmeyen4]} X {bilinmeyen5}");
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ⚔️⚔️ Savaş ⚔️⚔️ {zero} Düşmanlar: {count} adet [{enemyId}] {enemies[enemyId]}, {bilinmeyen3} adet [{bilinmeyen2:x2}] {enemies[bilinmeyen2]}, {bilinmeyen5} adet [{bilinmeyen4:x2}] {enemies[bilinmeyen4]}");
                             }
                             else
                             {
-                                sb.AppendLine(linecounter++.ToString() + "." + $" ⚔️⚔️ Fight ⚔️⚔️ {zero} EnemyType1: [{enemyId}]  X {count}, EnemyType2: [{bilinmeyen2:x2}] X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] X {bilinmeyen5}");
-                            }
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ⚔️⚔️ Savaş ⚔️⚔️ {zero} EnemyType1: [{enemyId}]  X {count}, EnemyType2: [{bilinmeyen2:x2}] X {bilinmeyen3}, EnemyType3: [{bilinmeyen4:x2}] X {bilinmeyen5}");
+                            }*/
                         }
                         break;
                     case 0x09: // loot ver 9 parametre
@@ -2342,13 +2934,16 @@ namespace LaleMapTest
                             byte bilinmeyen1 = eventData[offset++];
                             byte itemNo = eventData[offset++];
                             byte bilinmeyen2 = eventData[offset++];
+                            byte itemNo2 = eventData[offset++];
                             byte bilinmeyen3 = eventData[offset++];
-                            byte bilinmeyen4 = eventData[offset++];
-                            byte bilinmeyen5 = eventData[offset++];
+                            byte itemNo3 = eventData[offset++];
 
-                            sb.AppendLine(linecounter++.ToString() + "." + $"Loot $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
-                            if (itemNo > 0 && itemNo < 27) sb.AppendLine($"  Loot {bilinmeyen1}  item #{itemNo}({items[itemNo]})"); else sb.AppendLine($"  ?: {bilinmeyen1}  item#: {itemNo}");
-                            sb.AppendLine($"  Loot Params: {bilinmeyen2}, {bilinmeyen3}, {bilinmeyen4}, {bilinmeyen5}");
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" 💵💰💵 Ganimet $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
+                            if (itemNo > 0 && itemNo < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo}({items[itemNo]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen1}  item#: {itemNo}");
+                            if (itemNo2 > 0 && itemNo2 < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen2}  item #{itemNo2}({items[itemNo2]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen2}  item#: {itemNo2}");
+                            if (itemNo3 > 0 && itemNo3 < 27) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen3}  item #{itemNo3}({items[itemNo3]})"); else sb.AppendLine(bosluk(girinti) + $"     ?: {bilinmeyen3}  item#: {itemNo3}");
+
+                            
                         }
                         else
                         {
@@ -2359,7 +2954,7 @@ namespace LaleMapTest
 
                     case 0x0A: //rastgele iki metinden birini bas
                         match = true;
-                        sb.AppendLine(linecounter++.ToString() + "." + "[printRandom]");
+                        sb.AppendLine(linecounter++.ToString("00") + bosluk(girinti) + ". Rastgele birini yazdır: ");
 
                         // İlk metni oku
                         if (offset < eventData.Length)
@@ -2371,8 +2966,8 @@ namespace LaleMapTest
                                 Array.Copy(eventData, offset, txt1, 0, len1 - 1);
                                 offset += len1 - 1;
 
-                                string text1 = DecipherROT(txt1).Replace("\xAC", " ");
-                                sb.AppendLine($"- \"{text1}\"");
+                                string text1 = TurkceYap(DecipherROT(txt1).Replace("\xAC", " "));
+                                sb.AppendLine(bosluk(girinti) + $"- \"{text1}\"");
                             }
                         }
 
@@ -2391,8 +2986,8 @@ namespace LaleMapTest
                                     Array.Copy(eventData, offset, txt2, 0, len2);
                                     offset += len2;
 
-                                    string text2 = DecipherROT(txt2).Replace("\xAC", " ");
-                                    sb.AppendLine($"- \"{text2}\"");
+                                    string text2 = TurkceYap(DecipherROT(txt2).Replace("\xAC", " "));
+                                    sb.AppendLine(bosluk(girinti) + $"- \"{text2}\"");
                                 }
                             }
 
@@ -2412,9 +3007,16 @@ namespace LaleMapTest
                             byte bilinmeyen3 = eventData[offset++];
                             byte bilinmeyen4 = eventData[offset++];
                             byte bilinmeyen5 = eventData[offset++];
-                            string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️" };
-                            sb.AppendLine(linecounter++.ToString() + "." + $" [*★★**EXIT**★★*] Next Map: {bilinmeyen2}, {(bilinmeyen3 * 256) + bilinmeyen4}, {yon[bilinmeyen5]}");
+                            string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️", "Doğu ➡️", "UNKNOWN6", "UNKNOWN7" };
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] Yüklenecek Harita: {bilinmeyen2}, {(bilinmeyen3 * 256) + bilinmeyen4}, {yon[bilinmeyen5]}");
+                            sb.AppendLine("");
                         }
+                        break;
+
+                    case 0x0D: //oda başlangıcı (1 parametre)
+                        byte blokimg = eventData[offset];
+                        offset++;
+                        sb.AppendLine(linecounter++.ToString("00") + "." + " Oda başlangıcı: (Satır: " + blokimg.ToString() + ")");
                         break;
 
                     case 0x0E: //Blok sonu
@@ -2422,13 +3024,25 @@ namespace LaleMapTest
                         if (offset < eventData.Length)
                         {
                             byte dolar = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString() + "." + $"End {dolar}.");
+                            sb.AppendLine(linecounter++.ToString("00") + ". } devam et:");
+                            girinti=0;
+                        }
+                        break;
+                    case 0x0F: //Blok sonu
+                        match = true;
+                        if (offset < eventData.Length)
+                        {
+                            byte dolar = eventData[offset++];
+                            sb.AppendLine(linecounter++.ToString("00") + ". }");
+                            girinti--;
                         }
                         break;
 
                     case 0x10:  //exit event.
 
-                        sb.AppendLine(linecounter++.ToString() + "." + "[break]");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " Betiği Durdur ve çık.");
+                        sb.AppendLine();
+                        girinti--;
                         break;
 
                     case 0x11: //Konusan kafa ile konusma (0=random, 1-2-3-4 grup, 5+ npc)
@@ -2442,56 +3056,86 @@ namespace LaleMapTest
                                 byte[] txt = new byte[len];
                                 Array.Copy(eventData, offset, txt, 0, len);
                                 offset += len;
-                                string text = DecipherROT(txt).Replace("\xAC", "\n");
-                                if (faceId == 0) sb.AppendLine(linecounter++.ToString() + "." + $"Talk Random Face \"{text}\"");
-                                else if (faceId > 4) sb.AppendLine(linecounter++.ToString() + "." + $"Talk as NPC {faceId},\"{text}\"");
-                                else sb.AppendLine(linecounter++.ToString() + "." + $"Talk with Face {faceId},\"{text}\"");
+                                string text = TurkceYap(DecipherROT(txt).Replace("\xAC", "\n"));
+                                if (faceId == 0) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Rastgele surat ile konuş \"{text}\"");
+                                else if (faceId > 4) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Animasyonlu yüz konuş {faceId},\"{text}\"");
+                                else sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Bu surat ile konuş: {faceId},\"{text}\"");
                             }
                         }
                         break;
 
 
-                    case 0x12:  //bilinmeyen parametresiz komut
+                    case 0x12:  //vakit gündüz mü?
                         match = false;
-                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK0[{cmd:X2}] Test?");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Vakit gündüz mü?");
                         break;
 
                     case 0x17: //gösterilecek yüzü ayarla
                         match = true;
                         byte var1 = eventData[offset++];
                         byte var2 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString() + "." + $"Set Face [17] {var1},\"{var2}\"");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Yüzü ayarla [17] {var1},\"{var2}\"");
 
                         break;
 
-                    case 0x0C:  //bilinmeyen 3 parametreli komutlar
+                      //bilinmeyen 3 parametreli komutlar
                     case 0x16:
-                    case 0x1D:
-                    case 0x13:
+                    
                         match = true;
                         byte var4 = eventData[offset++];
                         byte var5 = eventData[offset++];
                         byte var6 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString() + "." + $"UNK3 [{cmd:X2}] {var4:X2}, {var5:X2}, {var6:X2}.");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" UNK3 [{cmd:X2}] {var4:X2}, {var5:X2}, {var6:X2}.");
 
                         break;
 
-                    case 0x19: //bilinmeyen 1 parametreli komut
-                    case 0x1A:
+                    case 0x1D: //modyify inventory
+                        match = true;
+                        byte stat4 = eventData[offset++];
+                        byte stat5 = eventData[offset++];
+                        byte stat6 = eventData[offset++];
+                        if (stat5 == 0x01)
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" {stat6} Numaralı eşyayı envanterden sil. [{cmd:X2}] {stat4:X2}, {stat5:X2},  {stat6:X2}].");
+                        else
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Envanter durumunu değiştir: [{cmd:X2}] {stat4:X2}, {stat5:X2}, {stat6:X2}].");
+
+                        break;
+
+                    case 0x0C: //modyify stat 
+                        match = true;
+                        byte stat1 = eventData[offset++];
+                        byte stat2 = eventData[offset++];
+                        byte stat3 = eventData[offset++];
+                        if (stat2==0x1d)
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini x {stat3}% düşür. [{cmd:X2}] {stat1:X2}, {stat2:X2},  {stat3:X2}].");
+                        else
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grup durumu değiştir: [{cmd:X2}] {stat1:X2}, {stat2:X2}, {stat3:X2}].");
+
+                        break;
+                        
+                    case 0x19: //play music
+                        match = true;
+                        byte muzik = eventData[offset++];
+
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Müzik Çal ({muzik}).");
+
+                        break;
+
+                    case 0x1A: //Kıvrık minus
                         match = true;
                         byte var1A = eventData[offset++];
                         if (var1A == 255)
                         {
-                            sb.AppendLine(linecounter++.ToString() + "." + $"[ Envanterdeki tüm paraları sıfırla ].");
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $"[ Envanterdeki tüm paraları sıfırla ].");
                         }
                         else
-                            sb.AppendLine(linecounter++.ToString() + "." + $"[UNK1 {cmd:X2}] {var1A}.");
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Para kontrolü: {var1A} kıvrık tahsil edilemedi mi?");
 
                         break;
 
                     case 0x1B: //oyunun hikayesini anlatan cutscene ve copyprotection
                         match = true;
-                        sb.AppendLine(linecounter++.ToString() + "." + "[Show Demo And Check WordList]");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + "[Hikayeyi anlat ve koruma kelimelerini ayarla]");
                         int wc = 0;
                         while (offset < eventData.Length)
                         {
@@ -2499,14 +3143,14 @@ namespace LaleMapTest
 
                             if (len == 0x03 || len == 0x02)
                             {
-                                sb.AppendLine("[end of word list]");
+                                sb.AppendLine(bosluk(girinti) + "[kelime listesi sonu]");
                                 offset--;
                                 break;
                             }
 
                             if (len >= 0x1F || offset + len > eventData.Length)
                             {
-                                sb.AppendLine($"[invalid word entry: len={len}]");
+                                sb.AppendLine(bosluk(girinti) + $"[Hatalı kelime: uzunluk={len}]");
                                 break;
                             }
 
@@ -2523,25 +3167,60 @@ namespace LaleMapTest
                             }
 
                             byte[] encrypted = raw.Take(textEnd).ToArray();
-                            string word = DecipherROT(encrypted); // ROT10 çözümü
+                            string word = TurkceYap(DecipherROT(encrypted)); // ROT10 çözümü
                             byte control = (textEnd < raw.Length) ? raw[textEnd] : (byte)0x00;
 
                             string page = word.Length >= 2 ? word.Substring(0, 2) : "??";
                             string wordNo = word.Length >= 4 ? word.Substring(2, 2) : "??";
                             string realWord = word.Length > 4 ? word.Substring(4) : "";
 
-                            sb.AppendLine($"{wc} - [{page}-{wordNo}]: \"{realWord}\"");
+                            sb.AppendLine(bosluk(girinti) + $"{wc} - [{page}-{wordNo}]: \"{realWord}\"");
                             wc++;
                             if (textEnd < raw.Length && control == 0x03)
                             {
-                                sb.AppendLine("[end of word list]");
+                                sb.AppendLine(bosluk(girinti) + "[Kelime listesi sonu]");
                                 break;
                             }
                         }
                         break;
+
+                    case 0x1C:  //Vecize öğretme listesini göster.
+
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " 📜📜📜 Vecize öğrenme listesini göster 📜📜📜 ");
+                        break;
+
+                    case 0x1E:
+                        match = true;
+                        if (offset < eventData.Length)
+                        {
+                            byte len = eventData[offset++];
+                            if (offset + len <= eventData.Length)
+                            {
+                                byte[] txt = new byte[len];
+                                byte inputatla= eventData[offset++];
+                                Array.Copy(eventData, offset, txt, 0, len);
+                                string text = TurkceYap(DecipherROT(txt));
+
+
+                                sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Sor ve eğer cevap (\"{text}\") DEĞİL ise {inputatla} ATLA (Satır: {inputatla+linecounter}). ");
+                                offset += len;
+                            }
+                        }
+                        break;
+
+                        break;
+
                     case 0x20: //bir adım geri git (odaya girilmişse geri çıkarır)
                         match = false;
-                        sb.AppendLine(linecounter++.ToString() + "." + $"Retrace (Go Back [14]).");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Geri çık (bir adım geri git).");
+                        break;
+
+                    case 0x06:
+                    case 0x13:
+                        match = true;
+                        byte var06 = eventData[offset++];
+                        
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [UNK1 {cmd:X2} {var06:X2}].");
                         break;
 
 
@@ -2555,15 +3234,15 @@ namespace LaleMapTest
                             maybeChar = (char)adjusted;
 
                         if (maybeChar.HasValue)
-                            sb.Append($"[{cmd:X2} ({maybeChar})] ");
+                            sb.Append($"[?{cmd:X2} ({maybeChar})] ");
                         else
-                            sb.Append($"[{cmd:X2}] ");
+                            sb.Append($"[?{cmd:X2}] ");
 
                         break;
                 }
                 if (match && (ofs == offset))
                 {
-                    sb.Append($"[0x{cmd:X2}] ");
+                    sb.Append($"[?0x{cmd:X2}] ");
                 }
             }
 
@@ -2778,7 +3457,7 @@ namespace LaleMapTest
                     textBox2.Text += "\r\n" + c;
 
                 }
-                textBox2.Text += "\r\n" + describeRoom(listBox1.Items[listBox1.SelectedIndex].ToString());
+                textBox2.Text += "\r\n" + describeRoom(listBox1.SelectedIndex);
 
 
 
@@ -3125,5 +3804,39 @@ namespace LaleMapTest
         {
             ExportListBoxToTxt(listBox1);
         }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            // Kullanımı:
+            string needle = ShowInputDialog("Metin Arama", "Senaryo olaylarında arma yapın:");
+            if (needle != null)
+            {
+                textBox2.Text = findCommand(needle);
+            }
+        }
+
+        public static string ShowInputDialog(string title, string prompt)
+        {
+            Form form = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                Text = title,
+                StartPosition = FormStartPosition.CenterParent
+            };
+            Label lbl = new Label() { Left = 10, Top = 20, Text = prompt, AutoSize = true };
+            TextBox tb = new TextBox() { Left = 10, Top = 45, Width = 360 };
+            Button btnOk = new Button() { Text = "Tamam", Left = 220, Width = 75, Top = 75, DialogResult = DialogResult.OK };
+            Button btnCancel = new Button() { Text = "İptal", Left = 300, Width = 75, Top = 75, DialogResult = DialogResult.Cancel };
+
+            form.Controls.AddRange(new Control[] { lbl, tb, btnOk, btnCancel });
+            form.AcceptButton = btnOk;
+            form.CancelButton = btnCancel;
+            tb.Text = "SetVariable ()";
+            return form.ShowDialog() == DialogResult.OK ? tb.Text : null;
+        }
+
+
+
     }
 }
