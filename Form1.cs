@@ -12,6 +12,45 @@ namespace LaleMapTest
 {
     //2025 ref ^ retrojen.org
 
+    public class ViewDirection
+    {
+        public Point[] offsets;
+        public Func<RoomData, int>[] wallTypes;
+        public Func<RoomData, int>[] wallSets;
+        public Func<RoomData, int>[] floorTypes;
+        public Func<RoomData, int>[] ceilingTypes;
+        public bool[] flipHorizontalWalls;
+    };
+
+    
+
+    public struct RoomData
+    {
+        public int Index;
+
+        public int ceilingType;
+        public int floorType;
+
+        public int topType;
+        public int rightType;
+        public int bottomType;
+        public int leftType;
+
+        public int topWall;
+        public int rightWall;
+        public int bottomWall;
+        public int leftWall;
+
+        public int enemySpawn;
+        public int isShop;
+
+        public int roomevent64;
+        public int roomevent32;
+        public int roomevent;
+
+        public int eventIndex;
+    }
+
     public struct AmigaPic
     {
         public Color[] palette;       // 32 girdilik palet
@@ -260,6 +299,9 @@ namespace LaleMapTest
             public int wall;  // 1=üst, 2=sağ, 3=alt, 4=sol, 5=orta
         }
 
+       
+        List<RoomData> rooms = new List<RoomData>();
+
         private int roomSize = 15;
         private int margin = 1;
         Bitmap dungeonMapBackup = null; // Orijinal haritanın kopyası
@@ -274,7 +316,7 @@ namespace LaleMapTest
 
         string[] haritalar =
         {
-            "otopark",
+            "Mecidiyeköy Otoparkı",
             "Mecidiyeköy",
             "Beşiktaş",
             "Eminönü",
@@ -282,16 +324,16 @@ namespace LaleMapTest
             "Ümraniye Koruluğu",
             "Kadıköy",
             "Beyoğlu",
-            "9",
+            "Ortaköy",
             "Beyazıt",
-            "savaş girişi",
+            "Fatih",
             "Sarıyer",
             "Kadıköy Kanalizasyonları",
             "Üsküdar Kanalizasyonları",
             "Topkapı Sarayı",
             "Sarıyer kanalizasyonları",
             "Kız Kulesi",
-            "18"
+            "Fatih Mahzenleri"
         };
 
         string[] items = {
@@ -383,6 +425,49 @@ namespace LaleMapTest
         "dragon"
     };
         // monster #68 = savaşa Dost Öğrenci ekler
+
+        private static readonly Dictionary<int, ViewDirection> viewTable = new()
+        {
+            [0] = new ViewDirection // kuzey
+            {
+                offsets = new[] { new Point(0, -2), new Point(0, -1), new Point(0, 0) },
+                wallTypes = new Func<RoomData, int>[] { r => r.topWall, r => r.leftWall, r => r.rightWall },
+                wallSets = new Func<RoomData, int>[] { r => r.topType, r => r.leftType, r => r.rightType },
+                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
+                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
+                flipHorizontalWalls = new[] { false, false, true }
+            },
+
+            [1] = new ViewDirection // doğu
+            {
+                offsets = new[] { new Point(+2, 0), new Point(+1, 0), new Point(0, 0) },
+                wallTypes = new Func<RoomData, int>[] { r => r.rightWall, r => r.topWall, r => r.bottomWall },
+                wallSets = new Func<RoomData, int>[] { r => r.rightType, r => r.topType, r => r.bottomType },
+                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
+                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
+                flipHorizontalWalls = new[] { false, false, true }
+            },
+
+            [2] = new ViewDirection // güney
+            {
+                offsets = new[] { new Point(0, +2), new Point(0, +1), new Point(0, 0) },
+                wallTypes = new Func<RoomData, int>[] { r => r.bottomWall, r => r.rightWall, r => r.leftWall },
+                wallSets = new Func<RoomData, int>[] { r => r.bottomType, r => r.rightType, r => r.leftType },
+                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
+                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
+                flipHorizontalWalls = new[] { false, false, true }
+            },
+
+            [3] = new ViewDirection // batı
+            {
+                offsets = new[] { new Point(-2, 0), new Point(-1, 0), new Point(0, 0) },
+                wallTypes = new Func<RoomData, int>[] { r => r.leftWall, r => r.bottomWall, r => r.topWall },
+                wallSets = new Func<RoomData, int>[] { r => r.leftType, r => r.bottomType, r => r.topType },
+                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
+                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
+                flipHorizontalWalls = new[] { false, false, true }
+            },
+        };
 
 
         public Form1()
@@ -973,9 +1058,16 @@ namespace LaleMapTest
                 {
                     if (line.StartsWith("Idx:"))
                     {
-                        listBox1.Items.Add(line.Trim()); // Satırı listeye ekle
+                        var room = ParseRoomLine(line.Trim());
+                        if (room.HasValue)
+                        {
+                            
+                            rooms.Add(room.Value);
+                            listBox1.Items.Add(line.Trim()); // Opsiyonel: sadece görsel amaçlı
+                        }
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -1080,7 +1172,7 @@ namespace LaleMapTest
             }
 
             StringBuilder sb = new StringBuilder();
-            string desc = LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
+            string desc = haritalar[Convert.ToInt32(textBox1.Text)-1];//LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
             restext += "\r\n" + ("Bölüm " + textBox1.Text + ": " + desc);
             // 0-3: Bilinmiyor
             restext += "\r\n" + ("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
@@ -1124,254 +1216,596 @@ namespace LaleMapTest
             return restext;
         }
 
-        public string describeRoom(int roomIdx, int facing = 0)
+        public RoomData GetRoomData(int x, int y, List<RoomData> rooms)
         {
+            if (x < 0 || x >= map.width || y < 0 || y >= map.height)
+                return new RoomData
+                {
+                    Index = -1,
+
+                    topType = 0,
+                    topWall = 0,
+
+                    rightType = 0,
+                    rightWall = 0,
+
+                    bottomType = 0,
+                    bottomWall = 0,
+
+                    leftType = 0,
+                    leftWall = 0,
+
+                    ceilingType = 0,
+                    floorType = 0
+                };
+
+            int index = y * map.width + x;
+            if (index < 0 || index >= rooms.Count)
+                return rooms[0];
+
+            return rooms[index];
+        }
+
+
+        public RoomData? ParseRoomLine(string line)
+        {
+            string[] parts = line.Split('\t');
+            if (parts.Length < 20)
+                return null;
+
+                RoomData temp= new RoomData
+                {
+                    Index = int.Parse(parts[0].Replace("Idx:", "").Trim()),
+
+                    topType = int.Parse(parts[5]),
+                    topWall = int.Parse(parts[6]),
+
+                    rightType = int.Parse(parts[7]),
+                    rightWall = int.Parse(parts[8]),
+
+                    bottomType = int.Parse(parts[9]),
+                    bottomWall = int.Parse(parts[10]),
+
+                    leftType = int.Parse(parts[11]),
+                    leftWall = int.Parse(parts[12]),
+
+                    ceilingType = int.Parse(parts[13]),
+                    floorType = int.Parse(parts[14])
+                };
+            return temp;
+
+        }
+
+        public string describeRoom(int roomIdx, int facing = 3)
+        {
+            int y =(roomIdx-1) / map.width;
+            int x = (roomIdx-1) - (y * map.width);
+
             var idDescriptions = new Dictionary<ushort, string>
-                    {
-                        { 0,   "Boş" },
-                        { 1,   "Ahşap" },
-                        { 2,   "Tuğla-Demir" },
-                        { 3,   "Taş-Ahşap" },
-                        { 4,   "Ağaçlık" },
-                        { 5,   "Kanalizasyon" },
-                        { 6,   "Kemik" },
-                        { 7,   "Sunta" },
-                        { 8,   "Deniz" },
-                        { 9,   "İniş/çıkış" },
-                    };
+            {
+                { 0,   "Boş" },
+                { 1,   "Ahşap" },
+                { 2,   "Tuğla-Demir" },
+                { 3,   "Taş-Ahşap" },
+                { 4,   "Ağaçlık" },
+                { 5,   "Kanalizasyon" },
+                { 6,   "Kemik" },
+                { 7,   "Sunta" },
+                { 8,   "Deniz" },
+                { 9,   "İniş/çıkış" },
+            };
 
 
             ClearPictureBoxToBlack(pictureBox2);
-            int ceilingType;
-            int floorType;
 
-            int topType;
-            int rightType;
-            int bottomType;
-            int leftType;
-
-            int topWall;
-            int rightWall;
-            int bottomWall;
-            int leftWall;
-
-            int enemySpawn;
-            int isShop;
-
-
-            int roomevent64;
-            int roomevent32;
-            int roomevent;
-
-            int eventIndex;
-            string line;
-            string[] parts;
             int tavan;
+            string desc = "";
             Bitmap clip;
 
-
+            RoomData room;
 
             switch (facing)
             {
                 case 0://Kuzey
-                    if (roomIdx - map.width * 2 > 0)
+                    if (roomIdx - map.width * 2 > 0)  //en arka seviye oda harita içinde mi? kuzey tarafı 0'dan küçükse harita biter
                     {
-                        line = listBox1.Items[roomIdx - map.width * 2].ToString();
-                        parts = line.Split('\t');
-                        if (parts.Length < 20) return "Geçersiz oda verisi.";
-                        ceilingType = int.Parse(parts[13]);
-                        floorType = int.Parse(parts[14]);
-
-                        topType = int.Parse(parts[5]);
-                        rightType = int.Parse(parts[7]);
-                        bottomType = int.Parse(parts[9]);
-                        leftType = int.Parse(parts[11]);
-
-                        topWall = int.Parse(parts[6]);
-                        rightWall = int.Parse(parts[8]);
-                        bottomWall = int.Parse(parts[10]);
-                        leftWall = int.Parse(parts[12]);
+                        room = GetRoomData(x, y-2, rooms);
                         tavan = 0;
-                        if (ceilingType > 0) tavan = 5 + (ceilingType * 3);
+                        if (room.ceilingType > 0) tavan = 5 + (room.ceilingType * 3);
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 39, clip);
 
-                        tavan = 9 + (floorType * 3);
+                        tavan = 9 + (room.floorType * 3);
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 96 - 44, clip);
 
                         //uzak seviye
-                        if (topType > 0)
+                        if (room.topType > 0)
                         {
-                            clip = getclipart(setler[topType], topWall + 10);
+                            clip = getclipart(setler[room.topType], room.topWall + 10);
                             putclipart(pictureBox2, 33, 49, clip);
                         }
-                        if (leftType > 0)
+                        if (room.leftType > 0)
                         {
-                            clip = getclipart(setler[leftType], leftWall + 8);
+                            clip = getclipart(setler[room.leftType], room.leftWall + 8);
                             putclipart(pictureBox2, 35, 37, clip);
                         }
-                        if (rightType > 0)
+                        if (room.rightType > 0)
                         {
-                            clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 8));
+                            clip = FlipHorizontal(getclipart(setler[room.rightType], room.rightWall + 8));
                             putclipart(pictureBox2, 42, 36, clip);
                         }
                     }
 
                     if (roomIdx - map.width > 0)
                     {
-                        line = listBox1.Items[roomIdx - map.width].ToString();
-                        parts = line.Split('\t');
-                        if (parts.Length < 20) return "Geçersiz oda verisi.";
-                        ceilingType = int.Parse(parts[13]);
-                        floorType = int.Parse(parts[14]);
 
-                        topType = int.Parse(parts[5]);
-                        rightType = int.Parse(parts[7]);
-                        bottomType = int.Parse(parts[9]);
-                        leftType = int.Parse(parts[11]);
-
-                        topWall = int.Parse(parts[6]);
-                        rightWall = int.Parse(parts[8]);
-                        bottomWall = int.Parse(parts[10]);
-                        leftWall = int.Parse(parts[12]);
+                        room = GetRoomData(x, y-1, rooms);
                         tavan = 0;
-                        if (ceilingType > 0) tavan = 4 + (ceilingType * 3);
+                        if (room.ceilingType > 0) tavan = 4 + (room.ceilingType * 3);
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 20, clip);
 
-                        tavan = 10 + (floorType * 3);
+                        tavan = 10 + (room.floorType * 3);
                         clip = getclipart(10, tavan);
                         putclipart(pictureBox2, -4, 96 - 33, clip);
 
 
 
                         //orta seviye
-                        if (topType > 0)
+                        if (room.topType > 0)
                         {
-                            clip = getclipart(setler[topType], topWall + 4);
+                            clip = getclipart(setler[room.topType], room.topWall + 4);
                             putclipart(pictureBox2, 35, 37, clip);
                         }
-                        if (leftType > 0)
+                        if (room.leftType > 0)
                         {
-                            clip = getclipart(setler[leftType], leftWall + 6);
+                            clip = getclipart(setler[room.leftType], room.leftWall + 6);
                             putclipart(pictureBox2, 19, 18, clip);
                         }
-                        if (rightType > 0)
+                        if (room.rightType > 0)
                         {
-                            clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 6));
+                            clip = FlipHorizontal(getclipart(setler[room.rightType], room.rightWall + 6));
                             putclipart(pictureBox2, 96 - 51, 18, clip);
                         }
 
                     }
+
+                    if (roomIdx > 0)
+                    {
+                        room = GetRoomData(x, y, rooms);
+
+                        // Event bilgisi
+                        if (room.eventIndex >= 0 && room.eventIndex < eventDataList.Count)
+                        {
+                            byte[] data = eventDataList[room.eventIndex];
+                            string eventText = ViewEvent(data);
+                            if (checkBox1.Checked) eventText += ViewEvent2(data);
+                            desc += $"Oda Eventleri (#{room.eventIndex}):\r\n{eventText}\r\n\r\n";
+                        }
+
+                        // Özel durumlar
+                        if (room.isShop == 31)
+                            desc += "🛒 Bu oda bir dükkandır.\r\n";
+                        if (room.enemySpawn == 15)
+                            desc += "⚠️ Bu odada rastgele düşman spawn olabilir.\r\n";
+
+
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 3 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 0, clip);
+
+                        tavan = 11 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 13, clip);
+
+
+                        //yakın seviye
+                        if (room.topType > 0)
+                        {
+                            clip = getclipart(setler[room.topType], room.topWall - 1);
+                            putclipart(pictureBox2, 15, 17, clip);
+                        }
+                        if (room.leftType > 0)
+                        {
+                            clip = getclipart(setler[room.leftType], room.leftWall + 2);
+                            putclipart(pictureBox2, 0, 0, clip);
+                        }
+                        else
+                        {
+                            //bu duvar boş, öyle ise bir uzaktaki duvara bakalım:
+                            RoomData roomL = GetRoomData(x - 1, y, rooms);
+                            if (roomL.topType > 0)
+                            {
+                                clip = getclipart(setler[roomL.topType], roomL.topWall - 1);
+                                putclipart(pictureBox2, - 44, 17, clip);
+                            }
+                        }
+
+                        if (room.rightType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.rightType], room.rightWall + 2));
+                            putclipart(pictureBox2, 96 - 32, 0, clip);
+                        }
+                        else
+                        {
+                            //bu duvar boş, öyle ise bir uzaktaki duvara bakalım:
+                            room = GetRoomData(x + 1, y, rooms);
+                            if (room.topType > 0)
+                            {
+                                clip = getclipart(setler[room.topType], room.topWall - 1);
+                                putclipart(pictureBox2, 96 - 22, 17, clip);
+                            }
+                        }
+                    }
                     break;
 
-                case 1://doğu
+                case 1: // Doğu
+                    if (x + 2 < map.width)
+                    {
+                        room = GetRoomData(x + 2, y, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 5 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 39, clip);
 
-                    break;
-                case 2://güney
+                        tavan = 9 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 44, clip);
 
+                        if (room.rightType > 0)
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall + 10);
+                            putclipart(pictureBox2, 33, 49, clip);
+                        }
+                        if (room.topType > 0) // harita üstü = ekran SOLU
+                        {
+                            clip = getclipart(setler[room.topType], room.topWall + 8);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.bottomType > 0) // harita altı = ekran SAĞI
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.bottomType], room.bottomWall + 8));
+                            putclipart(pictureBox2, 42, 36, clip);
+                        }
+                    }
+
+                    if (x + 1 < map.width)
+                    {
+                        room = GetRoomData(x + 1, y, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 4 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 20, clip);
+
+                        tavan = 10 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 33, clip);
+
+                        if (room.rightType > 0)
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall + 4);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.topType > 0)
+                        {
+                            clip = getclipart(setler[room.topType], room.topWall + 6);
+                            putclipart(pictureBox2, 19, 18, clip);
+                        }
+                        if (room.bottomType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.bottomType], room.bottomWall + 6));
+                            putclipart(pictureBox2, 96 - 51, 18, clip);
+                        }
+                    }
+
+                    if (roomIdx > 0)
+                    {
+                        room = GetRoomData(x, y, rooms);
+
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 3 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 0, clip);
+
+                        tavan = 11 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 13, clip);
+
+                        // Karşıdaki duvar: sağ
+                        if (room.rightType > 0)
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall - 1);
+                            putclipart(pictureBox2, 15, 17, clip);
+                        }
+
+                        if (room.topType > 0)
+                        {
+                            clip = getclipart(setler[room.topType], room.topWall + 2);
+                            putclipart(pictureBox2, 0, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomU = GetRoomData(x, y - 1, rooms);
+                            if (roomU.rightType > 0)
+                            {
+                                clip = getclipart(setler[roomU.rightType], roomU.rightWall - 1);
+                                putclipart(pictureBox2, -44, 17, clip);
+                            }
+                        }
+
+                        if (room.bottomType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.bottomType], room.bottomWall + 2));
+                            putclipart(pictureBox2, 96 - 32, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomD = GetRoomData(x, y + 1, rooms);
+                            if (roomD.rightType > 0)
+                            {
+                                clip = getclipart(setler[roomD.rightType], roomD.rightWall - 1);
+                                putclipart(pictureBox2, 96 - 22, 17, clip);
+                            }
+                        }
+                    }
                     break;
-                case 3://batı
+
+
+                case 2: // Güney
+                    if (y + 2 < map.height)
+                    {
+                        room = GetRoomData(x, y + 2, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 5 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 39, clip);
+
+                        tavan = 9 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 44, clip);
+
+                        if (room.bottomType > 0)
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall + 10);
+                            putclipart(pictureBox2, 33, 49, clip);
+                        }
+                        if (room.rightType > 0) // harita sağı = ekran solu
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall + 8);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.leftType > 0) // harita solu = ekran sağı
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.leftType], room.leftWall + 8));
+                            putclipart(pictureBox2, 42, 36, clip);
+                        }
+                    }
+
+                    if (y + 1 < map.height)
+                    {
+                        room = GetRoomData(x, y + 1, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 4 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 20, clip);
+
+                        tavan = 10 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 33, clip);
+
+                        if (room.bottomType > 0)
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall + 4);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.rightType > 0) // harita sağı = ekran solu
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall + 6);
+                            putclipart(pictureBox2, 19, 18, clip);
+                        }
+                        if (room.leftType > 0) // harita solu = ekran sağı
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.leftType], room.leftWall + 6));
+                            putclipart(pictureBox2, 96 - 51, 18, clip);
+                        }
+                    }
+
+                    if (roomIdx > 0)
+                    {
+                        room = GetRoomData(x, y, rooms);
+
+
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 3 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 0, clip);
+
+                        tavan = 11 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 13, clip);
+
+                        // Karşıdaki duvar artık bottom
+                        if (room.bottomType > 0)
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall - 1);
+                            putclipart(pictureBox2, 15, 17, clip);
+                        }
+
+                        if (room.rightType > 0) // harita sağı = ekran solu
+                        {
+                            clip = getclipart(setler[room.rightType], room.rightWall + 2);
+                            putclipart(pictureBox2, 0, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomR = GetRoomData(x + 1, y, rooms);
+                            if (roomR.bottomType > 0)
+                            {
+                                clip = getclipart(setler[roomR.bottomType], roomR.bottomWall - 1);
+                                putclipart(pictureBox2, -44, 17, clip);
+                            }
+                        }
+
+                        if (room.leftType > 0) // harita solu = ekran sağı
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.leftType], room.leftWall + 2));
+                            putclipart(pictureBox2, 96 - 32, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomL = GetRoomData(x - 1, y, rooms);
+                            if (roomL.bottomType > 0)
+                            {
+                                clip = getclipart(setler[roomL.bottomType], roomL.bottomWall - 1);
+                                putclipart(pictureBox2, 96 - 22, 17, clip);
+                            }
+                        }
+                    }
                     break;
+
+
+                case 3: // Batı
+                    if (x - 2 >= 0)
+                    {
+                        room = GetRoomData(x - 2, y, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 5 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 39, clip);
+
+                        tavan = 9 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 44, clip);
+
+                        if (room.leftType > 0)
+                        {
+                            clip = getclipart(setler[room.leftType], room.leftWall + 10);
+                            putclipart(pictureBox2, 33, 49, clip);
+                        }
+                        if (room.bottomType > 0) // harita altı = ekran SOLU
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall + 8);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.topType > 0) // harita üstü = ekran SAĞI
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.topType], room.topWall + 8));
+                            putclipart(pictureBox2, 42, 36, clip);
+                        }
+                    }
+
+                    if (x - 1 >= 0)
+                    {
+                        room = GetRoomData(x - 1, y, rooms);
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 4 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 20, clip);
+
+                        tavan = 10 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 33, clip);
+
+                        if (room.leftType > 0)
+                        {
+                            clip = getclipart(setler[room.leftType], room.leftWall + 4);
+                            putclipart(pictureBox2, 35, 37, clip);
+                        }
+                        if (room.bottomType > 0)
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall + 6);
+                            putclipart(pictureBox2, 19, 18, clip);
+                        }
+                        if (room.topType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.topType], room.topWall + 6));
+                            putclipart(pictureBox2, 96 - 51, 18, clip);
+                        }
+                    }
+
+                    if (roomIdx > 0)
+                    {
+                        room = GetRoomData(x, y, rooms);
+
+                        tavan = 0;
+                        if (room.ceilingType > 0) tavan = 3 + (room.ceilingType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 0, clip);
+
+                        tavan = 11 + (room.floorType * 3);
+                        clip = getclipart(10, tavan);
+                        putclipart(pictureBox2, -4, 96 - 13, clip);
+
+                        // Karşıdaki duvar: sol
+                        if (room.leftType > 0)
+                        {
+                            clip = getclipart(setler[room.leftType], room.leftWall - 1);
+                            putclipart(pictureBox2, 15, 17, clip);
+                        }
+
+                        if (room.bottomType > 0)
+                        {
+                            clip = getclipart(setler[room.bottomType], room.bottomWall + 2);
+                            putclipart(pictureBox2, 0, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomD = GetRoomData(x, y + 1, rooms);
+                            if (roomD.leftType > 0)
+                            {
+                                clip = getclipart(setler[roomD.leftType], roomD.leftWall - 1);
+                                putclipart(pictureBox2, -44, 17, clip);
+                            }
+                        }
+
+                        if (room.topType > 0)
+                        {
+                            clip = FlipHorizontal(getclipart(setler[room.topType], room.topWall + 2));
+                            putclipart(pictureBox2, 96 - 32, 0, clip);
+                        }
+                        else
+                        {
+                            RoomData roomU = GetRoomData(x, y - 1, rooms);
+                            if (roomU.leftType > 0)
+                            {
+                                clip = getclipart(setler[roomU.leftType], roomU.leftWall - 1);
+                                putclipart(pictureBox2, 96 - 22, 17, clip);
+                            }
+                        }
+                    }
+                    break;
+
             }
 
-            line = listBox1.Items[roomIdx].ToString();
-            parts = line.Split('\t');
-            if (parts.Length < 20) return "Geçersiz oda verisi.";
+            room = GetRoomData(x, y, rooms);
 
-            try
+            if (room.eventIndex >= 0 && room.eventIndex < eventDataList.Count)
             {
-                ceilingType = int.Parse(parts[13]);
-                floorType = int.Parse(parts[14]);
-
-                topType = int.Parse(parts[5]);
-                rightType = int.Parse(parts[7]);
-                bottomType = int.Parse(parts[9]);
-                leftType = int.Parse(parts[11]);
-
-                topWall = int.Parse(parts[6]);
-                rightWall = int.Parse(parts[8]);
-                bottomWall = int.Parse(parts[10]);
-                leftWall = int.Parse(parts[12]);
-
-                enemySpawn = int.Parse(parts[15]);
-                isShop = int.Parse(parts[16]);
-
-                roomevent64 = int.Parse(parts[17]);
-                roomevent32 = int.Parse(parts[18]);
-                roomevent = int.Parse(parts[19]);
-
-                eventIndex = (roomevent + (roomevent32 - 1) * 31) - eventOffset;
-
-                string desc = "";
-
-
-
-
-
-
-                tavan = 0;
-                if (ceilingType > 0) tavan = 3 + (ceilingType * 3);
-                clip = getclipart(10, tavan);
-                putclipart(pictureBox2, -4, 0, clip);
-
-                tavan = 11 + (floorType * 3);
-                clip = getclipart(10, tavan);
-                putclipart(pictureBox2, -4, 96 - 13, clip);
-
-
-                //yakın seviye
-                if (topType > 0)
-                {
-                    clip = getclipart(setler[topType], topWall - 1);
-                    putclipart(pictureBox2, 15, 17, clip);
-                }
-                if (leftType > 0)
-                {
-                    clip = getclipart(setler[leftType], leftWall + 2);
-                    putclipart(pictureBox2, 0, 0, clip);
-                }
-                if (rightType > 0)
-                {
-                    clip = FlipHorizontal(getclipart(setler[rightType], rightWall + 2));
-                    putclipart(pictureBox2, 96 - 32, 0, clip);
-                }
-
-
-                //orta seviye
-
-                desc += $"\r\n- Tavan: {ceilingType}\r\n\r\n";
-
-                desc += $"Doku Seti:\r\n";
-                desc += $"- \tÜst: {topType},\r\n Sol: {leftType}\t\tSağ: {rightType}\r\n\tAlt: {bottomType}\r\n \r\n";
-
-                desc += $"Fonsiyon:\r\n";
-                desc += $"- \tÜst: {topWall},\r\n Sol: {leftWall}\t\tSağ: {rightWall}\r\n\tAlt: {bottomWall}\r\n \r\n";
-
-                desc += $"- Zemin: {floorType}\r\n";
-
-                // Event bilgisi
-                if (eventIndex >= 0 && eventIndex < eventDataList.Count)
-                {
-                    byte[] data = eventDataList[eventIndex];
-                    string eventText = ViewEvent(data);
-                    if (checkBox1.Checked) eventText += ViewEvent2(data);
-                    desc += $"Oda Eventleri (#{eventIndex}):\r\n{eventText}\r\n\r\n";
-                }
-
-                // Özel durumlar
-                if (isShop == 31)
-                    desc += "🛒 Bu oda bir dükkandır.\r\n";
-                if (enemySpawn == 15)
-                    desc += "⚠️ Bu odada rastgele düşman spawn olabilir.\r\n";
-
-                return desc;
+                byte[] data = eventDataList[room.eventIndex];
+                string eventText = ViewEvent(data);
+                if (checkBox1.Checked) eventText += ViewEvent2(data);
+                desc += $"Oda Eventleri (#{room.eventIndex}):\r\n{eventText}\r\n\r\n";
             }
-            catch
-            {
-                return "Oda verisi parse edilirken hata oluştu.";
-            }
+
+            desc += $"\r\n- Tavan: {room.ceilingType}\r\n\r\n";
+
+            desc += $"Doku Seti:\r\n";
+            desc += $"- \tÜst: {room.topType},\r\n Sol: {room.leftType}\t\tSağ: {room.rightType}\r\n\tAlt: {room.bottomType}\r\n \r\n";
+
+            desc += $"Fonsiyon:\r\n";
+            desc += $"- \tÜst: {room.topWall},\r\n Sol: {room.leftWall}\t\tSağ: {room.rightWall}\r\n\tAlt: {room.bottomWall}\r\n \r\n";
+
+            desc += $"- Zemin: {room.floorType}\r\n";
+
+            if (room.isShop == 31)
+                desc += "🛒 Bu oda bir dükkandır.\r\n";
+            if (room.enemySpawn == 15)
+                desc += "⚠️ Bu odada rastgele düşman spawn olabilir.\r\n";
+
+            return desc;
+
         }
 
         private Bitmap FlipHorizontal(Bitmap original)
@@ -2331,6 +2765,7 @@ namespace LaleMapTest
         {
             // ListBox1'in önce temizlendiğinden emin olalım.
             listBox1.Items.Clear();
+            rooms.Clear();
             LaleMap map = new LaleMap(); // Initialize the map variable
                                          // --- 1. Header Satırı ---
                                          // y = 0 satırının ilk 20 sütun değerini tablarla ayrılmış bir satır olarak ekle.
@@ -2369,7 +2804,7 @@ namespace LaleMapTest
                 {
                     // Satır başına 20 sütun alalım: x = currentColumn'dan currentColumn+20'e kadar.
                     int endColumn = Math.Min(currentColumn + 19, imageWidth);
-                    string line = "Idx " + (count + 1).ToString() + ":"; // Her satırın başına "Idx:" ekle
+                    string line = "Idx: " + (count + 1).ToString() ; // Her satırın başına "Idx:" ekle
 
                     for (int x = currentColumn; x < endColumn && count < dataLength; x++)
                     {
@@ -2377,6 +2812,8 @@ namespace LaleMapTest
 
                     }
                     listBox1.Items.Add(line);
+                    var room = ParseRoomLine(line.Trim());
+                    rooms.Add(room.Value);
                     count++;
 
                     // Eğer dataLength kadar indeks eklenmişse, döngüden çık.
@@ -3032,14 +3469,27 @@ namespace LaleMapTest
                         match = true;
                         if (offset + 4 < eventData.Length) // toplam 5 byte
                         {
-                            byte bilinmeyen2 = eventData[offset++];
-                            byte bilinmeyen3 = eventData[offset++];
-                            byte bilinmeyen4 = eventData[offset++];
-                            byte bilinmeyen5 = eventData[offset++];
-                            string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️", "Doğu ➡️", "UNKNOWN6", "UNKNOWN7" };
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] Yüklenecek Harita: {bilinmeyen2}, {(bilinmeyen3 * 256) + bilinmeyen4}, {yon[bilinmeyen5]}");
+                            byte haritaNo = eventData[offset++];
+                            byte hucreH = eventData[offset++];
+                            byte hucreL = eventData[offset++];
+                            byte bakisYonu = eventData[offset++];
+                            string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️", "Doğu ➡️ belki ?Random?", "UNKNOWN6", "UNKNOWN7" };
+                            if (haritaNo==100) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] -Şehir Haritası-");
+                            else sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] Yüklenecek Harita: ({haritaNo}) {haritalar[haritaNo-1]}, Oda: {(hucreH * 256) + hucreL}, Bakış Yönü: {yon[bakisYonu]}");
                             sb.AppendLine("");
                         }
+                        break;
+
+                    case 0x0C: //modyify stat 
+                        match = true;
+                        byte stat1 = eventData[offset++];
+                        byte stat2 = eventData[offset++];
+                        byte stat3 = eventData[offset++];
+                        if (stat2 == 0x1d)
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini x {stat3}% düşür. [{cmd:X2}] {stat1:X2}, {stat2:X2},  {stat3:X2}].");
+                        else
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grup durumu değiştir: [{cmd:X2}] {stat1:X2}, {stat2:X2}, {stat3:X2}].");
+
                         break;
 
                     case 0x0D: //oda başlangıcı (1 parametre)
@@ -3118,28 +3568,10 @@ namespace LaleMapTest
 
                         break;
 
-                    case 0x1D: //modyify inventory
-                        match = true;
-                        byte stat4 = eventData[offset++];
-                        byte stat5 = eventData[offset++];
-                        byte stat6 = eventData[offset++];
-                        if (stat5 == 0x01)
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" {stat6} Numaralı eşyayı envanterden sil. [{cmd:X2}] {stat4:X2}, {stat5:X2},  {stat6:X2}].");
-                        else
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Envanter durumunu değiştir: [{cmd:X2}] {stat4:X2}, {stat5:X2}, {stat6:X2}].");
 
-                        break;
-
-                    case 0x0C: //modyify stat 
-                        match = true;
-                        byte stat1 = eventData[offset++];
-                        byte stat2 = eventData[offset++];
-                        byte stat3 = eventData[offset++];
-                        if (stat2 == 0x1d)
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini x {stat3}% düşür. [{cmd:X2}] {stat1:X2}, {stat2:X2},  {stat3:X2}].");
-                        else
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grup durumu değiştir: [{cmd:X2}] {stat1:X2}, {stat2:X2}, {stat3:X2}].");
-
+                    case 0x18: //play music
+                        match = false;
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ✅ Bir karakter seçtir.");
                         break;
 
                     case 0x19: //play music
@@ -3218,6 +3650,18 @@ namespace LaleMapTest
                         sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + " 📜📜📜 Vecize öğrenme listesini göster 📜📜📜 ");
                         break;
 
+                    case 0x1D: //modyify inventory
+                        match = true;
+                        byte stat4 = eventData[offset++];
+                        byte stat5 = eventData[offset++];
+                        byte stat6 = eventData[offset++];
+                        if (stat5 == 0x01)
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" {stat6} Numaralı eşyayı envanterden sil. [{cmd:X2}] {stat4:X2}, {stat5:X2},  {stat6:X2}].");
+                        else
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Envanter durumunu değiştir: [{cmd:X2}] {stat4:X2}, {stat5:X2}, {stat6:X2}].");
+
+                        break;
+
                     case 0x1E:
                         match = true;
                         if (offset < eventData.Length)
@@ -3242,6 +3686,11 @@ namespace LaleMapTest
                     case 0x20: //bir adım geri git (odaya girilmişse geri çıkarır)
                         match = false;
                         sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Geri çık (bir adım geri git).");
+                        break;
+
+                    case 0x21: //Haritaya çıkış
+                        match = false;
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Şehir Haritasına çık.");
                         break;
 
                     case 0x06:
