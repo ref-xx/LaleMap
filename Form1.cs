@@ -12,18 +12,7 @@ namespace LaleMapTest
 {
     //2025 ref ^ retrojen.org
 
-    public class ViewDirection
-    {
-        public Point[] offsets;
-        public Func<RoomData, int>[] wallTypes;
-        public Func<RoomData, int>[] wallSets;
-        public Func<RoomData, int>[] floorTypes;
-        public Func<RoomData, int>[] ceilingTypes;
-        public bool[] flipHorizontalWalls;
-    };
-
-    
-
+   
     public struct RoomData
     {
         public int Index;
@@ -299,7 +288,7 @@ namespace LaleMapTest
             public int wall;  // 1=üst, 2=sağ, 3=alt, 4=sol, 5=orta
         }
 
-       
+
         List<RoomData> rooms = new List<RoomData>();
 
         private int roomSize = 15;
@@ -313,6 +302,8 @@ namespace LaleMapTest
         //editor data
         private int highlightRoomIndex = -1;
         private int highlightWallDirection = -1;
+
+        private int locx, locy;
 
         string[] haritalar =
         {
@@ -426,53 +417,12 @@ namespace LaleMapTest
     };
         // monster #68 = savaşa Dost Öğrenci ekler
 
-        private static readonly Dictionary<int, ViewDirection> viewTable = new()
-        {
-            [0] = new ViewDirection // kuzey
-            {
-                offsets = new[] { new Point(0, -2), new Point(0, -1), new Point(0, 0) },
-                wallTypes = new Func<RoomData, int>[] { r => r.topWall, r => r.leftWall, r => r.rightWall },
-                wallSets = new Func<RoomData, int>[] { r => r.topType, r => r.leftType, r => r.rightType },
-                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
-                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
-                flipHorizontalWalls = new[] { false, false, true }
-            },
-
-            [1] = new ViewDirection // doğu
-            {
-                offsets = new[] { new Point(+2, 0), new Point(+1, 0), new Point(0, 0) },
-                wallTypes = new Func<RoomData, int>[] { r => r.rightWall, r => r.topWall, r => r.bottomWall },
-                wallSets = new Func<RoomData, int>[] { r => r.rightType, r => r.topType, r => r.bottomType },
-                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
-                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
-                flipHorizontalWalls = new[] { false, false, true }
-            },
-
-            [2] = new ViewDirection // güney
-            {
-                offsets = new[] { new Point(0, +2), new Point(0, +1), new Point(0, 0) },
-                wallTypes = new Func<RoomData, int>[] { r => r.bottomWall, r => r.rightWall, r => r.leftWall },
-                wallSets = new Func<RoomData, int>[] { r => r.bottomType, r => r.rightType, r => r.leftType },
-                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
-                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
-                flipHorizontalWalls = new[] { false, false, true }
-            },
-
-            [3] = new ViewDirection // batı
-            {
-                offsets = new[] { new Point(-2, 0), new Point(-1, 0), new Point(0, 0) },
-                wallTypes = new Func<RoomData, int>[] { r => r.leftWall, r => r.bottomWall, r => r.topWall },
-                wallSets = new Func<RoomData, int>[] { r => r.leftType, r => r.bottomType, r => r.topType },
-                ceilingTypes = new Func<RoomData, int>[] { r => r.ceilingType, r => r.ceilingType, r => r.ceilingType },
-                floorTypes = new Func<RoomData, int>[] { r => r.floorType, r => r.floorType, r => r.floorType },
-                flipHorizontalWalls = new[] { false, false, true }
-            },
-        };
 
 
         public Form1()
         {
             InitializeComponent();
+            panel1.KeyDown += panel1_KeyDown;
 
         }
 
@@ -1061,7 +1011,7 @@ namespace LaleMapTest
                         var room = ParseRoomLine(line.Trim());
                         if (room.HasValue)
                         {
-                            
+
                             rooms.Add(room.Value);
                             listBox1.Items.Add(line.Trim()); // Opsiyonel: sadece görsel amaçlı
                         }
@@ -1172,7 +1122,7 @@ namespace LaleMapTest
             }
 
             StringBuilder sb = new StringBuilder();
-            string desc = haritalar[Convert.ToInt32(textBox1.Text)-1];//LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
+            string desc = haritalar[Convert.ToInt32(textBox1.Text) - 1];//LevelNames.TryGetValue((ushort)Convert.ToInt32(textBox1.Text), out var d) ? d : "Bilinmeyen Level";
             restext += "\r\n" + ("Bölüm " + textBox1.Text + ": " + desc);
             // 0-3: Bilinmiyor
             restext += "\r\n" + ("0-3 : (bilinmeyen) " + string.Join(" ", header[0], header[1], header[2], header[3]));
@@ -1253,33 +1203,33 @@ namespace LaleMapTest
             if (parts.Length < 20)
                 return null;
 
-                RoomData temp= new RoomData
-                {
-                    Index = int.Parse(parts[0].Replace("Idx:", "").Trim()),
+            RoomData temp = new RoomData
+            {
+                Index = int.Parse(parts[0].Replace("Idx:", "").Trim()),
 
-                    topType = int.Parse(parts[5]),
-                    topWall = int.Parse(parts[6]),
+                topType = int.Parse(parts[5]),
+                topWall = int.Parse(parts[6]),
 
-                    rightType = int.Parse(parts[7]),
-                    rightWall = int.Parse(parts[8]),
+                rightType = int.Parse(parts[7]),
+                rightWall = int.Parse(parts[8]),
 
-                    bottomType = int.Parse(parts[9]),
-                    bottomWall = int.Parse(parts[10]),
+                bottomType = int.Parse(parts[9]),
+                bottomWall = int.Parse(parts[10]),
 
-                    leftType = int.Parse(parts[11]),
-                    leftWall = int.Parse(parts[12]),
+                leftType = int.Parse(parts[11]),
+                leftWall = int.Parse(parts[12]),
 
-                    ceilingType = int.Parse(parts[13]),
-                    floorType = int.Parse(parts[14])
-                };
+                ceilingType = int.Parse(parts[13]),
+                floorType = int.Parse(parts[14])
+            };
             return temp;
 
         }
 
         public string describeRoom(int roomIdx, int facing = 3)
         {
-            int y =(roomIdx-1) / map.width;
-            int x = (roomIdx-1) - (y * map.width);
+            int y = (roomIdx - 1) / map.width;
+            int x = (roomIdx - 1) - (y * map.width);
 
             var idDescriptions = new Dictionary<ushort, string>
             {
@@ -1309,7 +1259,7 @@ namespace LaleMapTest
                 case 0://Kuzey
                     if (roomIdx - map.width * 2 > 0)  //en arka seviye oda harita içinde mi? kuzey tarafı 0'dan küçükse harita biter
                     {
-                        room = GetRoomData(x, y-2, rooms);
+                        room = GetRoomData(x, y - 2, rooms);
                         tavan = 0;
                         if (room.ceilingType > 0) tavan = 5 + (room.ceilingType * 3);
                         clip = getclipart(10, tavan);
@@ -1340,7 +1290,7 @@ namespace LaleMapTest
                     if (roomIdx - map.width > 0)
                     {
 
-                        room = GetRoomData(x, y-1, rooms);
+                        room = GetRoomData(x, y - 1, rooms);
                         tavan = 0;
                         if (room.ceilingType > 0) tavan = 4 + (room.ceilingType * 3);
                         clip = getclipart(10, tavan);
@@ -1419,7 +1369,7 @@ namespace LaleMapTest
                             if (roomL.topType > 0)
                             {
                                 clip = getclipart(setler[roomL.topType], roomL.topWall - 1);
-                                putclipart(pictureBox2, - 44, 17, clip);
+                                putclipart(pictureBox2, -44, 17, clip);
                             }
                         }
 
@@ -2804,7 +2754,7 @@ namespace LaleMapTest
                 {
                     // Satır başına 20 sütun alalım: x = currentColumn'dan currentColumn+20'e kadar.
                     int endColumn = Math.Min(currentColumn + 19, imageWidth);
-                    string line = "Idx: " + (count + 1).ToString() ; // Her satırın başına "Idx:" ekle
+                    string line = "Idx: " + (count + 1).ToString(); // Her satırın başına "Idx:" ekle
 
                     for (int x = currentColumn; x < endColumn && count < dataLength; x++)
                     {
@@ -3405,7 +3355,7 @@ namespace LaleMapTest
                             if (itemNo == 66) { mod1 = 4; itemNo = 22; } //166 numarali item=tüftüf+4 silikon baba special
 
                             sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" 💵💰💵 Ganimet $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
-                            if (itemNo > 0 && itemNo < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo} {items[itemNo]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen1 > 0? $"     ?:  {bilinmeyen1}  item#: {ritemNo1}":""));
+                            if (itemNo > 0 && itemNo < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo} {items[itemNo]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen1 > 0 ? $"     ?:  {bilinmeyen1}  item#: {ritemNo1}" : ""));
                             if (itemNo2 > 0 && itemNo2 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen2}  item #{itemNo2} {items[itemNo2]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen2 > 0 ? $"     ?:  {bilinmeyen2}  item#: {ritemNo2}" : ""));
                             if (itemNo3 > 0 && itemNo3 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen3}  item #{itemNo3} {items[itemNo3]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen3 > 0 ? $"     ?:  {bilinmeyen3}  item#: {ritemNo3}" : ""));
 
@@ -3474,8 +3424,8 @@ namespace LaleMapTest
                             byte hucreL = eventData[offset++];
                             byte bakisYonu = eventData[offset++];
                             string[] yon = { "Kuzey ⬆️", "Doğu ➡️", "Güney ⬇️", "Batı ⬅️", "Doğu ➡️ belki ?Random?", "UNKNOWN6", "UNKNOWN7" };
-                            if (haritaNo==100) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] -Şehir Haritası-");
-                            else sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] Yüklenecek Harita: ({haritaNo}) {haritalar[haritaNo-1]}, Oda: {(hucreH * 256) + hucreL}, Bakış Yönü: {yon[bakisYonu]}");
+                            if (haritaNo == 100) sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] -Şehir Haritası-");
+                            else sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" [*★★**ÇIKIŞ**★★*] Yüklenecek Harita: ({haritaNo}) {haritalar[haritaNo - 1]}, Oda: {(hucreH * 256) + hucreL}, Bakış Yönü: {yon[bakisYonu]}");
                             sb.AppendLine("");
                         }
                         break;
@@ -3921,6 +3871,9 @@ namespace LaleMapTest
             var result = GetRoomAndWallFromPixel(e.X, e.Y);
             if (result.index > 0 && result.index < listBox1.Items.Count)
             {
+                locy = (result.index - 1) / map.width;
+                locy = (result.index - 1) - (locy * map.width);
+
                 textBox2.Text = ($"Tıklanan oda numarası: {result.index}");
                 listBox1.SelectedIndex = result.index;
                 //0x0B [Harita No] [n1*256+n2 lokasyon] [bakış yönü]
@@ -3935,14 +3888,11 @@ namespace LaleMapTest
                     textBox2.Text += "\r\n" + c;
 
                 }
-                textBox2.Text += "\r\n" + describeRoom(listBox1.SelectedIndex);
+                textBox2.Text += "\r\n" + describeRoom(listBox1.SelectedIndex, Convert.ToInt32(textBox5.Text));
+
+                //ClickedRoomInfo opposite = findOppositeWall(result);
 
 
-
-
-                ClickedRoomInfo opposite = findOppositeWall(result);
-
-                // veya bir düzenleme penceresi açabilirsiniz
             }
         }
 
@@ -4332,6 +4282,100 @@ namespace LaleMapTest
                 fetchMap(textBox1.Text);
             }
 
+        }
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Lokasyon ve yönü al
+            int locX = locx;
+            int locY = locy;
+            int facing = int.Parse(textBox5.Text);
+
+            switch (e.KeyChar)
+            {
+                case (char)Keys.D: // Sağ ok: yönü +1 yap
+                    facing = (facing + 1) % 4;
+                    break;
+
+                case (char)Keys.A: // Sol ok: yönü -1 yap
+                    facing = (facing + 3) % 4; // % 4 ile 0-3 aralığında döner
+                    break;
+
+                case (char)Keys.W: // İleri hareket
+                    switch (facing)
+                    {
+                        case 0: locY--; break; // kuzey
+                        case 1: locX++; break; // doğu
+                        case 2: locY++; break; // güney
+                        case 3: locX--; break; // batı
+                    }
+                    break;
+            }
+
+            // Harita sınırı kontrolü
+            if (locX < 0 || locX >= map.width || locY < 0 || locY >= map.height)
+                return;
+
+            // Yeni durumu kaydet
+            locx = locX;
+            locy = locY;
+            textBox5.Text = facing.ToString();
+
+            // Haritayı yeniden çiz
+            string desc = describeRoom(locY * map.width + locX, facing);
+            textBox1.Text = desc;
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            button22.Focus();
+
+        }
+
+        private void panel1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            // Bu olmazsa yön tuşları panelde çalışmaz
+
+        }
+
+        private void panel1_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+
+        private void button22_KeyDown(object sender, KeyEventArgs e)
+        {
+            int facing = int.Parse(textBox5.Text);
+
+            switch (e.KeyCode)
+            {
+                case Keys.D: // yönü sağa çevir
+                    facing = (facing + 1) % 4;
+                    break;
+
+                case Keys.A: // yönü sola çevir
+                    facing = (facing + 3) % 4;
+                    break;
+
+                case Keys.W: // ileri hareket
+                    switch (facing)
+                    {
+                        case 0: locy--; break;
+                        case 1: locx++; break;
+                        case 2: locy++; break;
+                        case 3: locx--; break;
+                    }
+                    break;
+            }
+
+            // sınır kontrolü
+            if (locx < 0 || locx >= map.width || locy < 0 || locy >= map.height)
+                return;
+
+            textBox5.Text = facing.ToString(); // yeni yönü yaz
+            textBox1.Text = describeRoom(locy * map.width + locx, facing); // görünümü güncelle
+
+            e.Handled = true;
         }
     }
 }

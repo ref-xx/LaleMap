@@ -70,10 +70,15 @@
             pictureBox2 = new PictureBox();
             button21 = new Button();
             comboBox5 = new ComboBox();
+            textBox5 = new TextBox();
+            label2 = new Label();
+            panel1 = new Panel();
+            button22 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -133,7 +138,7 @@
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(674, 432);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(430, 214);
+            listBox1.Size = new Size(421, 214);
             listBox1.TabIndex = 5;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
@@ -485,7 +490,7 @@
             // 
             pictureBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             pictureBox2.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox2.Location = new Point(1110, 432);
+            pictureBox2.Location = new Point(8, 7);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(192, 192);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -512,14 +517,57 @@
             comboBox5.TabIndex = 21;
             comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
             // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(755, 10);
+            textBox5.Name = "textBox5";
+            textBox5.ReadOnly = true;
+            textBox5.Size = new Size(43, 23);
+            textBox5.TabIndex = 22;
+            textBox5.Text = "0";
+            textBox5.KeyPress += textBox5_KeyPress;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(1149, 640);
+            label2.Name = "label2";
+            label2.Size = new Size(159, 15);
+            label2.TabIndex = 23;
+            label2.Text = "<-click here to navigate map";
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(pictureBox2);
+            panel1.Location = new Point(1101, 432);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(207, 205);
+            panel1.TabIndex = 24;
+            panel1.TabStop = true;
+            panel1.PreviewKeyDown += panel1_PreviewKeyDown;
+            // 
+            // button22
+            // 
+            button22.Location = new Point(1101, 643);
+            button22.Name = "button22";
+            button22.Size = new Size(53, 12);
+            button22.TabIndex = 25;
+            button22.Text = "''''";
+            button22.UseVisualStyleBackColor = true;
+            button22.Click += button22_Click;
+            button22.KeyDown += button22_KeyDown;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1320, 685);
+            Controls.Add(button22);
+            Controls.Add(panel1);
+            Controls.Add(label2);
+            Controls.Add(textBox5);
             Controls.Add(comboBox5);
             Controls.Add(button21);
-            Controls.Add(pictureBox2);
             Controls.Add(groupBox2);
             Controls.Add(button12);
             Controls.Add(checkBox3);
@@ -545,6 +593,7 @@
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -593,5 +642,9 @@
         private PictureBox pictureBox2;
         private Button button21;
         private ComboBox comboBox5;
+        private TextBox textBox5;
+        private Label label2;
+        private Panel panel1;
+        private Button button22;
     }
 }
