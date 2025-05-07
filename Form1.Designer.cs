@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             button1 = new Button();
             textBox1 = new TextBox();
             pictureBox1 = new PictureBox();
@@ -583,6 +584,7 @@
             Controls.Add(textBox1);
             Controls.Add(button1);
             Controls.Add(button8);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Lale Map Viewer 2025 Ref/retrojen.org";
             Load += Form1_Load;
