@@ -73,13 +73,11 @@
             comboBox5 = new ComboBox();
             textBox5 = new TextBox();
             label2 = new Label();
-            panel1 = new Panel();
             button22 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -491,7 +489,7 @@
             // 
             pictureBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             pictureBox2.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox2.Location = new Point(8, 7);
+            pictureBox2.Location = new Point(1116, 432);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(192, 192);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -530,6 +528,7 @@
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Location = new Point(1149, 640);
             label2.Name = "label2";
@@ -537,21 +536,12 @@
             label2.TabIndex = 23;
             label2.Text = "<-click here to navigate map";
             // 
-            // panel1
-            // 
-            panel1.Controls.Add(pictureBox2);
-            panel1.Location = new Point(1101, 432);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(207, 205);
-            panel1.TabIndex = 24;
-            panel1.TabStop = true;
-            panel1.PreviewKeyDown += panel1_PreviewKeyDown;
-            // 
             // button22
             // 
-            button22.Location = new Point(1101, 643);
+            button22.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button22.Location = new Point(1116, 640);
             button22.Name = "button22";
-            button22.Size = new Size(53, 12);
+            button22.Size = new Size(38, 15);
             button22.TabIndex = 25;
             button22.Text = "''''";
             button22.UseVisualStyleBackColor = true;
@@ -563,8 +553,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1320, 685);
+            Controls.Add(pictureBox2);
             Controls.Add(button22);
-            Controls.Add(panel1);
             Controls.Add(label2);
             Controls.Add(textBox5);
             Controls.Add(comboBox5);
@@ -595,7 +585,6 @@
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -646,7 +635,6 @@
         private ComboBox comboBox5;
         private TextBox textBox5;
         private Label label2;
-        private Panel panel1;
         private Button button22;
     }
 }

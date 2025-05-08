@@ -422,7 +422,6 @@ namespace LaleMapTest
         public Form1()
         {
             InitializeComponent();
-            panel1.KeyDown += panel1_KeyDown;
 
         }
 
