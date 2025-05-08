@@ -1201,7 +1201,8 @@ namespace LaleMapTest
             string[] parts = line.Split('\t');
             if (parts.Length < 20)
                 return null;
-
+            int roomeventb = int.Parse(parts[19]);
+            int roomevent32b = int.Parse(parts[18]);
             RoomData temp = new RoomData
             {
                 Index = int.Parse(parts[0].Replace("Idx:", "").Trim()),
@@ -1219,7 +1220,14 @@ namespace LaleMapTest
                 leftWall = int.Parse(parts[12]),
 
                 ceilingType = int.Parse(parts[13]),
-                floorType = int.Parse(parts[14])
+                floorType = int.Parse(parts[14]),
+
+                 roomevent = int.Parse(parts[19]),
+                 roomevent32 = int.Parse(parts[18]),
+                 roomevent64 = int.Parse(parts[17]),
+                eventIndex = (roomeventb + (roomevent32b - 1) * 31),
+                enemySpawn = int.Parse(parts[15]), //random spawn
+                 isShop = int.Parse(parts[16]) //dükkanlar
             };
             return temp;
 
@@ -1323,21 +1331,6 @@ namespace LaleMapTest
                     if (roomIdx > 0)
                     {
                         room = GetRoomData(x, y, rooms);
-
-                        // Event bilgisi
-                        if (room.eventIndex >= 0 && room.eventIndex < eventDataList.Count)
-                        {
-                            byte[] data = eventDataList[room.eventIndex];
-                            string eventText = ViewEvent(data);
-                            if (checkBox1.Checked) eventText += ViewEvent2(data);
-                            desc += $"Oda Eventleri (#{room.eventIndex}):\r\n{eventText}\r\n\r\n";
-                        }
-
-                        // Özel durumlar
-                        if (room.isShop == 31)
-                            desc += "🛒 Bu oda bir dükkandır.\r\n";
-                        if (room.enemySpawn == 15)
-                            desc += "⚠️ Bu odada rastgele düşman spawn olabilir.\r\n";
 
 
                         tavan = 0;
@@ -1729,10 +1722,10 @@ namespace LaleMapTest
             }
 
             room = GetRoomData(x, y, rooms);
-
-            if (room.eventIndex >= 0 && room.eventIndex < eventDataList.Count)
+            int roomeventno = room.eventIndex - eventOffset;
+            if (roomeventno >= 0 && roomeventno < eventDataList.Count)
             {
-                byte[] data = eventDataList[room.eventIndex];
+                byte[] data = eventDataList[roomeventno];
                 string eventText = ViewEvent(data);
                 if (checkBox1.Checked) eventText += ViewEvent2(data);
                 desc += $"Oda Eventleri (#{room.eventIndex}):\r\n{eventText}\r\n\r\n";
@@ -4322,7 +4315,7 @@ namespace LaleMapTest
 
             // Haritayı yeniden çiz
             string desc = describeRoom(locY * map.width + locX, facing);
-            textBox1.Text = desc;
+            textBox2.Text = desc;
         }
 
         private void button22_Click(object sender, EventArgs e)
@@ -4372,7 +4365,7 @@ namespace LaleMapTest
                 return;
 
             textBox5.Text = facing.ToString(); // yeni yönü yaz
-            textBox1.Text = describeRoom(locy * map.width + locx, facing); // görünümü güncelle
+            textBox2.Text = describeRoom(locy * map.width + locx, facing); // görünümü güncelle
 
             e.Handled = true;
         }
