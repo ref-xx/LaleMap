@@ -65,8 +65,8 @@ namespace LaleMapTest
     {
         public int startx;
         public int starty;
-
-
+        public int haritagirisix;
+        public int haritagirisiy;
         public int width;             // Genişlik (dosyada bayt cinsinden)
         public int height;            // Yükseklik (satır sayısı)
         public string scenario;
@@ -417,7 +417,41 @@ namespace LaleMapTest
     };
         // monster #68 = savaşa Dost Öğrenci ekler
 
+        Dictionary<ushort, string> dokuSetleri = new Dictionary<ushort, string>
+            {
+                { 0,   "Boş" },
+                { 1,   "Ahşap" },
+                { 2,   "Tuğla-Demir" },
+                { 3,   "Taş-Ahşap" },
+                { 4,   "Ağaçlık" },
+                { 5,   "Kanalizasyon" },
+                { 6,   "Kemik" },
+                { 7,   "Sunta" },
+                { 8,   "Deniz" },
+                { 9,   "İniş/çıkış" },
+            };
 
+        /// <summary>
+        /// level doku setleri max 4 adet.
+        /// </summary>
+        /// <param name="textureIds"></param>
+        public void viewTextureList(int[] textureIds)
+        {
+            listBox3.Items.Clear();
+            int c = 0;
+            foreach (ushort id in textureIds)
+            {
+                if (dokuSetleri.TryGetValue(id, out string name))
+                {
+                    listBox3.Items.Add($"{c}. {id} - {name}");
+                }
+                else
+                {
+                    listBox3.Items.Add($"{c}. {id} - (Bilinmeyen)");
+                }
+                c++;
+            }
+        }
 
         public Form1()
         {
@@ -439,13 +473,13 @@ namespace LaleMapTest
             LoadAbkPic(filename);
 
             map = ListData(PicBank);
-
-            eventOffset = drawDungeon() - 1;
-            textBox2.Text = "Level:" + mapNo + "\r\n";
-            byte[] result = File.ReadAllBytes("senaryo\\" + mapNo);
-            listEvents(result, eventOffset);
-            textBox1.Text = mapNo;
             textBox2.Text = ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
+            drawDungeon();
+            
+            byte[] result = File.ReadAllBytes("senaryo\\" + mapNo);
+            listEvents(result, eventOffset-1);
+            textBox1.Text = mapNo;
+            
         }
 
         public void drawRoom(int selectedListIndex)
@@ -706,10 +740,17 @@ namespace LaleMapTest
                             if (minEvent > (roomevent + (roomevent32 - 1) * 31)) minEvent = (roomevent + (roomevent32 - 1) * 31);
                         }
                         string enemies = "";
+
                         if (enemySpawn > 0)
                         {
                             enemies = "⚔" + enemySpawn.ToString().Trim();
                             g.DrawString(enemies, font, Brushes.Red, new RectangleF(x, y + 10, roomSize, roomSize), sf);
+                        }                        
+                        if (map.haritagirisix==j && map.haritagirisiy==i)
+                        {
+                            
+                            enemies = "IN";
+                            g.DrawString(enemies, font, Brushes.Cyan, new RectangleF(x, y + 10, roomSize, roomSize), sf);
                         }
                     }
                 }
@@ -878,6 +919,13 @@ namespace LaleMapTest
                 case 1:
                     Pen pene = new Pen(Color.Blue, 1);
                     g.DrawLine(pene, x1, y1, x2, y2);
+                    if (setler[wallType] == 9)
+                    {
+                        Pen tex = new Pen(Color.Cyan, 1);
+                        //g.DrawLine(tex, x1, y1, x2, y2);
+                       DrawPlus(g, tex, x1, y1, x2, y2);
+
+                    }
                     break;
                 case 2:
                     // "Kapı" görselliği
@@ -921,6 +969,14 @@ namespace LaleMapTest
                         // Kapı eğikse, düz çiz
                         g.DrawLine(pen, x1, y1, x2, y2);
                     }
+
+                    if (setler[wallType] == 9)
+                    {
+                        Pen tex = new Pen(Color.Cyan, 1);
+                        //g.DrawLine(tex, x1, y1, x2, y2);
+                        DrawPlus(g, tex, x1, y1, x2, y2,"ALT");
+
+                    }
                     break;
 
                 case 3:
@@ -931,6 +987,7 @@ namespace LaleMapTest
                 case 4:
                     pen.Color = Color.Cyan;
                     g.DrawLine(pen, x1, y1, x2, y2);
+
                     break;
 
                 default:
@@ -939,18 +996,11 @@ namespace LaleMapTest
                     break;
             }
 
-            switch (wallType)
-            {
-                case 4:
-                    Pen tex = new Pen(Color.Cyan, 1);
-                    //g.DrawLine(tex, x1, y1, x2, y2);
-                    DrawPlus(g, tex, x1, y1, x2, y2);
 
-                    break;
-            }
+
         }
 
-        private void DrawPlus(Graphics g, Pen pen, int x1, int y1, int x2, int y2)
+        private void DrawPlus(Graphics g, Pen pen, int x1, int y1, int x2, int y2, string text = "")
         {
             // Orta noktayı bul
             float midX = (x1 + x2) / 2f;
@@ -987,6 +1037,7 @@ namespace LaleMapTest
 
             // Ortasına dik çizgi
             g.DrawLine(pen, perpX1, perpY1, perpX2, perpY2);
+           
         }
 
 
@@ -1132,17 +1183,24 @@ namespace LaleMapTest
             // 5: Yükseklik
             restext += "\r\n" + ("5 : Yükseklik = " + header[5]);
 
+            // 6: bilinmeyen
+            restext += "\r\n" + ("6 : Tehlike Oranı = " + header[6]);
+
             // 6-12: Bilinmiyor
-            restext += "\r\n" + ("6-10 : Duvar Setleri = " + string.Join(" ", header.Skip(6).Take(5)));
+            restext += "\r\n" + ("7-10 : Duvar Setleri = " + string.Join(" ", header.Skip(7).Take(4)));
+
+            //byte[] textureIds = header.Skip(6).Take(5).Select(b => (byte)b).ToArray();
+            
 
             setler[0] = header[6];
             setler[1] = header[7];
             setler[2] = header[8];
             setler[3] = header[9];
             setler[4] = header[10];
-
-            restext += "\r\n" + ("10-12 : (Bilinmeyen) " + string.Join(" ", header.Skip(11).Take(2)));
-
+            viewTextureList(setler);
+            restext += "\r\n" + ("11-12 : Harita girişi " + string.Join(" ", header.Skip(11).Take(2)));
+            map.haritagirisix = header[11]-1;
+            map.haritagirisiy = header[12]-1;
             // 13-20: Düşman numaraları
             restext += "\r\n" + ("13-20 : Süpriz Düşman Listesi");
             for (int i = 13; i <= 20; i++)
@@ -1238,19 +1296,7 @@ namespace LaleMapTest
             int y = (roomIdx - 1) / map.width;
             int x = (roomIdx - 1) - (y * map.width);
 
-            var idDescriptions = new Dictionary<ushort, string>
-            {
-                { 0,   "Boş" },
-                { 1,   "Ahşap" },
-                { 2,   "Tuğla-Demir" },
-                { 3,   "Taş-Ahşap" },
-                { 4,   "Ağaçlık" },
-                { 5,   "Kanalizasyon" },
-                { 6,   "Kemik" },
-                { 7,   "Sunta" },
-                { 8,   "Deniz" },
-                { 9,   "İniş/çıkış" },
-            };
+
 
 
             ClearPictureBoxToBlack(pictureBox2);
@@ -3495,7 +3541,7 @@ namespace LaleMapTest
                         match = true;
                         byte var1 = eventData[offset++];
                         byte var2 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Yüzü ayarla [17] {var1},\"{var2}\"");
+                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Yüzü ayarla {var1},\"{var2}\"");
 
                         break;
 
@@ -3892,12 +3938,22 @@ namespace LaleMapTest
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (!checkBox5.Checked) return;
+            bool ctrlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
+
             var result = GetRoomAndWallFromPixel(e.X, e.Y);
             if (result.index > 0)
             {
                 updateRoomHighlight(result.index, result.wall);
             }
+
+            if (e.Button == MouseButtons.Left && ctrlPressed)
+            {
+
+            }
+
         }
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {

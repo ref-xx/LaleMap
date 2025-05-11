@@ -74,6 +74,7 @@
             textBox5 = new TextBox();
             label2 = new Label();
             button22 = new Button();
+            listBox3 = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -82,7 +83,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(175, 13);
+            button1.Location = new Point(175, 10);
             button1.Name = "button1";
             button1.Size = new Size(99, 23);
             button1.TabIndex = 0;
@@ -92,7 +93,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(280, 13);
+            textBox1.Location = new Point(280, 10);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(33, 23);
             textBox1.TabIndex = 1;
@@ -331,6 +332,7 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(listBox3);
             groupBox2.Controls.Add(label1);
             groupBox2.Controls.Add(checkBox5);
             groupBox2.Controls.Add(button19);
@@ -348,7 +350,7 @@
             groupBox2.Controls.Add(button13);
             groupBox2.Location = new Point(408, 34);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(156, 277);
+            groupBox2.Size = new Size(390, 277);
             groupBox2.TabIndex = 18;
             groupBox2.TabStop = false;
             groupBox2.Text = "groupBox2";
@@ -452,7 +454,7 @@
             // 
             // button14
             // 
-            button14.Location = new Point(86, 71);
+            button14.Location = new Point(320, 46);
             button14.Name = "button14";
             button14.Size = new Size(64, 24);
             button14.TabIndex = 3;
@@ -462,7 +464,7 @@
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(46, 72);
+            textBox4.Location = new Point(280, 47);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(34, 23);
             textBox4.TabIndex = 2;
@@ -470,7 +472,7 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(6, 72);
+            textBox3.Location = new Point(240, 47);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(34, 23);
             textBox3.TabIndex = 1;
@@ -478,7 +480,7 @@
             // 
             // button13
             // 
-            button13.Location = new Point(6, 47);
+            button13.Location = new Point(240, 22);
             button13.Name = "button13";
             button13.Size = new Size(144, 23);
             button13.TabIndex = 0;
@@ -547,6 +549,15 @@
             button22.UseVisualStyleBackColor = true;
             button22.Click += button22_Click;
             button22.KeyDown += button22_KeyDown;
+            // 
+            // listBox3
+            // 
+            listBox3.FormattingEnabled = true;
+            listBox3.ItemHeight = 15;
+            listBox3.Location = new Point(240, 76);
+            listBox3.Name = "listBox3";
+            listBox3.Size = new Size(144, 184);
+            listBox3.TabIndex = 15;
             // 
             // Form1
             // 
@@ -636,5 +647,6 @@
         private TextBox textBox5;
         private Label label2;
         private Button button22;
+        private ListBox listBox3;
     }
 }
