@@ -53,6 +53,7 @@
             checkBox3 = new CheckBox();
             button12 = new Button();
             groupBox2 = new GroupBox();
+            listBox3 = new ListBox();
             label1 = new Label();
             checkBox5 = new CheckBox();
             button19 = new Button();
@@ -74,7 +75,6 @@
             textBox5 = new TextBox();
             label2 = new Label();
             button22 = new Button();
-            listBox3 = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -145,7 +145,7 @@
             // textBox2
             // 
             textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Font = new Font("Courier New", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            textBox2.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 162);
             textBox2.Location = new Point(866, 41);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
@@ -356,6 +356,15 @@
             groupBox2.Text = "groupBox2";
             groupBox2.Visible = false;
             // 
+            // listBox3
+            // 
+            listBox3.FormattingEnabled = true;
+            listBox3.ItemHeight = 15;
+            listBox3.Location = new Point(240, 76);
+            listBox3.Name = "listBox3";
+            listBox3.Size = new Size(144, 184);
+            listBox3.TabIndex = 15;
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -486,6 +495,7 @@
             button13.TabIndex = 0;
             button13.Text = "New Map";
             button13.UseVisualStyleBackColor = true;
+            button13.Click += button13_Click;
             // 
             // pictureBox2
             // 
@@ -549,15 +559,6 @@
             button22.UseVisualStyleBackColor = true;
             button22.Click += button22_Click;
             button22.KeyDown += button22_KeyDown;
-            // 
-            // listBox3
-            // 
-            listBox3.FormattingEnabled = true;
-            listBox3.ItemHeight = 15;
-            listBox3.Location = new Point(240, 76);
-            listBox3.Name = "listBox3";
-            listBox3.Size = new Size(144, 184);
-            listBox3.TabIndex = 15;
             // 
             // Form1
             // 

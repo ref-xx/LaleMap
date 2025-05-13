@@ -75,6 +75,10 @@ namespace LaleMapTest
     public partial class Form1 : Form
     {
         private AmigaPic PicBank = new AmigaPic();
+
+        int LastbankNumber = 1;
+        bool LastBankOnChipMem = true;
+
         Color[] BackupPalette1 = new Color[]
         {
             Color.FromArgb(0x00, 0x00, 0x00),    // COLOR00 = 000
@@ -415,7 +419,7 @@ namespace LaleMapTest
         "kIl sItkI",
         "dragon"
     };
-        // monster #68 = savaşa Dost Öğrenci ekler
+        // monster #68 = savaşa Dost Öğrenci ekler, #72 gus ekler
 
         Dictionary<ushort, string> dokuSetleri = new Dictionary<ushort, string>
             {
@@ -427,9 +431,42 @@ namespace LaleMapTest
                 { 5,   "Kanalizasyon" },
                 { 6,   "Kemik" },
                 { 7,   "Sunta" },
-                { 8,   "Deniz" },
+                { 8,   "Deniz-pencere" },
                 { 9,   "İniş/çıkış" },
             };
+        string[] dokular = {
+        "Boş" ,
+        "Ahşap" ,
+        "Tuğla-Demir" ,
+        "Taş-Ahşap" ,
+        "Ağaçlık" ,
+        "Kanalizasyon" ,
+        "Kemik" ,
+        "Sunta" ,
+        "Deniz-pencere" ,
+        "İniş/çıkış" ,
+        "Bilinmiyor10",
+        "Bilinmiyor11",
+        "Bilinmiyor12",
+        };
+        string[] duvarTipleri =
+        {
+            "Boş",
+            "Duvar",
+            "Kapı",
+            "Açık Kapı",
+            "Bilinmiyor4",
+            "Bilinmiyor5",
+            "Bilinmiyor6",
+            "Bilinmiyor7",
+            "Bilinmiyor8",
+            "Bilinmiyor9"
+        };
+
+
+
+
+
 
         /// <summary>
         /// level doku setleri max 4 adet.
@@ -475,11 +512,11 @@ namespace LaleMapTest
             map = ListData(PicBank);
             textBox2.Text = ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString()));
             drawDungeon();
-            
+
             byte[] result = File.ReadAllBytes("senaryo\\" + mapNo);
-            listEvents(result, eventOffset-1);
+            listEvents(result, eventOffset - 1);
             textBox1.Text = mapNo;
-            
+
         }
 
         public void drawRoom(int selectedListIndex)
@@ -745,10 +782,10 @@ namespace LaleMapTest
                         {
                             enemies = "⚔" + enemySpawn.ToString().Trim();
                             g.DrawString(enemies, font, Brushes.Red, new RectangleF(x, y + 10, roomSize, roomSize), sf);
-                        }                        
-                        if (map.haritagirisix==j && map.haritagirisiy==i)
+                        }
+                        if (map.haritagirisix == j && map.haritagirisiy == i)
                         {
-                            
+
                             enemies = "IN";
                             g.DrawString(enemies, font, Brushes.Cyan, new RectangleF(x, y + 10, roomSize, roomSize), sf);
                         }
@@ -923,7 +960,7 @@ namespace LaleMapTest
                     {
                         Pen tex = new Pen(Color.Cyan, 1);
                         //g.DrawLine(tex, x1, y1, x2, y2);
-                       DrawPlus(g, tex, x1, y1, x2, y2);
+                        DrawPlus(g, tex, x1, y1, x2, y2);
 
                     }
                     break;
@@ -974,7 +1011,7 @@ namespace LaleMapTest
                     {
                         Pen tex = new Pen(Color.Cyan, 1);
                         //g.DrawLine(tex, x1, y1, x2, y2);
-                        DrawPlus(g, tex, x1, y1, x2, y2,"ALT");
+                        DrawPlus(g, tex, x1, y1, x2, y2, "ALT");
 
                     }
                     break;
@@ -1037,7 +1074,7 @@ namespace LaleMapTest
 
             // Ortasına dik çizgi
             g.DrawLine(pen, perpX1, perpY1, perpX2, perpY2);
-           
+
         }
 
 
@@ -1130,6 +1167,13 @@ namespace LaleMapTest
             return (ushort)((data[offset] << 8) | data[offset + 1]);
         }
 
+        private static void WriteWordBigEndian(byte[] buffer, int offset, ushort value)
+        {
+            if (offset + 1 >= buffer.Length) return;
+            buffer[offset] = (byte)((value >> 8) & 0xFF);
+            buffer[offset + 1] = (byte)(value & 0xFF);
+        }
+
 
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1190,7 +1234,7 @@ namespace LaleMapTest
             restext += "\r\n" + ("7-10 : Duvar Setleri = " + string.Join(" ", header.Skip(7).Take(4)));
 
             //byte[] textureIds = header.Skip(6).Take(5).Select(b => (byte)b).ToArray();
-            
+
 
             setler[0] = header[6];
             setler[1] = header[7];
@@ -1199,8 +1243,8 @@ namespace LaleMapTest
             setler[4] = header[10];
             viewTextureList(setler);
             restext += "\r\n" + ("11-12 : Harita girişi " + string.Join(" ", header.Skip(11).Take(2)));
-            map.haritagirisix = header[11]-1;
-            map.haritagirisiy = header[12]-1;
+            map.haritagirisix = header[11] - 1;
+            map.haritagirisiy = header[12] - 1;
             // 13-20: Düşman numaraları
             restext += "\r\n" + ("13-20 : Süpriz Düşman Listesi");
             for (int i = 13; i <= 20; i++)
@@ -1280,12 +1324,12 @@ namespace LaleMapTest
                 ceilingType = int.Parse(parts[13]),
                 floorType = int.Parse(parts[14]),
 
-                 roomevent = int.Parse(parts[19]),
-                 roomevent32 = int.Parse(parts[18]),
-                 roomevent64 = int.Parse(parts[17]),
+                roomevent = int.Parse(parts[19]),
+                roomevent32 = int.Parse(parts[18]),
+                roomevent64 = int.Parse(parts[17]),
                 eventIndex = (roomeventb + (roomevent32b - 1) * 31),
                 enemySpawn = int.Parse(parts[15]), //random spawn
-                 isShop = int.Parse(parts[16]) //dükkanlar
+                isShop = int.Parse(parts[16]) //dükkanlar
             };
             return temp;
 
@@ -1780,10 +1824,10 @@ namespace LaleMapTest
             desc += $"\r\n- Tavan: {room.ceilingType}\r\n\r\n";
 
             desc += $"Doku Seti:\r\n";
-            desc += $"- \tÜst: {room.topType},\r\n Sol: {room.leftType}\t\tSağ: {room.rightType}\r\n\tAlt: {room.bottomType}\r\n \r\n";
+            desc += $"- \tKuzey: {room.topType} {dokular[setler[room.topType]]},\r\n Batı: {room.leftType} {dokular[setler[room.leftType]]}\tDoğu: {room.rightType} {dokular[setler[room.rightType]]}\r\n\tGüney: {room.bottomType} {dokular[setler[room.bottomType]]}\r\n \r\n";
 
             desc += $"Fonsiyon:\r\n";
-            desc += $"- \tÜst: {room.topWall},\r\n Sol: {room.leftWall}\t\tSağ: {room.rightWall}\r\n\tAlt: {room.bottomWall}\r\n \r\n";
+            desc += $"- \tKuzey: {room.topWall} {duvarTipleri[room.topWall]} ,\r\n Batı: {room.leftWall} {duvarTipleri[room.leftWall]}\t\tDoğu: {room.rightWall} {duvarTipleri[room.rightWall]}\r\n\tGüney: {room.bottomWall} {duvarTipleri[room.bottomWall]}\r\n \r\n";
 
             desc += $"- Zemin: {room.floorType}\r\n";
 
@@ -1984,17 +2028,20 @@ namespace LaleMapTest
         {
 
 
-            // İlk 4 baytı okuyarak magic değeri elde et
             string magic = Encoding.ASCII.GetString(fileData, 0, 4);
+            LastbankNumber = (fileData[4] << 8) | fileData[5];
+            int rawLength = (fileData[8] << 24) | (fileData[9] << 16) | (fileData[10] << 8) | fileData[11];
+            LastBankOnChipMem= (rawLength & 0x40000000) != 0; 
+            int length = rawLength & 0x0FFFFFFF;
+            int dataLength = length - 8;
             string bankName = Encoding.ASCII.GetString(fileData, 12, 8).Trim();
-            // Eğer bank dosyası T_AMBK ise offset 12’den bank adını al
-
+            //return $"{magic},{bankNumber},{length},{dataLength},{bankName}";
 
             // Bank adını kontrol ederek hangi T_AMBK tipi olduğunu belirle
             if (bankName.Equals("Pac.Pic.", StringComparison.OrdinalIgnoreCase))
             {
                 parsePic(fileData);
-                return "Pac.Pic.";
+                return "Pac.Pic. (Bank "+LastbankNumber.ToString()+")";
             }
 
             else
@@ -2125,7 +2172,7 @@ namespace LaleMapTest
         void parsePic(byte[] fileData, int x = 0, int y = 0, bool clear = true)
         {
             PicBank = MakePalette(fileData);
-            listBox1.Items.Add((PicBank.width * 8).ToString() + "x" + (PicBank.lumph * PicBank.lumps).ToString());
+            listBox1.Items.Add((PicBank.width * 8).ToString() + "x" + (PicBank.lumph * PicBank.lumps).ToString()+ " - "+fileData.Length.ToString()+" bytes.");
             PicBank = Decompress(PicBank);
             PicBank = PaintAmigaPic(PicBank, x, y, clear);
 
@@ -2217,6 +2264,7 @@ namespace LaleMapTest
             {
                 listBox1.Items.Add("Resim başlığı bulunamadı.");
             }
+
             // Genişlik ve yüksekliği oku (big-endian: 2 bayt)
             pic.width = ((fileData[o + 8] << 8) | fileData[o + 9]); //width as bytes
             pic.lumph = (fileData[o + 10] << 8) | fileData[o + 11]; //lump count
@@ -2224,6 +2272,8 @@ namespace LaleMapTest
             // Lumps (ll) ve Bitplane Sayısı (dlumps) Okuma
             pic.lumps = (fileData[o + 12] << 8) | fileData[o + 13]; // ll (linelumps height)
             pic.dlumps = (fileData[o + 14] << 8) | fileData[o + 15]; // d (bitplane sayısı)
+            textBox3.Text = pic.lumps.ToString();
+            textBox4.Text = pic.lumph.ToString();
 
             pic.rleDataOffset = get4(fileData, o + 16) - 24;  //-24 due to removing the header from the stream
             pic.pointsOffset = get4(fileData, o + 20) - 24;
@@ -2238,6 +2288,8 @@ namespace LaleMapTest
             listBox1.Items.Add("Render tamam.");
             return pic;
         }
+
+        
 
         int get4(byte[] data, int offset)
         {
@@ -2406,7 +2458,9 @@ namespace LaleMapTest
                 }
 
                 // Create a new 32bppArgb bitmap
-                targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, targetPixelFormat);
+                //targetBmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, targetPixelFormat);
+                targetBmp = new Bitmap(finalWidth, finalHeight, targetPixelFormat);
+                
                 using (Graphics g = Graphics.FromImage(targetBmp))
                 {
                     g.Clear(pictureBox1.BackColor);
@@ -3111,9 +3165,10 @@ namespace LaleMapTest
             }
         }
 
-        private string findCommand(string needle)
+        private string findCommand(string needle, bool abortOnFind = false)
         {
             string resultx = $"'{needle}' aranıyor...\r\n\r\n";
+            bool found = false;
             for (int i = 1; i < 19; i++)
             {
 
@@ -3144,10 +3199,17 @@ namespace LaleMapTest
                         if (length < 0) length = 0;
                         string crop = haystack.Substring(contains, length + needle.Length);
 
-                        resultx += $"Bölüm:{i} // Olay: {eventOffset + idx} içerik: {crop}\r\n";
+                        resultx += $"Bölüm:{i}  // Olay:{eventOffset + idx}   içerik: {crop}\r\n";
+                        if (abortOnFind)
+                        {
+                            resultx += $" konum: {contains}      |";
+                            found = true;
+                            break;
+                        }
                     }
 
                 }
+                if (found) break;
             }
             resultx += "Arama tamamlandı.";
             return resultx;
@@ -3338,7 +3400,7 @@ namespace LaleMapTest
                         if (offset + 1 <= eventData.Length)
                         {
                             byte var = eventData[offset++];
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Değişkeni ayarla ({var})."); //, value ={ val}
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" ⚙️ Değişkeni ayarla ({var})."); //, value ={ val}
                         }
                         break;
 
@@ -3359,7 +3421,7 @@ namespace LaleMapTest
                                 ", ",
                                 new[]
                                 {
-                                  count       > 0 && enemyId     >= 0 && enemyId     < enemies.Length ? $"{count} adet [{enemyId}] {enemies[enemyId]}"     : count > 0? $"{count} adet [{enemyId}]":null,
+                                  count       > 0 && enemyId     >= 0 && enemyId     < enemies.Length ? $"{count} adet [{enemyId:x2}] {enemies[enemyId]}"     : count > 0? $"{count} adet [{enemyId:x2}]":null,
                                   bilinmeyen3 > 0 && bilinmeyen2 >= 0 && bilinmeyen2 < enemies.Length ? $"{bilinmeyen3} adet [{bilinmeyen2:x2}] {enemies[bilinmeyen2]}" :bilinmeyen3 > 0? $"{bilinmeyen3} adet [{bilinmeyen2:x2}]":null,
                                   bilinmeyen5 > 0 && bilinmeyen4 >= 0 && bilinmeyen4 < enemies.Length ? $"{bilinmeyen5} adet [{bilinmeyen4:x2}] {enemies[bilinmeyen4]}" : bilinmeyen5 > 0? $"{bilinmeyen5} adet [{bilinmeyen4:x2}]":null
                                 }
@@ -3392,10 +3454,10 @@ namespace LaleMapTest
 
                             if (itemNo == 66) { mod1 = 4; itemNo = 22; } //166 numarali item=tüftüf+4 silikon baba special
 
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" 💵💰💵 Ganimet $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
-                            if (itemNo > 0 && itemNo < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen1}  item #{itemNo} {items[itemNo]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen1 > 0 ? $"     ?:  {bilinmeyen1}  item#: {ritemNo1}" : ""));
-                            if (itemNo2 > 0 && itemNo2 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen2}  item #{itemNo2} {items[itemNo2]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen2 > 0 ? $"     ?:  {bilinmeyen2}  item#: {ritemNo2}" : ""));
-                            if (itemNo3 > 0 && itemNo3 < items.Length) sb.AppendLine(bosluk(girinti) + $"     Ganimet {bilinmeyen3}  item #{itemNo3} {items[itemNo3]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen3 > 0 ? $"     ?:  {bilinmeyen3}  item#: {ritemNo3}" : ""));
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" 💵 Ganimet $: {dolar}" + $", M: {mark}" + $", K: {kıvrık}");
+                            if (itemNo > 0 && itemNo < items.Length) sb.AppendLine(bosluk(girinti) + $"\t   💰 Ganimet {bilinmeyen1}  item #{itemNo} {items[itemNo]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen1 > 0 ? $"     ?:  {bilinmeyen1}  item#: {ritemNo1}" : ""));
+                            if (itemNo2 > 0 && itemNo2 < items.Length) sb.AppendLine(bosluk(girinti) + $"\t   💰 Ganimet {bilinmeyen2}  item #{itemNo2} {items[itemNo2]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen2 > 0 ? $"     ?:  {bilinmeyen2}  item#: {ritemNo2}" : ""));
+                            if (itemNo3 > 0 && itemNo3 < items.Length) sb.AppendLine(bosluk(girinti) + $"\t   💰 Ganimet {bilinmeyen3}  item #{itemNo3} {items[itemNo3]}(+{mod1})"); else sb.AppendLine(bosluk(girinti) + (bilinmeyen3 > 0 ? $"     ?:  {bilinmeyen3}  item#: {ritemNo3}" : ""));
 
 
                         }
@@ -3474,7 +3536,7 @@ namespace LaleMapTest
                         byte stat2 = eventData[offset++];
                         byte stat3 = eventData[offset++];
                         if (stat2 == 0x1d)
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini x {stat3}% düşür. [{cmd:X2}] {stat1:X2}, {stat2:X2},  {stat3:X2}].");
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grubun enerjisini {stat3}% olana kadar düşür.");
                         else
                             sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Grup durumu değiştir: [{cmd:X2}] {stat1:X2}, {stat2:X2}, {stat3:X2}].");
 
@@ -3545,14 +3607,25 @@ namespace LaleMapTest
 
                         break;
 
-                    //bilinmeyen 3 parametreli komutlar
+                    //inventory'de item kontrolü
                     case 0x16:
 
                         match = true;
                         byte var4 = eventData[offset++];
                         byte var5 = eventData[offset++];
                         byte var6 = eventData[offset++];
-                        sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" UNK3 [{cmd:X2}] {var4:X2}, {var5:X2}, {var6:X2}.");
+                        if (var4 == 2 && var5 == 2 && var6 == 1)
+                        {
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Özel Kontrol: Envanterde sözlük var mı?");
+                        }
+                        else if (var4 == 1 && var5 == 2 && var6 == 8)
+                        {
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Özel Kontrol: Envanterde tüftüf+4 var mı?");
+
+                        }
+                        else {
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Özel Kontrol [{cmd:X2}] {var4:X2}, {var5:X2}, {var6:X2} (grup/envanterde özel durum kontrolu).");
+                        }
 
                         break;
 
@@ -3643,11 +3716,27 @@ namespace LaleMapTest
                         byte stat4 = eventData[offset++];
                         byte stat5 = eventData[offset++];
                         byte stat6 = eventData[offset++];
+                        int modDelItem = stat6 / 100;
+                        int DelitemNo = (byte)(stat6 - modDelItem * 100);
                         if (stat5 == 0x01)
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" {stat6} Numaralı eşyayı envanterden sil. [{cmd:X2}] {stat4:X2}, {stat5:X2},  {stat6:X2}].");
-                        else
-                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Envanter durumunu değiştir: [{cmd:X2}] {stat4:X2}, {stat5:X2}, {stat6:X2}].");
+                        {
+                            //özel eşyalar
+                            if (stat6 == 0xFC) { modDelItem = 5; DelitemNo = 8; }
+                            if (stat6 == 0xa6) { modDelItem = 5; DelitemNo = 22; }
 
+                        }
+
+
+
+                        //if (stat5 == 0x01)
+                        try
+                        {
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" {stat6} Numaralı eşyayı ({items[DelitemNo]}+{modDelItem}) envanterden sil.");
+                        }
+                        catch
+                        {
+                            sb.AppendLine(linecounter++.ToString("00") + "." + bosluk(girinti) + $" Envanter durumunu değiştir/envanterden sil. [{cmd:X2} {stat4:X2}, {stat5:X2}, {stat6:X2}].");
+                        }
                         break;
 
                     case 0x1E:
@@ -3742,11 +3831,16 @@ namespace LaleMapTest
         {
             try
             {
+
+                
+
                 using (StreamWriter sw = new StreamWriter(filename, false, Encoding.UTF8))
                 {
+                    sw.Write(ParseMapHeader(ParseHeaderString(listBox1.Items[0].ToString())));
+
                     for (int i = 0; i < eventDataList.Count; i++)
                     {
-                        sw.WriteLine($"===== Event #{i + 1} =====");
+                        sw.WriteLine($"===== Event #{eventOffset + i } =====");
                         string content = ViewEvent(eventDataList[i]);
                         sw.WriteLine(content);
                         sw.WriteLine(); // Araya boşluk
@@ -3869,10 +3963,12 @@ namespace LaleMapTest
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)
         {
+            string selectedText = textBox2.SelectedText;
+            if (string.IsNullOrEmpty(selectedText)) return;
+
             if (e.KeyCode == Keys.F3)
             {
-                string selectedText = textBox2.SelectedText;
-                if (string.IsNullOrEmpty(selectedText)) return;
+                
 
                 int startIndex = textBox2.SelectionStart + textBox2.SelectionLength;
                 int foundIndex = textBox2.Text.IndexOf(selectedText, startIndex, StringComparison.CurrentCultureIgnoreCase);
@@ -3890,6 +3986,56 @@ namespace LaleMapTest
                 }
 
                 e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F4)
+            {
+                string results = findCommand("ayarla "+selectedText.Trim()+".", true);
+                int pos = 1;
+                pos =  results.IndexOf("Bölüm:", pos+4, StringComparison.CurrentCultureIgnoreCase);
+                pos = results.IndexOf(":", pos, StringComparison.CurrentCultureIgnoreCase);
+                if (pos>1)
+                {
+                    
+                    int bolum;
+                    string strBolum = results.Substring(pos + 1, 2);
+                    if (int.TryParse(strBolum, out bolum))
+                    {
+                        // Successfully parsed `bolum`, you can use it here.
+                        pos = results.IndexOf(":", pos+3, StringComparison.CurrentCultureIgnoreCase);
+                        if (pos > 1)
+                        {
+                            int olay;
+                            if (int.TryParse(results.Substring(pos + 1, 3), out olay))
+                            {
+
+                                if (bolum.ToString() != textBox1.Text) fetchMap(bolum.ToString());
+                                listBox2.SelectedIndex = olay - eventOffset;
+                                pos = results.IndexOf("konum:", pos + 4, StringComparison.CurrentCultureIgnoreCase);
+                                pos = results.IndexOf(":", pos , StringComparison.CurrentCultureIgnoreCase);
+                                if (pos > 1)
+                                {
+                                    int konum;
+                                    strBolum = results.Substring(pos + 1, 5);
+                                    if (int.TryParse(strBolum, out konum))
+                                    {
+                                        textBox2.SelectionStart = konum+7;
+                                        textBox2.SelectionLength = selectedText.Length-1;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -4388,7 +4534,7 @@ namespace LaleMapTest
 
         private void panel1_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
         }
 
         private void button22_KeyDown(object sender, KeyEventArgs e)
@@ -4424,6 +4570,219 @@ namespace LaleMapTest
             textBox2.Text = describeRoom(locy * map.width + locx, facing); // görünümü güncelle
 
             e.Handled = true;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            byte[] compressedData = ForceSmallestSquash(pictureBox1.Image, BackupPalette, 5);
+            byte[] fileData = CreateAmosBankFile(compressedData, (ushort)LastbankNumber, (ushort)(LastBankOnChipMem ? 0 : 1),true, BackupPalette);
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Amiga Bank File|*.bin;*.amo";
+                sfd.DefaultExt = "bin";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(sfd.FileName, fileData);
+                }
+            }
+        }
+
+
+        private byte[] ForceSmallestSquash(Image PboxImg, Color[] currentPalette, int bitplanes)
+        {
+            byte[] TSizes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 24, 32, 48, 64 };
+            byte bestSize = 0;
+            int minSize = 999999;
+            byte[] compressedData;
+            foreach (byte tsize in TSizes)
+            {
+                compressedData = squashBitmap(pictureBox1.Image, BackupPalette, 5, tsize);
+                if (compressedData != null)
+                {
+                    if (compressedData.Length < minSize)
+                    {
+                        bestSize = tsize;
+                        minSize = compressedData.Length;
+                    }
+                }
+            }
+            compressedData = squashBitmap(pictureBox1.Image, BackupPalette, 5, bestSize);
+            return compressedData;
+        }
+        static void WriteUInt16BE(BinaryWriter bw, int value)
+        {
+            bw.Write((byte)(value >> 8));
+            bw.Write((byte)value);
+        }
+
+        public static byte[] CreateAmosBankFile(byte[] compressedImageData, ushort bankNumber, ushort memoryType, bool addScreenHeader, Color[] currentPalette = null)
+        {
+            const string signature = "AmBk";
+            const int bankNameSize = 8;
+            const string bankName = "Pac.Pic."; // mutlaka 8 karakter
+            int dataLen = bankNameSize + compressedImageData.Length + (addScreenHeader ? 90 : 0);
+            int totalSize = 4    // signature
+                                        + 2    // bankNumber
+                                        + 2    // memoryType
+                                        + 4    // bank length (32-bit)
+                                        + bankNameSize
+                                        + (addScreenHeader?90:0)
+                                        + compressedImageData.Length;
+
+            using var ms = new MemoryStream(totalSize);
+            using var bw = new BinaryWriter(ms);
+
+            // 1) 4 bayt ASCII: "AmBk"
+            bw.Write(Encoding.ASCII.GetBytes(signature));
+
+            // 2) 2 bayt bankNumber, big-endian
+            bw.Write((byte)(bankNumber >> 8));
+            bw.Write((byte)bankNumber);
+
+            // 3) 2 bayt memoryType, big-endian
+            bw.Write((byte)(memoryType >> 8));
+            bw.Write((byte)memoryType);
+
+            // 4) 4 bayt length (bankName + data), big-endian
+            bw.Write((byte)((dataLen >> 24) & 0xFF));
+            bw.Write((byte)((dataLen >> 16) & 0xFF));
+            bw.Write((byte)((dataLen >> 8) & 0xFF));
+            bw.Write((byte)(dataLen & 0xFF));
+
+            // 5) 8 bayt bankName (ASCII, pad’li)
+            bw.Write(Encoding.ASCII.GetBytes(bankName));
+
+
+            if (addScreenHeader)
+            {
+                bw.Write(new byte[] { 0x12, 0x03, 0x19, 0x90 });
+
+                WriteUInt16BE(bw, 320);
+                WriteUInt16BE(bw, 256);
+
+                WriteUInt16BE(bw, 0x81);
+                WriteUInt16BE(bw, 0x2a);
+
+                WriteUInt16BE(bw, 320);
+                WriteUInt16BE(bw, 256);
+
+                WriteUInt16BE(bw, 0);
+                WriteUInt16BE(bw, 0);
+
+                WriteUInt16BE(bw, 0x5000);
+                WriteUInt16BE(bw, 32);
+                WriteUInt16BE(bw, 5);
+
+                // 32 palette entries, each 2 bytes (12-bit color: 4 bits per channel)
+                for (int i = 0; i < 32; i++)
+                {
+                    Color c = currentPalette[i];
+                    int pr = c.R / 17;
+                    int pg = c.G / 17;
+                    int pb = c.B / 17;
+                    int word = (pr << 8) | (pg << 4) | pb;
+                    WriteUInt16BE(bw, word);
+                }
+            }
+
+            // 6) compressed image data
+            bw.Write(compressedImageData);
+
+            return ms.ToArray();
+        }
+
+        private byte[] squashBitmap(Image PboxImg, Color[] currentPalette, int bitplanes, int Tsize)
+        {
+            // 1. Gerekli UI elemanlarından verileri al
+            if (PboxImg == null)
+            {
+                listBox1.Items.Add("Lütfen önce bir resim yükleyin.");
+                return null;
+            }
+            Bitmap sourceBitmap = PboxImg as Bitmap;
+            if (sourceBitmap == null)
+            {
+                listBox1.Items.Add("Yüklenen resim Bitmap formatında değil.");
+                return null;
+            }
+
+            // Paletin hazır olduğunu varsayıyoruz (MakePalette fonksiyonu tarafından yüklenmiş)
+            if (currentPalette == null || currentPalette.Length == 0)
+            {
+                listBox1.Items.Add("Palet yüklenmedi.");
+                return null;
+            }
+
+            int targetBitplanes = bitplanes; // Kaç bitplane sıkıştırılacak (örneğin 5 veya 6)
+            int selectedTsize = Tsize;       // Kullanılacak TSize değeri (örneğin 8, 16, vb.)
+
+            // 2. Bitmap'i Amiga planar formatına dönüştür
+
+            int widthBytes;
+            int heightLines;
+
+            // amossquasher sınıfındaki static metodu doğrudan çağırıyoruz
+            byte[][] uncompressedPlanarData;
+            try
+            {
+                uncompressedPlanarData = AmosSquasher.ConvertBitmapToPlanar(
+                    sourceBitmap,
+                    targetBitplanes,
+                    currentPalette, // Paletinizi buraya gönderin
+                    out widthBytes,
+                    out heightLines
+                );
+                
+
+            }
+            catch (ArgumentException ex)
+            {
+                listBox1.Items.Add("Planar dönüştürme hatası: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // LockBits veya unsafe kod ile ilgili hatalar burada yakalanabilir
+                listBox1.Items.Add("Genel dönüştürme hatası: " + ex.Message);
+                return null;
+            }
+
+
+            // 3. Seçilen TSize değerinin yüksekliği tam bölüp bölmediğini kontrol et (ASM kodu kontrolü)
+            // Bu kontrolü sıkıştırma öncesinde yapmak gerekiyor.
+            if (heightLines % selectedTsize != 0)
+            {
+                listBox1.Items.Add($"Hata: Seçilen TSize ({selectedTsize}), resim yüksekliği ({heightLines})'nı tam bölmüyor.");
+                // Veya otomatik olarak uygun bir TSize bulma mekanizması çalıştırılabilir (ASM GetSize rutini gibi)
+                return null;
+            }
+
+            // 4. Planar veriyi AMOS formatında sıkıştır
+
+            // amossquasher sınıfındaki static Squashing metodunu doğrudan çağırıyoruz
+            byte[] compressedData;
+            try
+            {
+                compressedData = AmosSquasher.Squash(
+                    uncompressedPlanarData,
+                    selectedTsize,
+                    heightLines, // ConvertBitmapToPlanar'dan gelen yükseklik
+                    widthBytes   // ConvertBitmapToPlanar'dan gelen genişlik (byte olarak)
+                );
+                listBox1.Items.Add($"Sıkıştırma tamamlandı.  TSize={selectedTsize}. Sıkıştırılmış boyut: {compressedData.Length} byte.");
+                return compressedData;
+
+            }
+            catch (ArgumentException ex)
+            {
+                listBox1.Items.Add("Sıkıştırma hatası: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                listBox1.Items.Add("Genel sıkıştırma hatası: " + ex.Message);
+                return null;
+            }
         }
     }
 }
